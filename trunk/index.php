@@ -12,14 +12,6 @@ define( 'VNP', true );
 require( './mainfile.php' );
 echo $vnp_url;
 
-//np( $pass );
-echo $pass->genPass( 'phuong' ) . '<br />';
-
-echo $pass->salt . '<br />';
-$a = 'fa6bccadfb998db834e5019fcc60755c7fed46d7d5529e8d750ea96e2eec485e';
-$salt = 'gS9kXVC2mL';
-if( $pass->authenticate( 'phuong', $salt, $a ) ) die('ok');
-else die('false');
 //echo $db->GetHTML();
 //np( $global_config );
 

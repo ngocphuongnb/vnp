@@ -61,7 +61,7 @@ RewriteRule (.*)(\/|\.html)$ index.php
 
 RewriteCond %{REQUEST_URI} !\.[^./]+$
 RewriteCond %{REQUEST_URI} !(.*)/$
-RewriteRule ^(.*)$ http://localhost/vnpcms/$1/ [R=301,L]
+RewriteRule ^(.*)$ http://localhost/vnp/$1/ [R=301,L]
 </IfModule>
 #nukeviet_rewrite_end
 ##################################################################################

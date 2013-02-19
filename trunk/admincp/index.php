@@ -36,10 +36,17 @@ require( VNP_ROOT . '/includes/' . SYS_INI );
 require( VNP_ROOT . '/includes/' . LOAD_ENV );
 require( VNP_ROOT . '/includes/class/xtemplate.min.class.php' );
 require( VNP_ROOT . '/includes/class/request.class.php');
-require( VNP_ROOT . '/includes/class/db.class.php');
-require( VNP_ROOT . '/' . ADMIN_DIR . '/template.php' );
-
+//require( VNP_ROOT . '/includes/class/db.class.php');
+require( VNP_ROOT . '/' . ADMIN_DIR . '/includes/template.php' );
 //require( VNP_ROOT . '/' . ADMIN_DIR . '/admin_auth.php' );
+require_once( VNP_ROOT . '/includes/' . CONFIG_FILE );
+require ( VNP_ROOT . '/includes/class/db.' . $db_info['dbtype'] . '.class.php');
+
+$request	= new request();
+$db			= new vnp_db();
+
+require( VNP_ROOT . '/' . ADMIN_DIR . '/includes/check_admin.php' );
+
 if( !defined( 'LOGGED_ADMIN' ) )
 {
 	adminLoginForm();

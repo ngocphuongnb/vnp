@@ -36,7 +36,7 @@
             <td><input type="text" name="password" /></td>
           </tr>
           <tr>
-            <td colspan="2"><center><input type="submit" value="Đăng nhập" /></center></td>
+            <td colspan="2"><center><input type="submit" name="admin-login" value="Đăng nhập" /></center></td>
           </tr>
         </tbody>
       </table>
