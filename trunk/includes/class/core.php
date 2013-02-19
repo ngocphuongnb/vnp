@@ -86,7 +86,7 @@ class vnp
 			if( file_exists( VNP_ROOT . '/includes/' . CONFIG_FILE ) )
 			{
 				require_once( VNP_ROOT . '/includes/' . CONFIG_FILE );
-				
+				require ( VNP_ROOT . '/includes/class/db.' . $db_info['dbtype'] . '.class.php');
 				$db = new vnp_db( true, $db_info['hostname'], $db_info['dbname'], $db_info['dbuname'], $db_info['dbpass'] );
 				$session = new vnp_session();
 			}

@@ -13,7 +13,6 @@ define( 'VNP_ROOT', pathinfo( str_replace( DIRECTORY_SEPARATOR, '/', __file__ ),
 require ( VNP_ROOT . '/includes/constants.php');
 require ( VNP_ROOT . '/includes/variables.php');
 require ( VNP_ROOT . '/includes/class/core.php');
-require ( VNP_ROOT . '/includes/class/db.class.php');
 require ( VNP_ROOT . '/includes/class/request.class.php');
 require ( VNP_ROOT . '/includes/class/password.class.php');
 require ( VNP_ROOT . '/includes/class/session.class.php');

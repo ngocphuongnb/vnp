@@ -3,6 +3,15 @@
     <table>
     	<caption>Database Setting</caption>
         <tbody>
+        	<tr>
+            	<th>Database Type</th>
+                <td>
+                	<select name="dbtype">
+                    	<option value="mysql">MYSQL</option>
+                        <option value="mysqli">MYSQLI</option>
+                    </select>
+                </td>
+            </tr>
             <tr>
                 <th>Host</th>
                 <td><input class="label" type="text" name="host" value="localhost" /><span class="note">Nhập tên host ( thường là localhost )</span></td>

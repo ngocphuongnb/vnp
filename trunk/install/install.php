@@ -22,7 +22,6 @@ require ( VNP_ROOT . '/includes/' . SYS_INI );
 require ( VNP_ROOT . '/includes/' . LOAD_ENV );
 require ( VNP_ROOT . '/' . INSTALL_DIR . '/template.php' );
 require ( VNP_ROOT . '/includes/class/request.class.php');
-require ( VNP_ROOT . '/includes/class/db.class.php');
 
 
 // url
@@ -94,6 +93,7 @@ elseif( $installStep == 1 )
 elseif( $installStep == 2 )
 {
 	$dbData = array(
+					'dbtype' => '',
 					'hostname' => '',
 					'dbname' => '',
 					'dbuname' => '',
@@ -104,6 +104,7 @@ elseif( $installStep == 2 )
 	
 	if( $request->get( 'next', 'post', '' ) )
 	{
+		$dbData['dbtype'] = $request->get( 'dbtype', 'post', '' );
 		$dbData['hostname'] = $request->get( 'host', 'post', '' );
 		$dbData['dbname'] = $request->get( 'dbname', 'post', '' );
 		$dbData['dbuname'] = $request->get( 'dbuname', 'post', '' );
@@ -111,12 +112,14 @@ elseif( $installStep == 2 )
 		$dbData['dbprefix'] = $request->get( 'dbprefix', 'post', '' );
 		
 		$delTable = $request->get( 'deltable', 'post', '' );
-		//np($dbData);
-		$db = new vnp_db();
-		if( $db->Open( $dbData['hostname'], $dbData['dbname'], $dbData['dbuname'], $dbData['dbpass'] ) )
+		if( !empty( $dbData['dbtype'] ) and @require ( VNP_ROOT . '/includes/class/db.' . $dbData['dbtype'] . '.class.php') )
 		{
-			$authkey = substr( md5( $_SERVER['SERVER_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . $dbData['hostname'] . $dbData['dbuname'] . $dbData['dbpass'] . $dbData['dbname'] . $dbData['dbuname'] . $dbData['dbpass'] . $dbData['dbname'] . substr( time(), 0, 6 ) ), 8, 6).random( 10 );
-			$configContent = '<?php' . PHP_EOL . '
+			//np($dbData);
+			$db = new vnp_db();
+			if( $db->Open( $dbData['hostname'], $dbData['dbname'], $dbData['dbuname'], $dbData['dbpass'] ) )
+			{
+				$authkey = substr( md5( $_SERVER['SERVER_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . $dbData['hostname'] . $dbData['dbuname'] . $dbData['dbpass'] . $dbData['dbname'] . $dbData['dbuname'] . $dbData['dbpass'] . $dbData['dbname'] . substr( time(), 0, 6 ) ), 8, 6).random( 10 );
+				$configContent = '<?php' . PHP_EOL . '
 /**
  * @Project VNP
  * @Author Nguyen Ngoc Phuong
@@ -130,53 +133,62 @@ $db_info[\'dbname\']		= 	\'' . $dbData['dbname'] . '\';
 $db_info[\'dbuname\']		= 	\'' . $dbData['dbuname'] . '\';
 $db_info[\'dbpass\']		= 	\'' . $dbData['dbpass'] . '\';
 $db_info[\'sitekey\']		= 	\'' . RandomString(32) . '\';
+$db_info[\'dbtype\']		= 	\'' . $dbData['dbtype'] . '\';
 $db_info[\'prefix\']		= 	\'' . $dbData['dbprefix'] . '\';' . PHP_EOL . '
 //
 $nG[\'authkey\']				=	\'' . $authkey . '\';' . PHP_EOL . '
 ?>';
-			
-			if( file_exists( VNP_ROOT . '/includes/' . CONFIG_FILE ) )
-			{
-				if( file_put_contents( VNP_ROOT . '/includes/' . CONFIG_FILE, $configContent, LOCK_EX ) )
+				
+				if( file_exists( VNP_ROOT . '/includes/' . CONFIG_FILE ) )
 				{
-					require( VNP_ROOT . '/includes/' . CONFIG_FILE );
-				}
-				else $db_info['prefix'] = $dbData['dbprefix'];
-			}
-			
-			require ( VNP_ROOT . '/' . INSTALL_DIR . '/data.php' );
-			
-			$checktable = $db->QueryArray( 'SHOW TABLE STATUS LIKE \'' . $db_info['prefix'] . '\_%\'' );
-			$nums = $db->RowCount();
-
-			$_i = 0;
-			if( !empty( $checktable ) )
-			{
-				$delTableForm = true;
-			}
-			if( $delTable == 1 )
-			{
-				while( $_i < $nums )
-				{
-					$db->Query( 'DROP TABLE `' . $checktable[$_i]['Name'] . '`' );
-					$_i++;
-				}
-			}
-			
-			if( !empty( $sql_create_table ) )
-			{
-				foreach( $sql_create_table as $_sql )
-				{
-					$db->Query( $_sql );
-					if( $db->Error() )
+					if( file_put_contents( VNP_ROOT . '/includes/' . CONFIG_FILE, $configContent, LOCK_EX ) )
 					{
-						$installError[] = $db->Error();
+						require( VNP_ROOT . '/includes/' . CONFIG_FILE );
+					}
+					else $db_info['prefix'] = $dbData['dbprefix'];
+				}
+				
+				require ( VNP_ROOT . '/' . INSTALL_DIR . '/data.php' );
+				
+				$checktable = $db->QueryArray( 'SHOW TABLE STATUS LIKE \'' . $db_info['prefix'] . '\_%\'' );
+				$nums = $db->RowCount();
+	
+				$_i = 0;
+				if( !empty( $checktable ) )
+				{
+					$delTableForm = true;
+				}
+				if( $delTable == 1 )
+				{
+					while( $_i < $nums )
+					{
+						$db->Query( 'DROP TABLE `' . $checktable[$_i]['Name'] . '`' );
+						$_i++;
 					}
 				}
-				if( empty( $installError ) )
+				
+				if( !empty( $sql_create_table ) )
 				{
-					Header( "Location: " . $vnp_mydir . INSTALL_DIR . "/install.php?step=3" );
-					exit();
+					foreach( $sql_create_table as $_sql )
+					{
+						$db->Query( $_sql );
+						if( $db->Error() )
+						{
+							$installError[] = $db->Error();
+						}
+					}
+					if( empty( $installError ) )
+					{
+						Header( "Location: " . $vnp_mydir . INSTALL_DIR . "/install.php?step=3" );
+						exit();
+					}
+				}
+			}
+			else
+			{
+				if( $db->Error() )
+				{
+					$installError[] = 'Invalid Database type';
 				}
 			}
 		}
@@ -205,6 +217,7 @@ elseif( $installStep == 3 )
 		if( $adminConfig['admin_pass'] == $adminConfig['admin_repass'] )
 		{
 			require( VNP_ROOT . '/includes/' . CONFIG_FILE );
+			require( VNP_ROOT . '/includes/class/db.' . $db_info['dbtype'] . '.class.php' );
 			
 			$db = new vnp_db( true, $db_info['hostname'], $db_info['dbname'], $db_info['dbuname'], $db_info['dbpass'] );
 			
