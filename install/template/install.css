@@ -1,0 +1,34 @@
+@charset "utf-8";
+
+.vnp-header {
+	width: 100%
+}
+.vnp-main {
+	width: 980px;
+	margin: 0 auto;
+}
+.vnp-main tr th.menu {
+	width: 20%
+}
+input.label {
+	height: 18px;
+	width: 200px;
+}
+span.note {
+	font-size: 12px;
+	font-weight: bold;
+	margin: 0 10px;
+	color: #060
+}
+.ins-error {
+	color: #F00;
+	font-weight: bold;
+	font-size: 12px;
+	margin-bottom: 10px;
+}
+.ins-error span {
+	color: #903;
+	margin: 5px 10px;
+	clear: both;
+	display: block
+}
