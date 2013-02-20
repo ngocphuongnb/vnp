@@ -559,6 +559,7 @@ class vnp_db
 			// Execute the UPDATE
 			if( !$this->Query( $sql ) )
 			{
+				die($sql);
 				return $this->last_result;
 			}
 			else

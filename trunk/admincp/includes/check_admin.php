@@ -25,6 +25,17 @@ if( $request->get( 'admin-login', 'post', '' ) )
 	}
 	if( empty( $error ) )
 	{
+		$db->SelectRows( VNP_USER, array( 'username' => vnp_db::SQLValue( $adminName ) ) );
+		echo $db->GetHTML();
+		if( $db->RowCount() === 1 )
+		{
+			$array = $db->RowArray(0, MYSQL_ASSOC);
+			np( $array );
+		}
+		else
+		{
+			die('fvfvfvrgvsdfv');
+		}
 	}
 }
 

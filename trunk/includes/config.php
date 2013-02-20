@@ -14,11 +14,11 @@ $db_info['dbport']		= 	'';
 $db_info['dbname']		= 	'vnpcms';
 $db_info['dbuname']		= 	'root';
 $db_info['dbpass']		= 	'123';
-$db_info['sitekey']		= 	'36Fa1I3dTC5Uzt4BETNQ6zCh2fpkyG1M';
+$db_info['sitekey']		= 	'NeRcpdAzsqvuDTAec5CEbl2dvGFNJslc';
 $db_info['dbtype']		= 	'mysql';
 $db_info['prefix']		= 	'vnp';
 
 //
-$nG['authkey']				=	'35eacfK0Pr3erv1M';
+$nG['authkey']				=	'38b09a2Ks7qSnN9A';
 
 ?>

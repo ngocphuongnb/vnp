@@ -42,8 +42,14 @@ require( VNP_ROOT . '/' . ADMIN_DIR . '/includes/template.php' );
 require_once( VNP_ROOT . '/includes/' . CONFIG_FILE );
 require ( VNP_ROOT . '/includes/class/db.' . $db_info['dbtype'] . '.class.php');
 
+define( 'VNP_ADMIN', $db_info['prefix'] . '_admins' );
+define( 'VNP_ADMIN_PERMISS', $db_info['prefix'] . '_admin_permiss' );
+define( 'VNP_USER', $db_info['prefix'] . '_users' );
+define( 'SESSION', $db_info['prefix'] . '_session' );
+define( 'GLOBAL_CONFIG', $db_info['prefix'] . '_global_config' );
+
 $request	= new request();
-$db			= new vnp_db();
+$db			= new vnp_db( true, $db_info['hostname'], $db_info['dbname'], $db_info['dbuname'], $db_info['dbpass'] );
 
 require( VNP_ROOT . '/' . ADMIN_DIR . '/includes/check_admin.php' );
 
