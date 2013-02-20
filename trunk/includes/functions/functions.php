@@ -211,3 +211,13 @@ function getglobal( $key, $group = NULL )
 	}
 	return NULL;
 }
+
+function CheckDirect( $value, $mode )
+{
+	return false;
+}
+
+function vnpDirect( $url )
+{
+	return false;
+}
