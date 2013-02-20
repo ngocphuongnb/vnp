@@ -9,7 +9,7 @@
 
 define( 'VNP', true );
 define( 'VN', true );
-define( 'VNP_ADMIN', true );
+define( 'ADMIN_FILE', true );
 
 if( !defined( 'VNP_ROOT' ) )
 {
@@ -36,6 +36,7 @@ require( VNP_ROOT . '/includes/' . SYS_INI );
 require( VNP_ROOT . '/includes/' . LOAD_ENV );
 require( VNP_ROOT . '/includes/class/xtemplate.min.class.php' );
 require( VNP_ROOT . '/includes/class/request.class.php');
+require( VNP_ROOT . '/includes/class/password.class.php');
 //require( VNP_ROOT . '/includes/class/db.class.php');
 require( VNP_ROOT . '/' . ADMIN_DIR . '/includes/template.php' );
 //require( VNP_ROOT . '/' . ADMIN_DIR . '/admin_auth.php' );
@@ -50,6 +51,7 @@ define( 'GLOBAL_CONFIG', $db_info['prefix'] . '_global_config' );
 
 $request	= new request();
 $db			= new vnp_db( true, $db_info['hostname'], $db_info['dbname'], $db_info['dbuname'], $db_info['dbpass'] );
+$pass		= new vnp_pass();
 
 require( VNP_ROOT . '/' . ADMIN_DIR . '/includes/check_admin.php' );
 

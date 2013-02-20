@@ -27,9 +27,9 @@ class vnp_db
 	private $time_start     = 0;        	// start time for the timer
 	private $error_desc		= '';			// last mysql error string
 	private $errorNumber	= 0;			// last mysql error number
-	private $db_connect		= 0;			// mysql link resource
+	private $db_link		= 0;			// mysql link resource
 	
-	// mysql_link --> db_connect
+	// mysql_link --> db_link
 	// active_row --> activeRow
 	
 	/**
@@ -90,11 +90,11 @@ class vnp_db
 		
 		if( $pcon )
 		{
-			$this->db_connect = @mysql_pconnect( $this->db_host, $this->db_user, $this->db_pass );
+			$this->db_link = @mysqli_connect( $this->db_host, $this->db_user, $this->db_pass );
 		}
 		else
 		{
-			$this->db_connect = @mysql_connect( $this->db_host, $this->db_user, $this->db_pass );
+			$this->db_link = @mysqli_connect( $this->db_host, $this->db_user, $this->db_pass );
 		}
 		if( !$this->IsConnected() )
 		{
@@ -147,7 +147,7 @@ class vnp_db
 		$return_value = true;
 		if( !$charset ) $charset = $this->db_charset;
 		$this->ResetError();
-		if( !( mysql_select_db( $database ) ) )
+		if( !( mysqli_select_db( $this->db_link, $database ) ) )
 		{
 			$this->SetError();
 			$return_value = false;
@@ -156,7 +156,7 @@ class vnp_db
 		{
 			if( ( strlen( $charset ) > 0 ) )
 			{
-				if( !( mysql_query( "SET CHARACTER SET '{$charset}'", $this->db_connect ) ) )
+				if( !( mysqli_query( $this->db_link, "SET CHARACTER SET '{$charset}'" ) ) )
 				{
 					$this->SetError();
 					$return_value = false;
@@ -173,7 +173,7 @@ class vnp_db
 	 */
 	public function IsConnected()
 	{
-		if( gettype( $this->db_connect ) == 'resource' )
+		if( gettype( $this->db_link ) == 'resource' )
 		{
 			return true;
 		}
@@ -196,7 +196,7 @@ class vnp_db
 	{
 		$this->ResetError();
 		$this->last_sql = $sql;
-		$this->last_result = @mysql_query( $sql, $this->db_connect );
+		$this->last_result = @mysqli_query( $this->db_link, $sql );
 		
 		if( !$this->last_result )
 		{
@@ -210,7 +210,7 @@ class vnp_db
 			$this->queryArray[] = array( htmlspecialchars( $sql ), true );
 			if( strpos( strtolower( $sql ), 'insert') === 0 )
 			{
-				$this->last_insert_id = mysql_insert_id();
+				$this->last_insert_id = mysqli_insert_id( $this->db_link );
 				if( $this->last_insert_id === false )
 				{
 					$this->SetError();
@@ -225,7 +225,8 @@ class vnp_db
 			}
 			else if( strpos( strtolower( $sql ), 'select') === 0 )
 			{
-				$numrows = mysql_num_rows( $this->last_result );
+				$stmt = mysqli_prepare( $this->db_link, $sql );
+				$numrows = mysqli_stmt_num_rows( $stmt );
 				if( $numrows > 0 )
 				{
 					$this->activeRow = 0;
@@ -246,7 +247,7 @@ class vnp_db
 	
 	public function AffectedRows()
 	{
-		return mysql_affected_rows();
+		return mysqli_affected_rows( $this->db_link );
 	}
 	
 	/**
@@ -273,7 +274,7 @@ class vnp_db
 		$this->ResetError();
 		if( $this->last_result )
 		{
-			if( !mysql_data_seek( $this->last_result, 0 ) )
+			if( !mysqli_data_seek( $this->last_result, 0 ) )
 			{
 				$this->SetError();
 				return false;
@@ -281,11 +282,11 @@ class vnp_db
 			else
 			{
 				//while($member = mysql_fetch_object($this->last_result)){
-				while( $member = mysql_fetch_array( $this->last_result, $resultType ) )
+				while( $member = mysqli_fetch_array( $this->last_result, $resultType ) )
 				{
 					$members[] = $member;
 				}
-				mysql_data_seek( $this->last_result, 0 );
+				mysqli_data_seek( $this->last_result, 0 );
 				$this->active_row = 0;
 				return $members;
 			}
@@ -321,7 +322,7 @@ class vnp_db
 		else
 		{
 			$this->active_row = $row_number;
-			$result = mysql_data_seek( $this->last_result, $row_number );
+			$result = mysqli_data_seek( $this->last_result, $row_number );
 			if( !$result )
 			{
 				$this->SetError();
@@ -329,7 +330,7 @@ class vnp_db
 			}
 			else
 			{
-				$record = mysql_fetch_row( $this->last_result );
+				$record = mysqli_fetch_row( $this->last_result );
 				if( !$record )
 				{
 					$this->SetError();
@@ -338,7 +339,7 @@ class vnp_db
 				else
 				{
 					// Go back to the record after grabbing it
-					mysql_data_seek( $this->last_result, $row_number );
+					mysqli_data_seek( $this->last_result, $row_number );
 					return $record;
 				}
 			}
@@ -395,7 +396,7 @@ class vnp_db
 				$this->Seek( $optional_row_number );
 			}
 		}
-		$row = mysql_fetch_object( $this->last_result );
+		$row = mysqli_fetch_object( $this->last_result );
 		if( !$row )
 		{
 			$this->SetError();
@@ -614,7 +615,7 @@ class vnp_db
 				$html .= "<table style=\"$tb\" cellpadding=\"2\" cellspacing=\"2\">\n";
 				$this->MoveFirst();
 				$header = false;
-				while( $member = mysql_fetch_object( $this->last_result ) )
+				while( $member = mysqli_fetch_object( $this->last_result ) )
 				{
 					if( !$header )
 					{
@@ -660,13 +661,13 @@ class vnp_db
 		{
 			if( $this->RowCount() > 0 )
 			{
-				for( $i = 0, $il = mysql_num_fields( $this->last_result ); $i < $il; $i++ )
+				for( $i = 0, $il = mysqli_field_count( $this->db_link ); $i < $il; $i++ )
 				{
-					$types[$i] = mysql_field_type( $this->last_result, $i );
+					$types[$i] = mysqli_fetch_field_direct( $this->last_result, $i );
 				}
 				$json = '[';
 				$this->MoveFirst();
-				while( $member = mysql_fetch_object( $this->last_result ) )
+				while( $member = mysqli_fetch_object( $this->last_result ) )
 				{
 					$json .= json_encode( $member ) . ",";
 				}
@@ -758,7 +759,7 @@ class vnp_db
 	static public function SQLValue( $value, $datatype = self::SQLVALUE_TEXT )
 	{
 		$return_value = '';
-		$value = mysql_real_escape_string( self::fixQuery( $value ) );
+		$value = mysqli_real_escape_string( $this->db_link, self::fixQuery( $value ) );
 
 		switch( strtolower( trim( $datatype ) ) )
 		{
@@ -912,7 +913,7 @@ class vnp_db
 		{
 			if( !$this->in_transaction )
 			{
-				if( !mysql_query( 'START TRANSACTION', $this->db_connect ) )
+				if( !mysqli_query( $this->db_link, 'START TRANSACTION' ) )
 				{
 					$this->SetError();
 					return false;
@@ -948,7 +949,7 @@ class vnp_db
 		{
 			if( $this->in_transaction )
 			{
-				if( !mysql_query( 'COMMIT', $this->db_connect ) )
+				if( !mysqli_query( $this->db_link, 'COMMIT' ) )
 				{
 					// $this->TransactionRollback();
 					$this->SetError();
@@ -983,7 +984,7 @@ class vnp_db
 		}
 		else
 		{
-			if( !mysql_query( 'ROLLBACK', $this->db_connect ) )
+			if( !mysqli_query( $this->db_link, 'ROLLBACK' ) )
 			{
 				$this->SetError( 'Could not rollback transaction' );
 				return false;
@@ -1040,7 +1041,8 @@ class vnp_db
 		}
 		else
 		{
-			$result = @mysql_num_rows( $this->last_result );
+			$stmt = mysqli_prepare( $this->db_link, $this->last_sql);
+			$result = mysqli_stmt_num_rows( $stmt );
 			if( !$result )
 			{
 				$this->SetError();
@@ -1095,7 +1097,7 @@ class vnp_db
 				$this->Seek( $optional_row_number );
 			}
 		}
-		$row = mysql_fetch_array( $this->last_result, $resultType );
+		$row = mysqli_fetch_array( $this->last_result, $resultType );
 		if( !$row )
 		{
 			$this->SetError();
@@ -1533,7 +1535,7 @@ class vnp_db
 	public function GetColumnComments( $table )
 	{
 		$this->ResetError();
-		$records = mysql_query('SHOW FULL COLUMNS FROM ' . $table);
+		$records = mysqli_query( $this->db_link, 'SHOW FULL COLUMNS FROM ' . $table);
 		if( !$records )
 		{
 			$this->SetError();
@@ -1551,7 +1553,7 @@ class vnp_db
 			{
 				$index = 0;
 				// Fetchs the array to be returned (column 8 is field comment):
-				while( $array_data = mysql_fetch_array( $records ) )
+				while( $array_data = mysqli_fetch_array( $records ) )
 				{
 					$columns[$index] = $array_data[8];
 					$columns[$columnNames[$index++]] = $array_data[8];
@@ -1573,12 +1575,12 @@ class vnp_db
 		$this->ResetError();
 		if( empty( $table ) )
 		{
-			$result = mysql_num_fields( $this->last_result );
+			$result = mysqli_field_count( $this->db_link );
 			if( !$result ) $this->SetError();
 		}
 		else
 		{
-			$records = mysql_query('SELECT * FROM ' . $table . ' LIMIT 1');
+			$records = mysqli_query( $this->db_link, 'SELECT * FROM ' . $table . ' LIMIT 1' );
 			if( !$records )
 			{
 				$this->SetError();
@@ -1586,8 +1588,8 @@ class vnp_db
 			}
 			else
 			{
-				$result = mysql_num_fields( $records );
-				$success = @mysql_free_result( $records );
+				$result = mysqli_field_count( $this->db_link );
+				$success = @mysqli_free_result( $records );
 				if( !$success )
 				{
 					$this->SetError();
@@ -1616,11 +1618,11 @@ class vnp_db
 			{
 				if( is_numeric( $column ) )
 				{
-					return mysql_field_type( $this->last_result, $column );
+					return mysqli_fetch_field_direct( $this->last_result, $column );
 				}
 				else
 				{
-					return mysql_field_type( $this->last_result, $this->GetColumnID( $column ) );
+					return mysqli_fetch_field_direct( $this->last_result, $this->GetColumnID( $column ) );
 				}
 			}
 			else
@@ -1631,10 +1633,10 @@ class vnp_db
 		else
 		{
 			if( is_numeric( $column ) ) $column = $this->GetColumnName( $column, $table );
-			$result = mysql_query( 'SELECT ' . $column . ' FROM ' . $table . ' LIMIT 1');
-			if( mysql_num_fields( $result ) > 0 )
+			$result = mysqli_query( $this->db_link, 'SELECT ' . $column . ' FROM ' . $table . ' LIMIT 1');
+			if( mysqli_num_fields( $this->db_link ) > 0 )
 			{
-				return mysql_field_type( $result, 0 );
+				return mysqli_fetch_field_direct( $result, 0 );
 			}
 			else
 			{
@@ -1712,7 +1714,7 @@ class vnp_db
 			}
 			else
 			{
-				$result = mysql_field_len( $this->last_result, $columnID );
+				$result = mysqli_fetch_field_direct( $this->last_result, $columnID );
 				if( !$result )
 				{
 					$this->SetError();
@@ -1726,13 +1728,13 @@ class vnp_db
 		}
 		else
 		{
-			$records = mysql_query( 'SELECT ' . $column . ' FROM ' . $table . ' LIMIT 1' );
+			$records = mysqli_query( $this->db_link, 'SELECT ' . $column . ' FROM ' . $table . ' LIMIT 1' );
 			if( !$records )
 			{
 				$this->SetError();
 				return false;
 			}
-			$result = mysql_field_len( $records, 0 );
+			$result = mysqli_fetch_field_direct( $records, 0 );
 			if( !$result )
 			{
 				$this->SetError();
@@ -1761,7 +1763,7 @@ class vnp_db
 		{
 			if( $this->RowCount() > 0 )
 			{
-				$result = mysql_field_name( $this->last_result, $columnID );
+				$result = mysqli_fetch_field_direct( $this->last_result, $columnID );
 				if( !$result ) $this->SetError();
 			}
 			else
@@ -1771,7 +1773,7 @@ class vnp_db
 		}
 		else
 		{
-			$records = mysql_query(' SELECT * FROM ' . $table . ' LIMIT 1' );
+			$records = mysqli_query( $this->db_link, ' SELECT * FROM ' . $table . ' LIMIT 1' );
 			if( !$records )
 			{
 				$this->SetError();
@@ -1779,9 +1781,9 @@ class vnp_db
 			}
 			else
 			{
-				if( mysql_num_fields( $records ) > 0 )
+				if( mysqli_field_count( $this->db_link ) > 0 )
 				{
-					$result = mysql_field_name( $records, $columnID );
+					$result = mysqli_fetch_field_direct( $records, $columnID );
 					if( !$result ) $this->SetError();
 				}
 				else
@@ -1805,7 +1807,7 @@ class vnp_db
 		$this->ResetError();
 		if(empty( $table ) )
 		{
-			$columnCount = mysql_num_fields( $this->last_result );
+			$columnCount = mysqli_field_count( $this->db_link );
 			if( !$columnCount )
 			{
 				$this->SetError();
@@ -1815,13 +1817,13 @@ class vnp_db
 			{
 				for( $column = 0; $column < $columnCount; $column++ )
 				{
-					$columns[] = mysql_field_name( $this->last_result, $column );
+					$columns[] = mysqli_fetch_field_direct( $this->last_result, $column );
 				}
 			}
 		}
 		else
 		{
-			$result = mysql_query( 'SHOW COLUMNS FROM ' . $table );
+			$result = mysqli_query( $this->db_link, 'SHOW COLUMNS FROM ' . $table );
 			if( !$result )
 			{
 				$this->SetError();
@@ -1829,7 +1831,7 @@ class vnp_db
 			}
 			else
 			{
-				while( $array_data = mysql_fetch_array( $result ) )
+				while( $array_data = mysqli_fetch_array( $result ) )
 				{
 					$columns[] = $array_data[0];
 				}
@@ -1870,7 +1872,7 @@ class vnp_db
 	{
 		$this->ResetError();
 		// Query to get the tables in the current database:
-		$records = mysql_query( 'SHOW TABLES' );
+		$records = mysqli_query( $this->db_link, 'SHOW TABLES' );
 		if( !$records )
 		{
 			$this->SetError();
@@ -1878,7 +1880,7 @@ class vnp_db
 		}
 		else
 		{
-			while( $array_data = mysql_fetch_array( $records ) )
+			while( $array_data = mysqli_fetch_array( $records ) )
 			{
 				$tables[] = $array_data[0];
 			}
@@ -1932,11 +1934,11 @@ class vnp_db
 			{
 				if( $this->IsConnected() )
 				{
-					$this->error_desc = mysql_error( $this->db_connect );
+					$this->error_desc = mysqli_error( $this->db_link );
 				}
 				else
 				{
-					$this->error_desc = mysql_error();
+					$this->error_desc = mysqli_error();
 				}
 			}
 			if( $errorNumber <> 0 )
@@ -1947,11 +1949,11 @@ class vnp_db
 			{
 				if( $this->IsConnected() )
 				{
-					$this->errorNumber = @mysql_errno( $this->db_connect );
+					$this->errorNumber = @mysqli_errno( $this->db_link );
 				}
 				else
 				{
-					$this->error_desc = @mysql_error();
+					$this->error_desc = @mysqli_error();
 				}
 			}
 		}
@@ -1987,7 +1989,7 @@ class vnp_db
 		$success = $this->Release();
 		if( $success )
 		{
-			$success = @mysql_close( $this->db_connect );
+			$success = @mysqli_close( $this->db_link );
 			if( !$success )
 			{
 				$this->SetError();
@@ -1996,7 +1998,7 @@ class vnp_db
 			{
 				unset( $this->last_sql );
 				unset( $this->last_result );
-				unset( $this->db_connect );
+				unset( $this->db_link );
 			}
 		}
 		return $success;
@@ -2104,7 +2106,7 @@ class vnp_db
 		}
 		else
 		{
-			$success = @mysql_free_result( $this->last_result );
+			$success = @mysqli_free_result( $this->last_result );
 			if( !$success ) $this->SetError();
 		}
 		return $success;

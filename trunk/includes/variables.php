@@ -66,4 +66,18 @@ $npnode = array(
 			'sticky' => 		0,
 			'author' => 		''
 			);
+
+$singlePage = array(
+			'member',
+			'login',
+			'register',
+			'blog',
+			'wall'
+			);
+			
+$nG['theme'] = 'seeuhn';
+
+$customHeading = array();
+
+$mode = '';
 ?>

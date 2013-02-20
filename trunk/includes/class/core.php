@@ -71,7 +71,7 @@ class vnp
 	
 	protected function _initializing()
 	{
-		global $glang, $sys_info, $session, $nG, $db, $db_info;
+		global $glang, $sys_info, $session, $nG, $db, $db_info, $template;
 		
 		if( file_exists( VNP_ROOT . '/includes/class/xtemplate.min.class.php' ) )
 		{
@@ -122,12 +122,32 @@ class vnp
 		else
 		{
 			$this->_parseErr( $glang['loadenv_file_notfound'], true );
+		}
+		if( file_exists( VNP_ROOT . '/includes/' . FUNCTION_DIR . '/theme.php' ) )
+		{
+			require_once( VNP_ROOT . '/includes/' . FUNCTION_DIR . '/theme.php' );
+		}
+		else
+		{
+			$this->_parseErr( $glang['loadenv_file_notfound'], true );
 		}		
 	}
 	
 	protected function _ini_global()
 	{
-		global $client_info, $vG;
+		global $client_info, $nG;
+	}
+	
+	public function Mode( $mod )
+	{
+		global $content, $request, $customHeading, $nG, $mode;
+		//die(VNP_ROOT . '/sources/controllers/' . $mode . '/' . $mode . '.php');
+		if( file_exists( VNP_ROOT . '/sources/controllers/' . $mod . '/' . $mod . '.php' ) )
+		{
+			$mode = $mod;
+			include( VNP_ROOT . '/sources/controllers/' . $mode . '/' . $mode . '.php' );
+			echo $content;
+		}
 	}
 	
 	public function SetNotice( $note )

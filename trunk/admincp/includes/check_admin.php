@@ -7,7 +7,7 @@
  * @Createdate  30/09/2012, 00:30
  */
 
-if( !defined( 'VNP' ) || !defined( 'VNP_ADMIN' ) ) die( 'ILN' );
+if( !defined( 'VNP' ) || !defined( 'ADMIN_FILE' ) ) die( 'ILN' );
 
 if( $request->get( 'admin-login', 'post', '' ) )
 {
@@ -25,12 +25,26 @@ if( $request->get( 'admin-login', 'post', '' ) )
 	}
 	if( empty( $error ) )
 	{
-		$db->SelectRows( VNP_USER, array( 'username' => vnp_db::SQLValue( $adminName ) ) );
+		$checkUser = array( 'username' => vnp_db::SQLValue( $adminName ) );
+		
+		$db->SelectRows( VNP_USER, $checkUser );
 		echo $db->GetHTML();
 		if( $db->RowCount() === 1 )
 		{
-			$array = $db->RowArray(0, MYSQL_ASSOC);
-			np( $array );
+			$AdminData = $db->RowArray(0, MYSQL_ASSOC);
+			if( $AdminData['userid'] > 0 )
+			{
+				if( $pass->authenticate( $adminPass, $AdminData['salt'], $AdminData['password'] ) )
+				{
+					$checkAdmin = array( 'userid' => $AdminData['userid'] );
+					$db->SelectRows( VNP_ADMIN, $checkAdmin );
+					if( $db->RowCount() === 1 )
+					{
+						die('ok');
+					}
+					else die('not');
+				}
+			}
 		}
 		else
 		{

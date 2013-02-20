@@ -6,9 +6,10 @@
 	
 */
 
-.login-wrapper {
-	background: url(../images/login-bg.png) fixed 50% no-repeat white;
-	font-family: Helvetica;
+html {
+	background: url(../images/login-bg.png);
+	font-size:10pt;
+	font-family: sans-serif;
 }
 
 .login-wrapper h2 {
@@ -20,7 +21,7 @@
 form.vnp-reg {
 	width: 280px;
 	height: 260px;
-	margin: 200px auto;
+	margin: 100px auto;
 	background: white;
 	border-radius: 3px;
 	box-shadow: 0 0 10px rgba(0,0,0, .4); 

@@ -7,7 +7,7 @@
  * @Createdate  30/09/2012, 00:30
  */
 
-if( !defined( 'VNP' ) || !defined( 'VNP_ADMIN' ) ) die( 'ILN' );
+if( !defined( 'VNP' ) || !defined( 'ADMIN_FILE' ) ) die( 'ILN' );
 
 function adminLoginForm()
 {

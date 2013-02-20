@@ -10,33 +10,32 @@
 define( 'VNP', true );
 
 require( './mainfile.php' );
-echo $vnp_url;
 
-//echo $db->GetHTML();
-//np( $global_config );
+if( $request->get( 'mod', 'get', '' ) )
+{
+	$AvailableMode = array( 'member', 'blog', 'wall' );
+	$mod = $request->get( 'mod', 'get', '' );
+	if( in_array( $mod, $AvailableMode ) )
+	{
+		$vnp->Mode( $mod );
+	}
+	elseif( $directLink = CheckDirect( $mod, 'mode' ) )
+	{
+		vnpDirect( $directLink );
+		exit();
+	}
+	else
+	{
+		vnpGetTheme( '404' );
+	}
+}
+else
+{
+	echo myTheme();
+}
 
-//np( $db->queryArray );
-//$db->Close();
 
-//np($nG);
-
-//$session->SetCookie( 'phuong', 'ngoc', 0, true );
-//$ck = $session->get( 'cookie', 'phuong', true );
-echo 'ck: ' . $session->get( 'cookie', 'phuong', true );
-$session->unsetss( 'cookie', 'phuong' );
-//$session->SetSession( 'ngoc', 'phuong' );
-//echo $session->get( 'session', 'ngoc' );
-
-
-//np($client_info);
-
-//$db->Query( 'SHOW STATUS LIKE \'Com_select\'' );
-//$db->Query( "show variables like 'query%'" );
-
-/*print_r('<pre><strong>Current session settings:</strong><br><br>');
-    print_r($session->get_settings());
-    print_r('</pre>');
-*/
+/*
 echo $alias_get . '<br />';
 echo $vnp->SetNotice('IMN') . '<br />';
 echo 'time:&nbsp&nbsp&nbsp&nbsp&nbsp ' . VNP_TIME . '<br />';
@@ -51,5 +50,6 @@ echo 'ADMINDIR:&nbsp&nbsp&nbsp&nbsp&nbsp ' . MY_ADMDIR . '<br />';
 echo 'HD STATUS:&nbsp&nbsp&nbsp&nbsp&nbsp ' . HEADER_STATUS . '<br />';
 echo 'ROOT:&nbsp&nbsp&nbsp&nbsp&nbsp ' . DOC_ROOT . '<br />';
 echo 'ROOT:&nbsp&nbsp&nbsp&nbsp&nbsp ' . VNP_ROOT . '<br />';
+*/
 
 ?>
