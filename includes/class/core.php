@@ -141,7 +141,7 @@ class vnp
 	public function Mode( $mod )
 	{
 		global $content, $request, $customHeading, $nG, $mode;
-		//die(VNP_ROOT . '/sources/controllers/' . $mode . '/' . $mode . '.php');
+		
 		if( file_exists( VNP_ROOT . '/sources/controllers/' . $mod . '/' . $mod . '.php' ) )
 		{
 			$mode = $mod;
