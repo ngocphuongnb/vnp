@@ -20,7 +20,6 @@ if( $AdminLogged = $session->get( 'session', 'AdminLogged' ) )
 		{
 			$AdminData = $db->RowArray(0, MYSQL_ASSOC);
 			define( 'LOGGED_ADMIN', true );
-			np( $AdminData );
 		}
 	}
 }
