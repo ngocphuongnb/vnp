@@ -40,7 +40,7 @@ require( VNP_ROOT . '/includes/class/request.class.php');
 require( VNP_ROOT . '/includes/class/password.class.php');
 require( VNP_ROOT . '/includes/class/session.class.php');
 require( VNP_ROOT . '/' . ADMIN_DIR . '/includes/template.php' );
-require ( VNP_ROOT . '/includes/class/db.' . $db_info['dbtype'] . '.class.php');
+require( VNP_ROOT . '/includes/class/db.' . $db_info['dbtype'] . '.class.php');
 
 $request	= new request();
 $db			= new vnp_db( true, $db_info['hostname'], $db_info['dbname'], $db_info['dbuname'], $db_info['dbpass'] );
@@ -55,6 +55,7 @@ if( !defined( 'LOGGED_ADMIN' ) )
 }
 else
 {
+	include( VNP_ROOT . '/' . ADMIN_DIR . '/includes/load_theme.php' );
 }
 
 ?>

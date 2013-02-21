@@ -35,4 +35,8 @@ function adminLoginForm()
 	echo $xtpl->out( 'main' );
 }
 
+function adminFullTheme( $content )
+{
+}
+
 ?>
