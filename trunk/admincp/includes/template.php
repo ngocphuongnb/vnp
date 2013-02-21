@@ -35,8 +35,15 @@ function adminLoginForm()
 	echo $xtpl->out( 'main' );
 }
 
-function adminFullTheme( $content )
+function adminFullTheme( $content = '' )
 {
+	$xtpl = new XTemplate( 'layout.tpl', DOC_ROOT . MY_ADMDIR . '/template/' );
+	$xtpl->assign( 'ADMIN_DIR', ADMIN_DIR );
+	$xtpl->assign( 'MY_DOMAIN', VNP_DOMAIN );
+	$xtpl->assign( 'MY_DIR', VNP_MYDIR );
+	
+	$xtpl->parse( 'main' );
+	echo $xtpl->out( 'main' );
 }
 
 ?>
