@@ -1,6 +1,6 @@
 <!-- BEGIN: main -->
 <section class="loginform cf">
-    <form name="login" action="" method="get" accept-charset="utf-8">
+    <form name="login" action="{ACTION}" method="get" accept-charset="utf-8">
         <ul>
             <li>
                 <label for="usermail">Email</label>
