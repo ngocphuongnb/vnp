@@ -42,7 +42,7 @@ elseif( $request->get( 'admin-login', 'post', '' ) )
 		$checkUser = array( 'username' => vnp_db::SQLValue( $adminName ) );
 		
 		$db->SelectRows( VNP_USER, $checkUser );
-		echo $db->GetHTML();
+		//echo $db->GetHTML();
 		if( $db->RowCount() === 1 )
 		{
 			$UserData = $db->RowArray(0, MYSQL_ASSOC);
