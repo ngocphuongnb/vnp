@@ -9,7 +9,22 @@
 
 if( !defined( 'VNP' ) || !defined( 'ADMIN_FILE' ) ) die( 'ILN' );
 
-if( $request->get( 'admin-login', 'post', '' ) )
+if( $AdminLogged = $session->get( 'session', 'AdminLogged' ) )
+{
+	$CheckAdmin = explode( '|', $AdminLogged );
+	if( $CheckAdmin[0] == 1 )
+	{
+		$check = array( 'admin_id' => $CheckAdmin[1] );
+		$db->SelectRows( VNP_ADMIN, $check );
+		if( $db->RowCount() === 1 )
+		{
+			$AdminData = $db->RowArray(0, MYSQL_ASSOC);
+			define( 'LOGGED_ADMIN', true );
+			np( $AdminData );
+		}
+	}
+}
+elseif( $request->get( 'admin-login', 'post', '' ) )
 {
 	$error = array();
 	$adminName = $request->get( 'username', 'post', '' );
@@ -31,25 +46,25 @@ if( $request->get( 'admin-login', 'post', '' ) )
 		echo $db->GetHTML();
 		if( $db->RowCount() === 1 )
 		{
-			$AdminData = $db->RowArray(0, MYSQL_ASSOC);
-			if( $AdminData['userid'] > 0 )
+			$UserData = $db->RowArray(0, MYSQL_ASSOC);
+			if( $UserData['userid'] > 0 )
 			{
-				if( $pass->authenticate( $adminPass, $AdminData['salt'], $AdminData['password'] ) )
+				if( $pass->authenticate( $adminPass, $UserData['salt'], $UserData['password'] ) )
 				{
-					$checkAdmin = array( 'userid' => $AdminData['userid'] );
+					$checkAdmin = array( 'userid' => $UserData['userid'] );
 					$db->SelectRows( VNP_ADMIN, $checkAdmin );
+					$AdminData = $db->RowArray(0, MYSQL_ASSOC);
 					if( $db->RowCount() === 1 )
 					{
-						die('ok');
+						$session->SetSession( 'AdminLogged', '1|' . $AdminData['admin_id'] );
 					}
-					else die('not');
+					else die('Hacking!!!');
 				}
 			}
 		}
 		else
 		{
 			echo $db->RowCount();
-			die(VNP_USER);
 		}
 	}
 }
