@@ -113,7 +113,7 @@ class vnp
 	
 	protected function _load_env()
 	{
-		global $_vG, $glang, $client_info, $alias_get;
+		global $_vG, $glang, $client_info, $alias_get, $db_info;
 		
 		if( file_exists( VNP_ROOT . '/includes/' . LOAD_ENV ) )
 		{
@@ -140,11 +140,12 @@ class vnp
 	
 	public function Mode( $mod )
 	{
-		global $content, $request, $customHeading, $nG, $mode;
+		global $content, $request, $pass, $db, $customHeading, $nG, $mode;
 		
-		if( file_exists( VNP_ROOT . '/sources/controllers/' . $mod . '/' . $mod . '.php' ) )
+		if( file_exists( VNP_ROOT . '/sources/controllers/' . $mod . '/function.php' ) && file_exists( VNP_ROOT . '/sources/controllers/' . $mod . '/' . $mod . '.php' ) )
 		{
 			$mode = $mod;
+			include( VNP_ROOT . '/sources/controllers/' . $mode . '/function.php' );
 			include( VNP_ROOT . '/sources/controllers/' . $mode . '/' . $mode . '.php' );
 			echo $content;
 		}

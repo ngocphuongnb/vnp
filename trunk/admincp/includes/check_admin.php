@@ -48,7 +48,8 @@ if( $request->get( 'admin-login', 'post', '' ) )
 		}
 		else
 		{
-			die('fvfvfvrgvsdfv');
+			echo $db->RowCount();
+			die(VNP_USER);
 		}
 	}
 }
