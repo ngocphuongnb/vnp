@@ -76,10 +76,12 @@ class vnp_session
 	private function SetSessionPath( $SessionPath )
 	{
 		global $sys_info;
+		
         
         if( function_exists( 'session_save_path' ) and ! in_array( 'session_save_path', $sys_info['disable_functions'] ) )
         {
-        	if( preg_match( "/^[a-zA-Z]{1}[a-zA-Z0-9_]*$/", $SessionPath ) )
+        	//if( preg_match( "/^[a-zA-Z]{1}[a-zA-Z0-9_]*$/", $SessionPath ) )
+			if(1)
             {
                 $save_path = VNP_ROOT . '/' . $SessionPath;
 				
@@ -105,7 +107,7 @@ class vnp_session
             }
             $save_path = session_save_path();
         }
-        $this->session_save_path = $save_path;
+        $this->SessionSavePath = $save_path;
 	}
 	
 	/**
