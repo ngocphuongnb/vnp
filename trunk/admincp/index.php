@@ -16,8 +16,7 @@ if( !defined( 'VNP_ROOT' ) )
 	define( 'VNP_ROOT', str_replace( '\\', '/', realpath( pathinfo( __file__, PATHINFO_DIRNAME ) . '/../' ) ) );
 }
 
-require( VNP_ROOT . '/includes/constants.php');
-require( VNP_ROOT . '/includes/variables.php');
+require_once( VNP_ROOT . '/includes/constants.php');
 
 // url
 $vnp_mydir = pathinfo( $_SERVER['PHP_SELF'], PATHINFO_DIRNAME );
@@ -30,32 +29,9 @@ $vnp_mydir = str_replace( ADMIN_DIR, '', $vnp_mydir );
 define( 'VNP_MYDIR', $vnp_mydir );
 define( 'MY_ADMDIR', $vnp_mydir . ADMIN_DIR . '/' );
 
-require_once( VNP_ROOT . '/includes/' . CONFIG_FILE );
-require( VNP_ROOT . '/includes/' . FUNCTION_DIR . '/' . CORE_FUNCTION );
-require( VNP_ROOT . '/includes/' . GET_SYSINFO );
-require( VNP_ROOT . '/includes/' . SYS_INI );
-require( VNP_ROOT . '/includes/' . LOAD_ENV );
-require( VNP_ROOT . '/includes/class/xtemplate.min.class.php' );
-require( VNP_ROOT . '/includes/class/request.class.php');
-require( VNP_ROOT . '/includes/class/password.class.php');
-require( VNP_ROOT . '/includes/class/session.class.php');
-require( VNP_ROOT . '/' . ADMIN_DIR . '/includes/template.php' );
-require( VNP_ROOT . '/includes/class/db.' . $db_info['dbtype'] . '.class.php');
+require( VNP_ROOT . '/mainfile.php');
+require( VNP_ROOT . '/' . ADMIN_DIR . '/includes/admin.class.php' );
 
-$request	= new request();
-$db			= new vnp_db( true, $db_info['hostname'], $db_info['dbname'], $db_info['dbuname'], $db_info['dbpass'] );
-$pass		= new vnp_pass();
-$session	= new vnp_session( 'sesPre', 'sources/temp/sess', 'cooPre');
-
-require( VNP_ROOT . '/' . ADMIN_DIR . '/includes/check_admin.php' );
-
-if( !defined( 'LOGGED_ADMIN' ) )
-{
-	adminLoginForm();
-}
-else
-{
-	include( VNP_ROOT . '/' . ADMIN_DIR . '/includes/load_theme.php' );
-}
+$adm = new vnp_admin();
 
 ?>

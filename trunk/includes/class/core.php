@@ -71,7 +71,7 @@ class vnp
 	
 	protected function _initializing()
 	{
-		global $glang, $sys_info, $session, $nG, $db, $db_info, $template;
+		global $glang, $sys_info, $session, $nG, $db, $pass, $request, $db_info, $template;
 		
 		if( file_exists( VNP_ROOT . '/includes/class/xtemplate.min.class.php' ) )
 		{
@@ -87,8 +87,12 @@ class vnp
 			{
 				require_once( VNP_ROOT . '/includes/' . CONFIG_FILE );
 				require ( VNP_ROOT . '/includes/class/db.' . $db_info['dbtype'] . '.class.php');
-				$db = new vnp_db( true, $db_info['hostname'], $db_info['dbname'], $db_info['dbuname'], $db_info['dbpass'] );
-				$session = new vnp_session();
+				/*********************/
+				$db	= new vnp_db( true, $db_info['hostname'], $db_info['dbname'], $db_info['dbuname'], $db_info['dbpass'] );
+				$session	= new vnp_session( 'sesPre', 'sources/temp/sess', 'cooPre');
+				$pass		= new vnp_pass();
+				$request	= new request();
+				/*********************/
 			}
 			else
 			{

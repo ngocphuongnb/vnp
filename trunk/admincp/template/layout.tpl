@@ -1,10 +1,10 @@
 <!-- BEGIN: main -->
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8">
-    <title>Admin Template</title>
+    <title>VNP Admin Area</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Admin Panel Template">
     <meta name="author" content="Westilian: Kamrujaman Shohel">
@@ -13,6 +13,7 @@
     <link href="{MY_DIR}{ADMIN_DIR}/template/css/bootstrap-responsive.css" rel="stylesheet">
     <link href="{MY_DIR}{ADMIN_DIR}/template/css/styles.css" rel="stylesheet">
     <link href="{MY_DIR}{ADMIN_DIR}/template/css/themes.css" rel="stylesheet">
+    <link href="{MY_DIR}{ADMIN_DIR}/template/css/icons-sprite.css" rel="stylesheet">
     <!--[if IE 7]>
     <link rel="stylesheet" type="text/css" href="{MY_DIR}{ADMIN_DIR}/template/css/ie/ie7.css" />
     <![endif]-->
