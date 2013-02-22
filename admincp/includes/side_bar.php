@@ -9,12 +9,8 @@
 
 if( !defined( 'VNP' ) || !defined( 'ADMIN_FILE' ) || !defined( 'LOGGED_ADMIN' ) ) die( 'ILN' );
 
-$topMenu = '';
-$sideBar = '';
+$sideBarArray = array();
 
-include( VNP_ROOT . '/' . ADMIN_DIR . '/includes/top_menu.php' );
-include( VNP_ROOT . '/' . ADMIN_DIR . '/includes/side_bar.php' );
-
-adminFullTheme( $topMenu, $sideBar );
+$sideBar = adminSideBar( $sideBarArray );
 
 ?>

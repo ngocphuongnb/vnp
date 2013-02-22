@@ -56,6 +56,8 @@ elseif( $request->get( 'admin-login', 'post', '' ) )
 					if( $db->RowCount() === 1 )
 					{
 						$session->SetSession( 'AdminLogged', '1|' . $AdminData['admin_id'] );
+						Header( 'Location: ' . MY_ADMDIR );
+						exit();
 					}
 					else die('Hacking!!!');
 				}
