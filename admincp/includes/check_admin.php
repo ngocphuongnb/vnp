@@ -18,7 +18,7 @@ if( $AdminLogged = $session->get( 'session', 'AdminLogged' ) )
 		$db->SelectRows( VNP_ADMIN, $check );
 		if( $db->RowCount() === 1 )
 		{
-			$AdminData = $db->RowArray(0, MYSQL_ASSOC);
+			$adm->AdminData = $db->RowArray(0, MYSQL_ASSOC);
 			define( 'LOGGED_ADMIN', true );
 		}
 	}

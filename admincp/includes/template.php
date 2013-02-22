@@ -32,6 +32,14 @@ function adminLoginForm()
 		$xtpl->parse( 'main.error' );
 	}
 	$xtpl->parse( 'main' );
+	return $xtpl->text( 'main' );
+}
+
+function adminSinglePage( $content )
+{
+	$xtpl = new XTemplate( 'single_page.tpl', DOC_ROOT . MY_ADMDIR . '/template/' );
+	
+	$xtpl->parse( 'main' );
 	echo $xtpl->out( 'main' );
 }
 
@@ -46,7 +54,7 @@ function adminFullTheme( $topMenu = '', $sideBar = '', $content = '' )
 	$xtpl->assign( 'SIDE_BAR', $sideBar );
 	
 	$xtpl->parse( 'main' );
-	echo $xtpl->out( 'main' );
+	return $xtpl->text( 'main' );
 }
 
 function adminTopMenu( $topMenuArray = array() )

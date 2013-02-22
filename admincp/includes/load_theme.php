@@ -7,7 +7,7 @@
  * @Createdate  30/09/2012, 00:30
  */
 
-if( !defined( 'VNP' ) || !defined( 'ADMIN_FILE' ) || !defined( 'LOGGED_ADMIN' ) ) die( 'ILN' );
+if( !defined( 'LOGGED_ADMIN' ) || !defined( 'ADMIN_CLASS' ) ) die( 'ILN' );
 
 $topMenu = '';
 $sideBar = '';
@@ -15,6 +15,6 @@ $sideBar = '';
 include( VNP_ROOT . '/' . ADMIN_DIR . '/includes/top_menu.php' );
 include( VNP_ROOT . '/' . ADMIN_DIR . '/includes/side_bar.php' );
 
-adminFullTheme( $topMenu, $sideBar );
+$this->html = adminFullTheme( $topMenu, $sideBar );
 
 ?>

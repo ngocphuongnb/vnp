@@ -21,7 +21,5 @@ require ( VNP_ROOT . '/includes/class/session.class.php');
 //$link = mysql_connect('localhost', 'root', '123') or die('Could not connect to database!');
 //$db = mysql_select_db('vnpcms', $link) or die ('Could not select database!');
 $vnp		= & vnp::instance();
-$pass		= new vnp_pass();
-$request	= new request();
 
 ?>
