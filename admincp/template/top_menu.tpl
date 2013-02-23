@@ -40,7 +40,7 @@
                         <li><a href="#"><i class="icon-pencil"></i>Edit Profile</a></li>
                         <li><a href="#"><i class="icon-cog"></i>Account Settings</a></li>
                         <li class="divider"></li>
-                        <li><a href="#"><i class="icon-off"></i><strong>Logout</strong></a></li>
+                        <li><a href="/vnp/admincp/index.php?ctl=member&action=logout"><i class="icon-off"></i><strong>Logout</strong></a></li>
           			</ul>
         		</li>
                 <!-- End user login info -->

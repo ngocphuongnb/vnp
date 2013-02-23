@@ -10,7 +10,7 @@
 
 <body>
 <div class="admin-login">
-	<form action="" method="post">
+	<form action="{MY_DOMAIN}{MY_DIR}{ADMIN_DIR}/" method="post">
     <table>
         <caption>Đăng nhập Admin</caption>
         <tbody>
