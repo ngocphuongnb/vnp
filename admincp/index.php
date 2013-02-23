@@ -35,9 +35,11 @@ require( VNP_ROOT . '/' . ADMIN_DIR . '/includes/admin.class.php' );
 $adm = new vnp_admin();
 
 //ctl->controller
-if( $mod = $request->get( 'ctl', 'get' ) )
+if( $mod = $request->get( 'ctl', 'get', '' ) )
 {
 	$adm->adminAction( $mod );
 }
+
+$template->init();
 
 ?>

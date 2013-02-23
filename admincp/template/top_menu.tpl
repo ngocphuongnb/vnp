@@ -37,7 +37,7 @@
                         <li><a href="#"><i class="icon-envelope"></i>Notifications<span class="alert-noty">15</span></a></li>
                         <li><a href="#"><i class="icon-briefcase"></i>My Account</a></li>
                         <li><a href="#"><i class="icon-file"></i>View Profile</a></li>
-                        <li><a href="#"><i class="icon-pencil"></i>Edit Profile</a></li>
+                        <li><a href="/vnp/admincp/index.php?ctl=member&action=editprofile"><i class="icon-pencil"></i>Edit Profile</a></li>
                         <li><a href="#"><i class="icon-cog"></i>Account Settings</a></li>
                         <li class="divider"></li>
                         <li><a href="/vnp/admincp/index.php?ctl=member&action=logout"><i class="icon-off"></i><strong>Logout</strong></a></li>
