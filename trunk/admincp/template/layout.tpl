@@ -55,8 +55,8 @@
  
 <div id="main-content">
     <div class="container-fluid">
-     <!--Page content here-->
-     
+	<!--Page content here-->
+		{CONTENT}
     </div>
 </div>
 </body>

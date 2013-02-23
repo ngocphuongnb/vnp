@@ -51,10 +51,12 @@ class vnp_admin
 	
 	public function adminAction( $mod )
 	{
-		$validMod = array( 'login' );
+		global $request, $db, $session;
+
+		$validMod = array( 'member' );
 		if( in_array( $mod, $validMod ) )
 		{
-			require( VNP_ROOT . '/' . ADMIN_DIR . '/controllers/' . $mod . '/' . $mod . '.class.php' );
+			require_once( VNP_ROOT . '/' . ADMIN_DIR . '/controllers/' . $mod . '/' . $mod . '.class.php' );
 			$iniClass = 'vnp_' . $mod;
 			new $iniClass();
 		}

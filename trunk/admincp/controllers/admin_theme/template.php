@@ -18,6 +18,7 @@ function adminFullTheme( $topMenu = '', $sideBar = '', $content = '' )
 	
 	$xtpl->assign( 'TOP_MENU', $topMenu );
 	$xtpl->assign( 'SIDE_BAR', $sideBar );
+	$xtpl->assign( 'CONTENT', $content );
 	
 	$xtpl->parse( 'main' );
 	return $xtpl->out( 'main' );
