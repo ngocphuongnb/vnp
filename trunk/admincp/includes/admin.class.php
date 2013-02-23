@@ -15,35 +15,24 @@ class vnp_admin
 {
 	public $isAdmin		= false;
 	public $adminData	= array();
-	public $html		= '';
+	public static $html		= '';
 	
 	public function __construct()
 	{
-		$this->loadTemplate();
+		require( VNP_ROOT . '/' . ADMIN_DIR . '/controllers/member/member.class.php' );
 		$this->checkAdmin();
+		$this->loadTheme();
 		//$this->loadControllers();
-		$this->printPage();
-	}
-	
-	private function loadTemplate()
-	{
-		require( VNP_ROOT . '/' . ADMIN_DIR . '/includes/template.php' );
+		//$this->printPage();
 	}
 	
 	private function checkAdmin()
 	{
-		global $session, $request, $db;
+		global $session, $request, $db, $pass;
 		
-		if( @include( VNP_ROOT . '/' . ADMIN_DIR . '/includes/check_admin.php' ) )
+		if( @include( VNP_ROOT . '/' . ADMIN_DIR . '/controllers/member/check_admin.php' ) )
 		{
-			if( !defined( 'LOGGED_ADMIN' ) )
-			{
-				$this->html = adminLoginForm();
-			}
-			else
-			{
-				include( VNP_ROOT . '/' . ADMIN_DIR . '/includes/load_theme.php' );
-			}
+			// do nothing;
 		}
 		else
 		{
@@ -51,9 +40,24 @@ class vnp_admin
 		}
 	}
 	
-	private function printPage()
+	private function loadTheme()
 	{
-		echo $this->html;
+		global $template;
+		
+		require( VNP_ROOT . '/' . ADMIN_DIR . '/controllers/admin_theme/admin_theme.class.php' );
+		
+		$template = new admin_theme();
+	}
+	
+	public function adminAction( $mod )
+	{
+		$validMod = array( 'login' );
+		if( in_array( $mod, $validMod ) )
+		{
+			require( VNP_ROOT . '/' . ADMIN_DIR . '/controllers/' . $mod . '/' . $mod . '.class.php' );
+			$iniClass = 'vnp_' . $mod;
+			new $iniClass();
+		}
 	}
 }
 

@@ -69,5 +69,9 @@ elseif( $request->get( 'admin-login', 'post', '' ) )
 		}
 	}
 }
+else
+{
+	vnp_member::adminLoginForm();
+}
 
 ?>

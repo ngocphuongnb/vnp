@@ -9,40 +9,6 @@
 
 if( !defined( 'VNP' ) || !defined( 'ADMIN_FILE' ) ) die( 'ILN' );
 
-function adminLoginForm()
-{
-	global $loginError;
-	
-	$xtpl = new XTemplate( 'login.tpl', DOC_ROOT . MY_ADMDIR . '/template/' );
-	$xtpl->assign( 'INSTALL_DIR', INSTALL_DIR );
-	$xtpl->assign( 'ADMIN_DIR', ADMIN_DIR );
-	$xtpl->assign( 'MY_DOMAIN', VNP_DOMAIN );
-	$xtpl->assign( 'MY_DIR', VNP_MYDIR );
-	
-	if( !empty( $loginError ) )
-	{
-		foreach( $loginError as $_err )
-		{
-			if( !empty( $_err ) )
-			{
-				$xtpl->assign( 'ERR', $_err );
-				$xtpl->parse( 'main.error.loop' );
-			}
-		}
-		$xtpl->parse( 'main.error' );
-	}
-	$xtpl->parse( 'main' );
-	return $xtpl->text( 'main' );
-}
-
-function adminSinglePage( $content )
-{
-	$xtpl = new XTemplate( 'single_page.tpl', DOC_ROOT . MY_ADMDIR . '/template/' );
-	
-	$xtpl->parse( 'main' );
-	echo $xtpl->out( 'main' );
-}
-
 function adminFullTheme( $topMenu = '', $sideBar = '', $content = '' )
 {
 	$xtpl = new XTemplate( 'layout.tpl', DOC_ROOT . MY_ADMDIR . '/template/' );
@@ -54,7 +20,7 @@ function adminFullTheme( $topMenu = '', $sideBar = '', $content = '' )
 	$xtpl->assign( 'SIDE_BAR', $sideBar );
 	
 	$xtpl->parse( 'main' );
-	return $xtpl->text( 'main' );
+	return $xtpl->out( 'main' );
 }
 
 function adminTopMenu( $topMenuArray = array() )
