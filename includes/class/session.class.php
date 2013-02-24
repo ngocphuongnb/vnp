@@ -295,6 +295,7 @@ class vnp_session
                     {
                         if ( ! $this->is_session_start ) $this->SessionStart();
                         $value = $_SESSION[$this->SessionPrefix . '_' . $key];
+						return $value;
                         return $this->Decode( $value );
                     }
                     break;
@@ -368,7 +369,7 @@ class vnp_session
         if ( empty( $key ) ) return false;
         if ( ! $this->is_session_start ) $this->SessionStart();
         $key = $this->SessionPrefix . '_' . $key;
-        $value = $this->Encode( $value );
+        //$value = $this->Encode( $value );
         $_SESSION[$key] = $value;
         return true;
     }

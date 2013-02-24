@@ -13,6 +13,7 @@ if( !defined( 'VNP' ) || !defined( 'VN' ) || !defined( 'VNP_INSTALL' ) ) die( 'I
 define( 'VNP_ADMIN', $db_info['prefix'] . '_admins' );
 define( 'VNP_ADMIN_PERMISS', $db_info['prefix'] . '_admin_permiss' );
 define( 'VNP_USER', $db_info['prefix'] . '_users' );
+define( 'USER_PROFILE', $db_info['prefix'] . '_users_profile' );
 define( 'SESSION', $db_info['prefix'] . '_session' );
 define( 'GLOBAL_CONFIG', $db_info['prefix'] . '_global_config' );
 
@@ -21,6 +22,7 @@ define( 'GLOBAL_CONFIG', $db_info['prefix'] . '_global_config' );
 $sql_create_table[] = "CREATE TABLE `" . VNP_USER . "` (
   `userid` mediumint(8) unsigned NOT NULL auto_increment,
   `username` varchar(255) NOT NULL,
+  `realname` varchar(255) NOT NULL default '',
   `password` varchar(100) NOT NULL,
   `salt` varchar(100) NOT NULL,
   `groupid` int(11) DEFAULT NULL,
@@ -38,6 +40,26 @@ $sql_create_table[] = "CREATE TABLE `" . VNP_USER . "` (
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`userid`),
   UNIQUE KEY `username` (`username`)
+) ENGINE=MyISAM";
+
+$sql_create_table[] = "CREATE TABLE `" . USER_PROFILE . "` (
+  `upid` mediumint(8) unsigned NOT NULL auto_increment,
+  `userid` mediumint(8) unsigned NOT NULL,
+  `realname` varchar(255) NOT NULL default '',
+  `gender` tinyint(1) NOT NULL default '0',
+  `birthyear` smallint(6) unsigned NOT NULL default '0',
+  `birthmonth` tinyint(3) unsigned NOT NULL default '0',
+  `birthday` tinyint(3) unsigned NOT NULL default '0',
+  `constellation` varchar(255) NOT NULL default '',
+  `telephone` varchar(255) NOT NULL default '',
+  `mobile` varchar(255) NOT NULL default '',
+  `address` varchar(255) NOT NULL default '',
+  `zipcode` varchar(255) NOT NULL default '',
+  `nationality` varchar(255) NOT NULL default '',
+  `graduateschool` varchar(255) NOT NULL default '',
+  `company` varchar(255) NOT NULL default '',
+  PRIMARY KEY (`upid`),
+  UNIQUE KEY `userid` (`userid`)
 ) ENGINE=MyISAM";
 
 $sql_create_table[] = "CREATE TABLE `" . VNP_ADMIN . "` (

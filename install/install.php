@@ -132,11 +132,11 @@ $db_info[\'dbport\']		= 	\'\';
 $db_info[\'dbname\']		= 	\'' . $dbData['dbname'] . '\';
 $db_info[\'dbuname\']		= 	\'' . $dbData['dbuname'] . '\';
 $db_info[\'dbpass\']		= 	\'' . $dbData['dbpass'] . '\';
-$db_info[\'sitekey\']		= 	\'' . RandomString(32) . '\';
 $db_info[\'dbtype\']		= 	\'' . $dbData['dbtype'] . '\';
 $db_info[\'prefix\']		= 	\'' . $dbData['dbprefix'] . '\';' . PHP_EOL . '
 //
-$nG[\'authkey\']				=	\'' . $authkey . '\';' . PHP_EOL . '
+$nG[\'sitekey\']			= 	\'' . RandomString(32) . '\';
+$nG[\'authkey\']			=	\'' . $authkey . '\';' . PHP_EOL . '
 ?>';
 				
 				if( file_exists( VNP_ROOT . '/includes/' . CONFIG_FILE ) )
@@ -244,6 +244,7 @@ elseif( $installStep == 3 )
 				
 				$admin_config = array(
 										'username'		=> vnp_db::SQLValue( $adminConfig['admin_uname'] ),
+										'realname'		=> vnp_db::SQLValue( $adminConfig['admin_uname'] ),
 										'password'		=> vnp_db::SQLValue( $pass->genPass( $adminConfig['admin_pass'] ) ),
 										'salt'			=> vnp_db::SQLValue( $pass->salt )
 									);
@@ -262,9 +263,23 @@ elseif( $installStep == 3 )
 				{
 					$db->Kill();
 				}
+				
+				$admin_config2 = array(
+										'upid'			=> vnp_db::SQLValue( $db->GetLastInsertID() ),
+										'userid'		=> vnp_db::SQLValue( $db->GetLastInsertID() ),
+										'realname'		=> vnp_db::SQLValue( $adminConfig['admin_uname'] ),
+									);
+				$_result = $db->InsertRow( USER_PROFILE, $admin_config2 );
+				if( !$_result )
+				{
+					$db->Kill();
+				}
+
 									
-				unset( $adminConfig['admin_pass'] );
-				unset( $adminConfig['admin_repass'] );
+				unset( $adminConfig );
+				unset( $admin_config );
+				unset( $admin_config1 );
+				unset( $admin_config2 );
 				
 				Header( "Location: " . $vnp_mydir . INSTALL_DIR . "/install.php?step=4" );
 				exit();

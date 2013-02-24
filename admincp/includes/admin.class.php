@@ -14,25 +14,24 @@ define( 'ADMIN_CLASS', true );
 class vnp_admin
 {
 	public $isAdmin		= false;
-	public $adminData	= array();
 	public static $html		= '';
 	
 	public function __construct()
 	{
 		require( VNP_ROOT . '/' . ADMIN_DIR . '/controllers/member/member.class.php' );
+		require( VNP_ROOT . '/' . ADMIN_DIR . '/controllers/ct_type/ct_type.class.php' );
 		$this->checkAdmin();
 		$this->loadTheme();
-		//$this->loadControllers();
-		//$this->printPage();
 	}
 	
 	private function checkAdmin()
 	{
-		global $session, $request, $db, $pass;
+		global $session, $request, $db, $pass, $adminData;
 		
 		if( @include( VNP_ROOT . '/' . ADMIN_DIR . '/controllers/member/check_admin.php' ) )
 		{
 			// do nothing;
+			member::showAdminProfile();
 		}
 		else
 		{
@@ -57,7 +56,7 @@ class vnp_admin
 		if( in_array( $mod, $validMod ) )
 		{
 			require_once( VNP_ROOT . '/' . ADMIN_DIR . '/controllers/' . $mod . '/' . $mod . '.class.php' );
-			$iniClass = 'vnp_' . $mod;
+			$iniClass = $mod;
 			new $iniClass();
 		}
 	}
