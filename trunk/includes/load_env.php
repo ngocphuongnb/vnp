@@ -56,14 +56,6 @@ else
 }
 set_timezone();
 
-//Ten cac table cua CSDL dung chung cho he thong
-define( 'VNP_ADMIN', $db_info['prefix'] . '_admins' );
-define( 'VNP_ADMIN_PERMISS', $db_info['prefix'] . '_admin_permiss' );
-define( 'VNP_USER', $db_info['prefix'] . '_users' );
-define( 'SESSION', $db_info['prefix'] . '_session' );
-define( 'GLOBAL_CONFIG', $db_info['prefix'] . '_global_config' );
-
-
 // client array
 $client_info['selfurl'] = ( empty( $_SERVER['REQUEST_URI'] ) ) ? $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING'] : $_SERVER['REQUEST_URI'];
 

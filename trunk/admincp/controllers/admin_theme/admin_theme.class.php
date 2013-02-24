@@ -19,6 +19,7 @@ class admin_theme
 	public function __construct( )
 	{
 		require( VNP_ROOT . '/' . ADMIN_DIR . '/controllers/admin_theme/template.php' );
+		
 		if( defined( 'LOGGED_ADMIN' ) )
 		{
 			//$this->init();
@@ -33,15 +34,26 @@ class admin_theme
 	
 	public function init()
 	{
+		global $themeMenu, $customMenu;
+		
 		if( $this->systemStart )
-		{	
-			$topMenuArray = array();
-			$sideBarArray = array();
-	
-			$this->topMenu = adminTopMenu( $topMenuArray );
-			$this->sideBar = adminSideBar( $sideBarArray );
+		{
+			$this->topMenu = adminTopMenu( $themeMenu['topmenu'], $customMenu['topmenu'] );
+			$this->sideBar = adminSideBar( $themeMenu['sidebar'], $customMenu['sidebar'] );
 			
 			admin_theme::singlePage( adminFullTheme( $this->topMenu, $this->sideBar, $this->content ) );
+		}
+	}
+	
+	public static function registerMenu( $menuName = '', $menuData )
+	{		
+		global $themeMenu;
+		
+		$menuKeys = array_keys( $themeMenu );
+		
+		if( !empty( $menuName ) && in_array( $menuName, $menuKeys ) && !empty( $menuData ) )
+		{
+			$themeMenu[$menuName][] = $menuData;
 		}
 	}
 	
@@ -52,6 +64,41 @@ class admin_theme
 		$xtpl->assign( 'CONTENT', $content );
 		$xtpl->parse( 'main' );
 		echo $xtpl->out( 'main' );
+	}
+}
+
+class vnp_menu
+{
+	private $mainMenu	= array();
+	private $subMenu	= array();
+	private $thisMenu;
+	
+	public function __construct()
+	{
+		$this->mainMenu = '';
+		$this->subMenu	= '';
+	}
+	
+	public function mainMenu( $href = '#', $anchor = '' )
+	{
+		$this->mainMenu = array( 'href' => $href, 'anchor' => $anchor );
+	}
+	
+	public function subMenu( $href = '#', $anchor = '' )
+	{
+		if( $href === 'break' )
+		{
+			$this->subMenu[] = 'break';
+		}
+		else
+		{
+			$this->subMenu[] = array( 'href' => $href, 'anchor' => $anchor );
+		}
+	}
+	
+	public function menu()
+	{		
+		return array( 'link_data' => $this->mainMenu, 'sub_data' => $this->subMenu );
 	}
 }
 

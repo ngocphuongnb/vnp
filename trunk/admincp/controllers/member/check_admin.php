@@ -14,12 +14,21 @@ if( $AdminLogged = $session->get( 'session', 'AdminLogged' ) )
 	$CheckAdmin = explode( '|', $AdminLogged );
 	if( $CheckAdmin[0] == 1 )
 	{
-		$check = array( 'admin_id' => $CheckAdmin[1] );
-		$db->SelectRows( VNP_ADMIN, $check );
+		$checkUser = array( 'userid' => vnp_db::SQLValue( $CheckAdmin[1] ) );
+		
+		$db->SelectRows( VNP_USER, $checkUser );
+		//echo $db->GetHTML();
 		if( $db->RowCount() === 1 )
 		{
-			$adm->AdminData = $db->RowArray(0, MYSQL_ASSOC);
-			define( 'LOGGED_ADMIN', true );
+			$UserData = $db->RowArray(0, MYSQL_ASSOC);
+			$check = array( 'admin_id' => $CheckAdmin[2] );
+			$db->SelectRows( VNP_ADMIN, $check );
+			if( $db->RowCount() === 1 )
+			{
+				$adminData = $db->RowArray(0, MYSQL_ASSOC);
+				$adminData = array_merge( $UserData, $adminData );
+				define( 'LOGGED_ADMIN', true );
+			}
 		}
 	}
 }
@@ -46,6 +55,7 @@ elseif( $request->get( 'admin-login', 'post', '' ) )
 		if( $db->RowCount() === 1 )
 		{
 			$UserData = $db->RowArray(0, MYSQL_ASSOC);
+			
 			if( $UserData['userid'] > 0 )
 			{
 				if( $pass->authenticate( $adminPass, $UserData['salt'], $UserData['password'] ) )
@@ -55,7 +65,7 @@ elseif( $request->get( 'admin-login', 'post', '' ) )
 					$AdminData = $db->RowArray(0, MYSQL_ASSOC);
 					if( $db->RowCount() === 1 )
 					{
-						$session->SetSession( 'AdminLogged', '1|' . $AdminData['admin_id'] );
+						$session->SetSession( 'AdminLogged', '1|' . $UserData['userid'] . '|' . $AdminData['admin_id'] );
 						Header( 'Location: ' . MY_ADMDIR );
 						exit();
 					}
@@ -71,7 +81,7 @@ elseif( $request->get( 'admin-login', 'post', '' ) )
 }
 else
 {
-	vnp_member::adminLoginForm();
+	member::adminLoginForm();
 }
 
 ?>

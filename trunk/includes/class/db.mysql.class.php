@@ -154,6 +154,7 @@ class vnp_db
 		}
 		else
 		{
+			mysql_query("set names 'utf8'", $this->db_link ); 
 			if( ( strlen( $charset ) > 0 ) )
 			{
 				if( !( mysql_query( "SET CHARACTER SET '{$charset}'", $this->db_link ) ) )

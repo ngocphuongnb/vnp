@@ -18,6 +18,16 @@ require ( VNP_ROOT . '/includes/class/request.class.php');
 require ( VNP_ROOT . '/includes/class/password.class.php');
 require ( VNP_ROOT . '/includes/class/session.class.php');
 
+$vnp_mydir = pathinfo( $_SERVER['PHP_SELF'], PATHINFO_DIRNAME );
+if ( $vnp_mydir == DIRECTORY_SEPARATOR ) $vnp_mydir = '';
+if ( ! empty( $vnp_mydir ) ) $vnp_mydir = str_replace( DIRECTORY_SEPARATOR, '/', $vnp_mydir );
+if ( ! empty( $vnp_mydir ) ) $vnp_mydir = preg_replace( "/[\/]+$/", '', $vnp_mydir );
+if ( ! empty( $vnp_mydir ) ) $vnp_mydir = preg_replace( "/^[\/]*(.*)$/", '/\\1', $vnp_mydir );
+$vnp_mydir = str_replace( ADMIN_DIR, '', $vnp_mydir );
+
+define( 'VNP_MYDIR', $vnp_mydir . '/' );
+define( 'MY_ADMDIR', $vnp_mydir . ADMIN_DIR . '/' );
+
 //$link = mysql_connect('localhost', 'root', '123') or die('Could not connect to database!');
 //$db = mysql_select_db('vnpcms', $link) or die ('Could not select database!');
 $vnp		= & vnp::instance();

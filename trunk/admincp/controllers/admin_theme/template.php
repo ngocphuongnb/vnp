@@ -24,9 +24,43 @@ function adminFullTheme( $topMenu = '', $sideBar = '', $content = '' )
 	return $xtpl->out( 'main' );
 }
 
-function adminTopMenu( $topMenuArray = array() )
-{
+function adminTopMenu( $topMenuArray = array(), $customMenuArray = array() )
+{	
 	$xtpl = new XTemplate( 'top_menu.tpl', DOC_ROOT . MY_ADMDIR . '/template/' );
+	
+	foreach( $topMenuArray as $topMenu )
+	{
+		$xtpl->assign( 'LINK_DATA', $topMenu['link_data'] );
+		if( !empty( $topMenu['sub_data'] ) && is_array( $topMenu['sub_data'] ) )
+		{
+			foreach( $topMenu['sub_data'] as $_sub )
+			{
+				if( $_sub === 'break' )
+				{
+					$xtpl->assign( 'BREAK', '<li class="divider"></li>' );
+					$xtpl->assign( 'SUB_DATA', '' );
+				}
+				else
+				{
+					$xtpl->assign( 'BREAK', '' );
+					$xtpl->assign( 'SUB_DATA', $_sub );
+					$xtpl->parse( 'main.loop.sub.loop.main' );
+				}
+				$xtpl->parse( 'main.loop.sub.loop' );
+			}
+			$xtpl->parse( 'main.loop.sub' );
+		}
+		$xtpl->parse( 'main.loop' );
+	}
+	
+	if( !empty( $customMenuArray ) )
+	{
+		foreach( $customMenuArray as $_csmenu )
+		{
+			$xtpl->assign( 'CUSTOM', $_csmenu );
+			$xtpl->parse( 'main.customloop' );
+		}
+	}
 	
 	$xtpl->parse( 'main' );
 	return $xtpl->text( 'main' );

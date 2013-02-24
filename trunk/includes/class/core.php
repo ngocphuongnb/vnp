@@ -101,7 +101,7 @@ class vnp
 		}
 		else
 		{
-			Header( "Location: " . INSTALL_DIR . '/install.php' );
+			Header( "Location: " . VNP_MYDIR . INSTALL_DIR . '/install.php' );
 			exit();
 		}
 		
@@ -139,7 +139,15 @@ class vnp
 	
 	protected function _ini_global()
 	{
-		global $client_info, $nG;
+		global $client_info, $nG, $db_info;
+		
+		//Ten cac table cua CSDL dung chung cho he thong
+		define( 'VNP_ADMIN', $db_info['prefix'] . '_admins' );
+		define( 'VNP_ADMIN_PERMISS', $db_info['prefix'] . '_admin_permiss' );
+		define( 'VNP_USER', $db_info['prefix'] . '_users' );
+		define( 'USER_PROFILE', $db_info['prefix'] . '_user_profile' );
+		define( 'SESSION', $db_info['prefix'] . '_session' );
+		define( 'GLOBAL_CONFIG', $db_info['prefix'] . '_global_config' );
 	}
 	
 	public function Mode( $mod )

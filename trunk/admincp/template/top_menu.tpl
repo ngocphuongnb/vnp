@@ -24,26 +24,28 @@
             			</li>
           			</ul>
 				</li>
-            	<!-- User login info -->
+                
+                <!-- BEGIN: loop -->
                 <li class="dropdown">
-                	<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                    	Anthony
-                        <span class="alert-noty">25</span>
-                        <i class="white-icons admin_user"></i>
-                        <b class="caret"></b>
+                	<a href="{LINK_DATA.href}" class="dropdown-toggle" data-toggle="dropdown">
+                    	<i class="nav-icon cup"></i> {LINK_DATA.anchor} <b class="caret"></b>
                     </a>
-					<ul class="dropdown-menu">
-                        <li><a href="#"><i class="icon-inbox"></i>Inbox<span class="alert-noty">10</span></a></li>
-                        <li><a href="#"><i class="icon-envelope"></i>Notifications<span class="alert-noty">15</span></a></li>
-                        <li><a href="#"><i class="icon-briefcase"></i>My Account</a></li>
-                        <li><a href="#"><i class="icon-file"></i>View Profile</a></li>
-                        <li><a href="/vnp/admincp/index.php?ctl=member&action=editprofile"><i class="icon-pencil"></i>Edit Profile</a></li>
-                        <li><a href="#"><i class="icon-cog"></i>Account Settings</a></li>
-                        <li class="divider"></li>
-                        <li><a href="/vnp/admincp/index.php?ctl=member&action=logout"><i class="icon-off"></i><strong>Logout</strong></a></li>
-          			</ul>
-        		</li>
-                <!-- End user login info -->
+                    <!-- BEGIN: sub -->
+            		<ul class="dropdown-menu">
+                    	<!-- BEGIN: loop -->
+                        <!-- BEGIN: main -->
+              			<li><a href="{SUB_DATA.href}"> {SUB_DATA.anchor} </a></li>
+                        <!-- END: main -->
+                        {BREAK}
+                        <!-- END: loop -->
+            		</ul>
+                    <!-- END: sub -->
+          		</li>
+                <!-- END: loop -->
+                
+                <!-- BEGIN: customloop -->
+                <li class="dropdown">{CUSTOM}</li>
+                <!-- END: customloop -->
                 
 				<li class="dropdown">
                 	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="nav-icon cog_3"></i>
