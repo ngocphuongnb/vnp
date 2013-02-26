@@ -145,7 +145,7 @@ class vnp
 		define( 'VNP_ADMIN', $db_info['prefix'] . '_admins' );
 		define( 'VNP_ADMIN_PERMISS', $db_info['prefix'] . '_admin_permiss' );
 		define( 'VNP_USER', $db_info['prefix'] . '_users' );
-		define( 'USER_PROFILE', $db_info['prefix'] . '_user_profile' );
+		define( 'USER_PROFILE', $db_info['prefix'] . '_users_profile' );
 		define( 'SESSION', $db_info['prefix'] . '_session' );
 		define( 'GLOBAL_CONFIG', $db_info['prefix'] . '_global_config' );
 	}

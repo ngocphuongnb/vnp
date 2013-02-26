@@ -35,6 +35,8 @@ class vnp_pass
 	{
 		$_authTemp = hash( 'sha256', md5( $inputString . $salt ) );
 		
+		//echo $_authTemp; die();
+		
 		if( $_authTemp === $authString )
 		{
 			return true;

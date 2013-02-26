@@ -8,30 +8,12 @@
  */
 
 define( 'VNP', true );
-define( 'VN', true );
 define( 'ADMIN_FILE', true );
 
-if( !defined( 'VNP_ROOT' ) )
-{
-	define( 'VNP_ROOT', str_replace( '\\', '/', realpath( pathinfo( __file__, PATHINFO_DIRNAME ) . '/../' ) ) );
-}
+$doc_root = str_replace( '\\', '/', realpath( pathinfo( __file__, PATHINFO_DIRNAME ) . '/../' ) );
 
-require_once( VNP_ROOT . '/includes/constants.php');
+require( $doc_root . '/mainfile.php');
 
-// url
-$vnp_mydir = pathinfo( $_SERVER['PHP_SELF'], PATHINFO_DIRNAME );
-if ( $vnp_mydir == DIRECTORY_SEPARATOR ) $vnp_mydir = '';
-if ( ! empty( $vnp_mydir ) ) $vnp_mydir = str_replace( DIRECTORY_SEPARATOR, '/', $vnp_mydir );
-if ( ! empty( $vnp_mydir ) ) $vnp_mydir = preg_replace( "/[\/]+$/", '', $vnp_mydir );
-if ( ! empty( $vnp_mydir ) ) $vnp_mydir = preg_replace( "/^[\/]*(.*)$/", '/\\1', $vnp_mydir );
-$vnp_mydir = str_replace( ADMIN_DIR, '', $vnp_mydir );
-$adminData = array();
-
-
-define( 'VNP_MYDIR', $vnp_mydir );
-define( 'MY_ADMDIR', $vnp_mydir . ADMIN_DIR . '/' );
-
-require( VNP_ROOT . '/mainfile.php');
 require( VNP_ROOT . '/' . ADMIN_DIR . '/includes/admin.class.php' );
 require( VNP_ROOT . '/' . ADMIN_DIR . '/controllers/admin_theme/variables.php' );
 

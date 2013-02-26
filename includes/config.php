@@ -18,7 +18,7 @@ $db_info['dbtype']		= 	'mysql';
 $db_info['prefix']		= 	'vnp';
 
 //
-$nG['sitekey']			= 	'A3nKcjwoGmMwVAz3PK0SpqOXxpWRxO6A';
-$nG['authkey']			=	'5fd3bfNf77HoX773';
+$nG['sitekey']			= 	'2WCOhj3OIl6QRGlp6rc3DEL1JCi64Tl';
+$nG['authkey']			=	'b888c7f0u7FApA55';
 
 ?>

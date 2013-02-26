@@ -71,6 +71,11 @@ elseif( $request->get( 'admin-login', 'post', '' ) )
 					}
 					else die('Hacking!!!');
 				}
+				else
+				{
+					//echo $adminPass . '-' . $UserData['salt'] . '-' . $UserData['password'];
+					//die();
+				}
 			}
 		}
 		else

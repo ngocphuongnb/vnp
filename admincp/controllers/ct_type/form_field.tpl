@@ -1,42 +1,52 @@
 <!-- BEGIN: main -->
-
 <div class="control-group">
-    <label class="control-label" for="input01">{LABEL}</label>
+    <label class="control-label" for="{FIELD.name}">{FIELD.label}</label>
     <div class="controls">
     	<!-- BEGIN: textbox -->
-        <input type="text" class="input-xlarge text-tip" id="input01" data-original-title="{TOOL_TIP}" >
+        <input type="text" class="input-xlarge tip-right" {FIELD.evenmethod} name="{FIELD.name}" id="{FIELD.id}" value="{FIELD.value}" data-original-title="{FIELD.tooltip}">
         <!-- END: textbox -->
+        
+        <!-- BEGIN: date -->
+        <div class="input-append date">
+            <input type="text" {FIELD.evenmethod} name="{FIELD.name}" id="date" value="{FIELD.value}" data-original-title="{FIELD.tooltip}" >
+            <span class="add-on  margin-fix"><i class="icon-th"></i></span>
+        </div>
+        <!-- END: date -->
+        
+        <!-- BEGIN: textarea -->
+        <textarea class="input-xlarge tip-right" name="{FIELD.name}" rows="3" data-original-title="{FIELD.tooltip}">{FIELD.value}</textarea>
+        <!-- END: textarea -->
         
         <!-- BEGIN: checkbox -->
         <!-- BEGIN: options -->
-        <label class="checkbox">
-        	<input type="checkbox" value="option1">
-			{OPTION_NAME}
+        <label class="checkbox" id="{FIELD.id}" data-original-title="{FIELD.tooltip}">
+        	<input class="checkbox-b" type="checkbox" {FIELD.evenmethod} name="{FIELD.name}" value="{OPTION.value}"{OPTION.checked}>
+            {OPTION.text}
         </label>
         <!-- END: options -->
-        <!-- END: textbox -->
+        <!-- END: checkbox -->
         
         <!-- BEGIN: radio -->
         <!-- BEGIN: options -->
-        <label class="radio">
-        	<input type="radio" value="option1">
-			{OPTION_NAME}
+        <label class="radio" data-original-title="{FIELD.tooltip}">
+        	<input class="radio-b" type="radio" name="{FIELD.name}" value="{OPTION.value}"{OPTION.checked}>
+			{OPTION.text}
         </label>
         <!-- END: options -->
         <!-- END: radio -->
         
         <!-- BEGIN: selectbox -->
-        <select>
+        <select name="{FIELD.name}" {FIELD.evenmethod} data-original-title="{FIELD.tooltip}">
         	<!-- BEGIN: options -->
-            <option>something</option>
+            <option value="{OPTION.value}"{OPTION.selected}>{OPTION.text}</option>
             <!-- END: options -->
         </select>
         <!-- END: selectbox -->
         
         <!-- BEGIN: multiselectbox -->
-        <select multiple="multiple">
+        <select name="{FIELD.name}" {FIELD.evenmethod} id="{FIELD.id}" data-original-title="{FIELD.tooltip}" multiple="multiple">
         	<!-- BEGIN: options -->
-            <option>something</option>
+            <option value="{FIELD.value}"{FIELD.selected}>{FIELD.text}</option>
             <!-- END: options -->
         </select>
         <!-- END: multiselectbox -->
@@ -47,9 +57,9 @@
             <span class="filename">No file selected</span><span class="action">Choose File</span>
         </div>
         <!-- END: filesupload -->
-        
-        
-        <p class="help-block">{HELP_TEXT}</p>
+        <!-- BEGIN: help -->
+        <p class="help-block">{FIELD.help}</p>
+        <!-- END: help -->
     </div>
 </div>
     

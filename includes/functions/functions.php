@@ -75,7 +75,13 @@ function DataType( $data, $type )
 		case 'string':
 			return ( string) $data;
 			break;
+		case 'text':
+			return ( string) $data;
+			break;
 		case 'int':
+			return ( int ) $data;
+			break;
+		case 'number':
 			return ( int ) $data;
 			break;
 	}

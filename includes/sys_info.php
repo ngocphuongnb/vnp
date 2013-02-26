@@ -54,7 +54,7 @@ if( function_exists('ini_get') )
 	$sys_info['mb_support'] = ( extension_loaded( 'mbstring' ) ) ? 1 : 0;
 	$sys_info['iconv_support'] = ( extension_loaded( 'iconv' ) ) ? 1 : 0;
 	
-	$sys_info['enabled_set_time_limit'] = ( ! $sys_info['safe_mode'] and function_exists( "set_time_limit" ) and ! in_array( 'set_time_limit', $sys_info['disable_functions'] ) ) ? 1 : 0;
+	$sys_info['enabled_set_time_limit'] = ( isset( $sys_info['safe_mode'] ) && !$sys_info['safe_mode'] and function_exists( "set_time_limit" ) and ! in_array( 'set_time_limit', $sys_info['disable_functions'] ) ) ? 1 : 0;
 	
 	$sys_info['os'] = strtoupper( ( function_exists( "php_uname" ) and ! in_array( 'php_uname', $sys_info['disable_functions'] ) and php_uname( 's' ) != '' ) ? php_uname( 's' ) : PHP_OS );
 
