@@ -52,7 +52,7 @@ class vnp_admin
 	{
 		global $request, $db, $session;
 
-		$validMod = array( 'member' );
+		$validMod = array( 'member', 'ct_type' );
 		if( in_array( $mod, $validMod ) )
 		{
 			require_once( VNP_ROOT . '/' . ADMIN_DIR . '/controllers/' . $mod . '/' . $mod . '.class.php' );

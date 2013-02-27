@@ -13,7 +13,65 @@ class ct_type
 {
 	public function __construct()
 	{
-		global $request, $template, $db, $session;		
+		global $request, $template, $db, $session;
+		
+		if( $action = $request->get( 'action', 'get', '' ) )
+		{
+			switch( $action )
+			{
+				case 'add':
+					{
+						if( $request->get( 'submit', 'post', '' ) )
+						{
+							$data = $request->get( 'ct_type_field', 'post' );
+							np($data);
+							die();
+						}
+						$template->content = $this->addContentType();
+					}
+					break;
+			}
+		}	
+	}
+	
+	private function addContentType()
+	{
+		$form = new vnp_form();
+			
+		$fieldData = array();
+		
+		$fieldData[] = array( 
+								'type'		=> 'textbox',
+								'name'		=> 'ct_name',
+								'label'		=> 'Tên content type',
+								'tooltip'	=> 'Tên content type',
+								'value'		=> ''
+							);
+		$fieldData[] = array( 
+								'type'		=> 'textbox',
+								'name'		=> 'unique_id',
+								'label'		=> 'Unique Id',
+								'tooltip'	=> 'Duy nhất và là điều kiện phân biệt các content type',
+								'value'		=> ''
+							);
+		$fieldData[] = array( 
+								'type'		=> 'textarea',
+								'name'		=> 'description',
+								'label'		=> 'Miêu tả',
+								'tooltip'	=> 'Miêu tả cho content type',
+								'value'		=> ''
+							);
+		$formData = array(
+							'header' => 'Thêm content',
+							'action' => MY_ADMDIR . 'index.php?ctl=ct_type&action=add',
+							'method' => 'post'
+						);
+		
+		$xtpl = new XTemplate( 'extendable.tpl', DOC_ROOT . MY_ADMDIR . 'controllers/ct_type/' );
+		$xtpl->parse( 'main' );
+		$ext = $xtpl->text( 'main' );
+						
+		return $form->create( $formData, $fieldData, $ext );
 	}
 }
 
@@ -180,7 +238,7 @@ class vnp_form
 					);
 	*/
 	
-	public function create( $formData = array(), $fieldData = array() )
+	public function create( $formData = array(), $fieldData = array(), $extended = '' )
 	{
 		$xtpl = new XTemplate( 'myform.tpl', DOC_ROOT . MY_ADMDIR . 'controllers/ct_type/' );
 		$xtpl->assign( 'INSTALL_DIR', INSTALL_DIR );
@@ -193,6 +251,11 @@ class vnp_form
 		{
 			$xtpl->assign( 'FIELD_DATA', $this->CreateField( $field ) );
 			$xtpl->parse( 'main.field' );
+		}
+		
+		if( !empty( $extended ) )
+		{
+			$xtpl->assign( 'EXT', $extended );
 		}
 		
 		$xtpl->parse( 'main' );

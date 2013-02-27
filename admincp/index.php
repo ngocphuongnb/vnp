@@ -21,8 +21,8 @@ $adm = new vnp_admin();
 
 $nmenu = new vnp_menu();
 
-$nmenu->mainMenu( 'http://google.com', 'Google' );
-$nmenu->subMenu( 'http://yahoo.com', 'Yahoo' );
+$nmenu->mainMenu( MY_ADMDIR . 'index.php?ctl=ct_type', 'Content type' );
+$nmenu->subMenu( MY_ADMDIR . 'index.php?ctl=ct_type&action=add', 'Add Content type' );
 $nmenu->subMenu( 'http://bing.com', 'Bing' );
 $nmenu->subMenu( 'http://yahoo.com', 'Yahoo 1' );
 $nmenu->subMenu( 'break' );

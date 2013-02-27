@@ -1,5 +1,5 @@
 <!-- BEGIN: main -->
-<div class="span7">
+<div class="">
     <div class="widget-block">
         <div class="widget-head">
             <h5><i class="black-icons users"></i> {FORM_DATA.header}</h5>
@@ -17,6 +17,7 @@
                         <!-- BEGIN: field -->
                         {FIELD_DATA}
                         <!-- END: field -->
+                        {EXT}
                         <div class="form-actions">
                             <button type="submit" name="submit" value="1" class="btn btn-primary">Save changes</button>
                             <button class="btn">Cancel</button>
