@@ -62,7 +62,7 @@
 <script src="{MY_DIR}sources/static/js/inputmask.jquery.js"></script>
 <script src="{MY_DIR}sources/static/js/jquery-ui-1.8.16.custom.min.js"></script>
 <script src="{MY_DIR}sources/static/js/uniform.jquery.js"></script>
-<script src="{MY_DIR}sources/static/js/chosen.jquery.js"></script>
+<script src="{MY_DIR}sources/static/js/jquery-dynamic-form.js"></script>
 
 <script type="text/javascript">
 $(function () {
@@ -92,9 +92,11 @@ $("#date").mask("99/99/9999");
     $('#datepicker').datepicker();
 	/*==JQUERY UNIFORM==*/
 	$(".checkbox-b,.rem_me,.radio-b,input[type='file']").uniform();
-	/*==JQUERY SELECTBOX==*/
-	$(".chzn-select").chosen(); 
-	$(".chzn-select-deselect").chosen({allow_single_deselect: true});
+	$("#ct_type_field").dynamicForm("#plus2", "#minus2", {
+        limit: 5,
+		createColor:'yellow',
+    	removeColor: 'red',
+    });
 })
 </script>
 

@@ -6,13 +6,10 @@
  * @Copyright (C) 2012 Nguyen Ngoc Phuong. All rights reserved
  * @Createdate  30/09/2012, 00:30
  */
-echo 'dddd';
 
 define( 'VNP', true );
 
 require( './mainfile.php' );
-
-echo '123';
 
 if( $request->get( 'mod', 'get', '' ) )
 {
