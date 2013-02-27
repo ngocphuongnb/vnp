@@ -56,6 +56,8 @@
 	cloneField = function(myObj, fieldData){
 		fieldNo++;
 		
+		$("#field-count", myObj).val(fieldNo);
+		
 		fieldData = "<div>" + fieldData + "</div>";
 		
 		$(fieldData).find('.controls').each(function(){
@@ -93,6 +95,9 @@
 			event.preventDefault();
 			//var fieldData = $('#ct_type_field', obj).html();
 			cloneField(obj, cloneData);
+			$('.text-tip').tooltip({
+				placement: 'top'
+			});
 		});
 	});  
  };  
@@ -100,6 +105,10 @@
 
 function rmvfield(id, sltor)
 {
-	$(sltor + ' #field-' + id).remove();	
+	if( confirm( "Bạn có chắc chắn xóa trường dữ liệu này?'" ) )
+	{
+		$(sltor + ' #field-' + id).remove();
+		$('.tooltip').remove();
+	}
 }
 	

@@ -23,8 +23,13 @@ class ct_type
 					{
 						if( $request->get( 'submit', 'post', '' ) )
 						{
-							$data = $request->get( 'ct_type_field', 'post' );
-							np($data);
+							$fieldArray = array();
+							$fieldnums = $request->get( 'field-count', 'post' );
+							for( $i = 0; $i <= $fieldnums; $i++ )
+							{
+								$fieldArray[] = $request->get( 'ct_type_field' . $i, 'post' );
+							}
+							np($fieldArray);
 							die();
 						}
 						$template->content = $this->addContentType();
