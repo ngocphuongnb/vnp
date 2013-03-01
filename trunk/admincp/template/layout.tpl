@@ -63,6 +63,7 @@
 <script src="{MY_DIR}sources/static/js/jquery-ui-1.8.16.custom.min.js"></script>
 <script src="{MY_DIR}sources/static/js/uniform.jquery.js"></script>
 <script src="{MY_DIR}sources/static/js/vnp-extenable-form.jquery.js"></script>
+<script src="{MY_DIR}sources/static/js/smart-wizard.jquery.js"></script>
 
 <script type="text/javascript">
 $(function () {
@@ -94,6 +95,20 @@ $("#date").mask("99/99/9999");
 	$(".checkbox-b,.rem_me,.radio-b,input[type='file']").uniform();
 	
 	$('#ext-form').extForm();
+	
+	$(function () {
+		// Smart Wizard 	
+		$('#add-ct_type-wizard').smartWizard({
+			enableFinishButton: false,
+			onFinish: onFinishCallback
+		});
+	 
+		function onFinishCallback() {
+			$('#add-ct_type-wizard').smartWizard('showMessage', 'Finish Clicked');
+			$('#ct_type-submit').click();
+		}
+		$('#vertical-wizard').smartWizard();
+	});
 })
 </script>
 

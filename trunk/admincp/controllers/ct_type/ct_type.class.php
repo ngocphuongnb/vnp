@@ -11,7 +11,8 @@ if( !defined( 'VNP' ) || !defined( 'ADMIN_FILE' ) ) die( 'ILN' );
 
 class ct_type
 {
-	public $error = array();
+	public $error		= array();
+	public $ignor_err	= array();
 	
 	public function __construct()
 	{
@@ -67,6 +68,8 @@ class ct_type
 	{
 		global $db;
 		
+		$err = array();
+		
 		$fieldType = array(
 							'number-int',
 							'number-float',
@@ -83,19 +86,20 @@ class ct_type
 						);
 		if( empty( $ct_field['field_name'] ) || empty( $ct_field['field_label'] ) )
 		{
-			$this->error[] = 'Field name and field label can not be empty!';
+			$err[] = 'Field name and field label can not be empty!';
 			
 		}
 		if( !in_array( $ct_field['field_type'], $fieldType ) )
 		{
-			$this->error[] = 'Invalid field type!';
+			$err[] = 'Invalid field type!';
 		}
 		if( $ct_field['field_length'] < 0 )
 		{
-			$this->error[] = 'Invalid field length!';
+			$err[] = 'Invalid field length!';
 		}
-		if( !empty( $this->error ) )
+		if( !empty( $err ) )
 		{
+			$this->ignor_err = $err;
 			return '';
 		}
 		else
@@ -105,7 +109,7 @@ class ct_type
 			$db->SelectRows( CONTENT_FIELD, $check_ct_field );
 			if( $db->RowCount() > 0 )
 			{
-				$this->error[] = 'Content field existed!';
+				$this->ignor_err[] = 'Content field: <u>' . $ct_field['field_name'] . '</u> existed!';
 				return '';
 			}
 			else
@@ -193,48 +197,16 @@ class ct_type
 				$template->content .= vnpMsg( 'Thêm thành công content type', 'success' );
 			}
 		}
-		$template->content .= vnpMsg( $this->error, 'error' );
+		$template->content .= vnpMsg( array_merge( $this->error, $this->ignor_err ), 'error' );
 		$template->content .= $this->addContentTypeForm();
 	}
 	
 	private function addContentTypeForm()
 	{
-		$form = new vnp_form();
-			
-		$fieldData = array();
-		
-		$fieldData[] = array( 
-								'type'		=> 'textbox',
-								'name'		=> 'content_type_title',
-								'label'		=> 'Tên content type',
-								'tooltip'	=> 'Tên content type',
-								'value'		=> ''
-							);
-		$fieldData[] = array( 
-								'type'		=> 'textbox',
-								'name'		=> 'content_type_name',
-								'label'		=> 'Unique Id',
-								'tooltip'	=> 'Duy nhất và là điều kiện phân biệt các content type',
-								'value'		=> ''
-							);
-		$fieldData[] = array( 
-								'type'		=> 'textarea',
-								'name'		=> 'content_type_note',
-								'label'		=> 'Miêu tả',
-								'tooltip'	=> 'Miêu tả cho content type',
-								'value'		=> ''
-							);
-		$formData = array(
-							'header' => 'Thêm content',
-							'action' => MY_ADMDIR . 'index.php?ctl=ct_type&action=add_ct_type',
-							'method' => 'post'
-						);
-		
 		$xtpl = new XTemplate( 'extendable.tpl', DOC_ROOT . MY_ADMDIR . 'controllers/ct_type/' );
+		$xtpl->assign( 'ACTION', MY_ADMDIR . 'index.php?ctl=ct_type&action=add_ct_type' );
 		$xtpl->parse( 'main' );
-		$ext = $xtpl->text( 'main' );
-						
-		return $form->create( $formData, $fieldData, $ext );
+		return $xtpl->text( 'main' );
 	}
 }
 
