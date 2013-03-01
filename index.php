@@ -31,12 +31,11 @@ if( $request->get( 'mod', 'get', '' ) )
 }
 else
 {
+	$vnp->urlHanderler();
 	echo myTheme();
 }
 
-
 /*
-echo $alias_get . '<br />';
 echo $vnp->SetNotice('IMN') . '<br />';
 echo 'time:&nbsp&nbsp&nbsp&nbsp&nbsp ' . VNP_TIME . '<br />';
 echo 'IP:&nbsp&nbsp&nbsp&nbsp&nbsp ' . SERVER_IP . '<br />';

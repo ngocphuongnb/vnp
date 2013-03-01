@@ -16,6 +16,10 @@ define( 'VNP_USER', $db_info['prefix'] . '_users' );
 define( 'USER_PROFILE', $db_info['prefix'] . '_users_profile' );
 define( 'SESSION', $db_info['prefix'] . '_session' );
 define( 'GLOBAL_CONFIG', $db_info['prefix'] . '_global_config' );
+//
+define( 'CONTENT_TYPE', $db_info['prefix'] . '_content_type' );
+define( 'CONTENT_FIELD', $db_info['prefix'] . '_content_field' );
+define( 'GLOBAL_URL', $db_info['prefix'] . '_global_url' );
 
 //define( 'NV_CRONJOBS_GLOBALTABLE', $db_info['prefix'] . '_cronjobs' );
 
@@ -98,6 +102,53 @@ $sql_create_table[] = "CREATE TABLE `" . SESSION . "` (
   `session_expire` int(11) NOT NULL default '0',
   PRIMARY KEY  (`session_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+
+/////////////////////////////////////
+$sql_create_table[] = "CREATE TABLE `" . CONTENT_TYPE . "` (
+  `content_type_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `content_type_name` varchar(255) NOT NULL,
+  `content_type_title` varchar(255) NOT NULL,
+  `content_type_note` varchar(255) NOT NULL default '',
+  `content_type_icon` varchar(255) NOT NULL default '',
+  `content_type_page` varchar(255) NOT NULL default '',
+  `add_method` varchar(255) NOT NULL default '',
+  `del_method` varchar(255) NOT NULL default '',
+  `manage_method` varchar(255) NOT NULL default '',
+  `comment` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `rating` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`content_type_id`),
+  UNIQUE KEY `content_type_name` (`content_type_name`)
+) ENGINE=MyISAM";
+
+$sql_create_table[] = "CREATE TABLE `" . CONTENT_FIELD . "` (
+  `field_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `content_type_id` mediumint(8) unsigned NOT NULL,
+  `content_type_name` varchar(255) NOT NULL default '',
+  `field_name` varchar(255) NOT NULL default '',
+  `field_label` varchar(255) NOT NULL default '',
+  `field_type` varchar(255) NOT NULL default '',
+  `field_length` varchar(255) default '',
+  `default_value` varchar(255) NOT NULL default '',
+  `ref_field` mediumint(8) unsigned,
+  `require` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`field_id`),
+  UNIQUE KEY `field_name` (`field_name`)
+) ENGINE=MyISAM";
+
+$sql_create_table[] = "CREATE TABLE `" . GLOBAL_URL . "` (
+  `id` mediumint(8) unsigned NOT NULL auto_increment,
+  `url` varchar(255) NOT NULL default '',
+  `controller` varchar(255) NOT NULL default '',
+  `content_type` varchar(255) NOT NULL default '',
+  `thumbnail` varchar(255) NOT NULL default '',
+  `db_table` varchar(255) NOT NULL default '',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `url` (`url`)
+) ENGINE=MyISAM";
+/////////////////////////////////////
 
 $sql_create_table[] = "INSERT INTO `" . VNP_ADMIN_PERMISS . "` (`permission_id`, `permission_name`, `content_type`) VALUES
 (1, 'full', 'global')";

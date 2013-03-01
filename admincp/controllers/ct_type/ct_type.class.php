@@ -11,35 +11,193 @@ if( !defined( 'VNP' ) || !defined( 'ADMIN_FILE' ) ) die( 'ILN' );
 
 class ct_type
 {
+	public $error = array();
+	
 	public function __construct()
 	{
 		global $request, $template, $db, $session;
 		
 		if( $action = $request->get( 'action', 'get', '' ) )
 		{
-			switch( $action )
+			$validAction = array( 'add_ct_type', 'del_ct_type', 'view_ct_type', 'refer' );
+			
+			if( in_array( $action, $validAction ) && method_exists( $this, $action ) )
 			{
-				case 'add':
-					{
-						if( $request->get( 'submit', 'post', '' ) )
-						{
-							$fieldArray = array();
-							$fieldnums = $request->get( 'field-count', 'post' );
-							for( $i = 0; $i <= $fieldnums; $i++ )
-							{
-								$fieldArray[] = $request->get( 'ct_type_field' . $i, 'post' );
-							}
-							np($fieldArray);
-							die();
-						}
-						$template->content = $this->addContentType();
-					}
-					break;
+				$this->$action();
 			}
 		}	
 	}
 	
-	private function addContentType()
+	private function check_ct_type( $ct_type_name )
+	{
+		global $db;
+		
+		if( empty($ct_type_name['content_type_title']) )
+		{
+			$this->error[] = 'Empty content type title!';
+		}
+		elseif( empty($ct_type_name['content_type_name']) )
+		{
+			$ct_type_name['content_type_name'] = get_alias( $ct_type_name['content_type_title'] );
+		}
+		else
+		{
+			$ct_type_name['content_type_name'] = get_alias( $ct_type_name['content_type_name'] );
+		}
+		
+		if( empty( $this->error ) )
+		{
+			$check_ct_type = array( 'content_type_name' => vnp_db::SQLValue( $ct_type_name['content_type_name'] ) );	
+			$db->SelectRows( CONTENT_TYPE, $check_ct_type );
+			if( $db->RowCount() > 0 )
+			{
+				//$this->error[] = $db->GetLastSQL();
+				$this->error[] = 'Content type existed!';
+				return '';
+			}
+			else
+			{
+				return $ct_type_name;
+			}
+		}
+		else return '';
+	}
+	
+	private function check_ct_field( $ct_field )
+	{
+		global $db;
+		
+		$fieldType = array(
+							'number-int',
+							'number-float',
+							'short-text',
+							'long-text',
+							'text',
+							'date',
+							'image',
+							'file',
+							'radio',
+							'checkbox',
+							'select',
+							'radio'
+						);
+		if( empty( $ct_field['field_name'] ) || empty( $ct_field['field_label'] ) )
+		{
+			$this->error[] = 'Field name and field label can not be empty!';
+			
+		}
+		if( !in_array( $ct_field['field_type'], $fieldType ) )
+		{
+			$this->error[] = 'Invalid field type!';
+		}
+		if( $ct_field['field_length'] < 0 )
+		{
+			$this->error[] = 'Invalid field length!';
+		}
+		if( !empty( $this->error ) )
+		{
+			return '';
+		}
+		else
+		{		
+			$ct_field['field_name'] = get_alias( $ct_field['field_name'] );
+			$check_ct_field = array( 'field_name' => vnp_db::SQLValue( $ct_field['field_name'] ) );	
+			$db->SelectRows( CONTENT_FIELD, $check_ct_field );
+			if( $db->RowCount() > 0 )
+			{
+				$this->error[] = 'Content field existed!';
+				return '';
+			}
+			else
+			{
+				return $ct_field;
+			}
+		}
+	}
+	
+	private function add_ct_type()
+	{
+		global $request, $template, $db;
+		
+		if( $request->get( 'submit', 'post', '' ) )
+		{
+			$template->content = '';
+			$ct_type = array(
+							array( 'content_type_title' ),
+							array( 'content_type_name' ),
+							array( 'content_type_note' )
+						);
+			
+			$fieldnums = $request->get( 'field-count', 'post' );
+			for( $i = 0; $i <= $fieldnums; $i++ )
+			{
+				$ct_type[] = array( 'ct_type_field' . $i );
+			}		
+			
+			$formData = vnp_form::getFormData( $ct_type, false );
+			
+			if( $_formData = $this->check_ct_type( $formData ) )
+			{
+				$formData = $_formData;
+				unset( $_formData );
+				
+				$ctTypeData = array(
+									'content_type_title'	=> vnp_db::SQLValue( $formData['content_type_title'] ),
+									'content_type_name'		=> vnp_db::SQLValue( $formData['content_type_name'] ),
+									'content_type_note'		=> vnp_db::SQLValue( $formData['content_type_note'] )
+								);
+				
+				$_result = $db->InsertRow( CONTENT_TYPE, $ctTypeData );
+				if( !$_result )
+				{
+					$this->error[] = 'Can not add content type!';
+					$db->Kill();
+				}
+				else
+				{
+					$ctTypeID = $db->GetLastInsertID();	
+					$ct_field = array();
+					for( $i = 0; $i <= $fieldnums; $i++ )
+					{
+						$ct_field[] = $formData['ct_type_field' . $i];
+					}
+					foreach( $ct_field as $_field )
+					{
+						if( $__field = $this->check_ct_field( $_field ) )
+						{
+							$_field = $__field;
+							unset( $__field );
+							
+							$ctFieldData = array(
+									'content_type_id'	=> vnp_db::SQLValue( $ctTypeID, 'number' ),
+									'content_type_name' => vnp_db::SQLValue( $formData['content_type_name'] ),
+									'field_name'		=> vnp_db::SQLValue( $_field['field_name'] ),
+									'field_label'		=> vnp_db::SQLValue( $_field['field_label'] ),
+									'field_type'		=> vnp_db::SQLValue( $_field['field_type'] ),
+									'field_length'		=> vnp_db::SQLValue( $_field['field_length'], 'number' ),
+									'default_value'		=> vnp_db::SQLValue( $_field['default_value'] ),
+									'require'			=> vnp_db::SQLValue( $_field['require'], 'number' )
+								);
+							$_result = $db->InsertRow( CONTENT_FIELD, $ctFieldData );
+							if( !$_result )
+							{
+								$this->error[] = 'Can not add content field - ' . $_field['field_name'];
+								$db->Kill();
+							}
+						}
+					}
+				}
+			}
+			if( empty( $this->error ) )
+			{
+				$template->content .= vnpMsg( 'Thêm thành công content type', 'success' );
+			}
+		}
+		$template->content .= vnpMsg( $this->error, 'error' );
+		$template->content .= $this->addContentTypeForm();
+	}
+	
+	private function addContentTypeForm()
 	{
 		$form = new vnp_form();
 			
@@ -47,28 +205,28 @@ class ct_type
 		
 		$fieldData[] = array( 
 								'type'		=> 'textbox',
-								'name'		=> 'ct_name',
+								'name'		=> 'content_type_title',
 								'label'		=> 'Tên content type',
 								'tooltip'	=> 'Tên content type',
 								'value'		=> ''
 							);
 		$fieldData[] = array( 
 								'type'		=> 'textbox',
-								'name'		=> 'unique_id',
+								'name'		=> 'content_type_name',
 								'label'		=> 'Unique Id',
 								'tooltip'	=> 'Duy nhất và là điều kiện phân biệt các content type',
 								'value'		=> ''
 							);
 		$fieldData[] = array( 
 								'type'		=> 'textarea',
-								'name'		=> 'description',
+								'name'		=> 'content_type_note',
 								'label'		=> 'Miêu tả',
 								'tooltip'	=> 'Miêu tả cho content type',
 								'value'		=> ''
 							);
 		$formData = array(
 							'header' => 'Thêm content',
-							'action' => MY_ADMDIR . 'index.php?ctl=ct_type&action=add',
+							'action' => MY_ADMDIR . 'index.php?ctl=ct_type&action=add_ct_type',
 							'method' => 'post'
 						);
 		
