@@ -148,6 +148,9 @@ class vnp
 		define( 'USER_PROFILE', $db_info['prefix'] . '_users_profile' );
 		define( 'SESSION', $db_info['prefix'] . '_session' );
 		define( 'GLOBAL_CONFIG', $db_info['prefix'] . '_global_config' );
+		define( 'GLOBAL_URL', $db_info['prefix'] . '_global_url' );
+		define( 'CONTENT_TYPE', $db_info['prefix'] . '_content_type' );
+		define( 'CONTENT_FIELD', $db_info['prefix'] . '_content_field' );
 	}
 	
 	public function Mode( $mod )
@@ -159,7 +162,35 @@ class vnp
 			$mode = $mod;
 			include( VNP_ROOT . '/sources/controllers/' . $mode . '/function.php' );
 			include( VNP_ROOT . '/sources/controllers/' . $mode . '/' . $mode . '.php' );
+			ob_start();
 			echo $content;
+		}
+	}
+	
+	public function urlHanderler()
+	{
+		global $alias_get, $db;
+		
+		$checkUrl = array( 'url' => vnp_db::SQLValue( $alias_get ) );		
+		
+		$db->SelectRows( GLOBAL_URL, $checkUrl );
+		//echo $db->GetHTML();
+		if( $db->RowCount() === 1 )
+		{
+			$UrlData = $db->RowArray(0, MYSQL_ASSOC);
+			
+			$availableController = array( 'music' );
+			
+			if( in_array( $UrlData['controller'], $availableController ) )
+			{
+				if( file_exists( VNP_ROOT . '/sources/controllers/' . $UrlData['controller'] . '/function.php' ) && file_exists( VNP_ROOT . '/sources/controllers/' . $UrlData['controller'] . '/' . $UrlData['controller'] . '.php' ) )
+				{
+					$mode = $UrlData['controller'];
+					include( VNP_ROOT . '/sources/controllers/' . $UrlData['controller'] . '/function.php' );
+					include( VNP_ROOT . '/sources/controllers/' . $UrlData['controller'] . '/' . $UrlData['controller'] . '.php' );
+					new $UrlData['controller']();
+				}
+			}
 		}
 	}
 	

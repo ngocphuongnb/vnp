@@ -63,6 +63,7 @@ class admin_theme
 		
 		$xtpl->assign( 'CONTENT', $content );
 		$xtpl->parse( 'main' );
+		//ob_start();
 		echo $xtpl->out( 'main' );
 	}
 }
