@@ -19,14 +19,14 @@
                   	<li><a href="#step-4" class="disabled" isdone="0" rel="4"> <span class="stepNumber">4</span> <span class="stepDesc"> Bước 4 <small>Kết thúc</small></span></a></li>
                 </ul>
                 <form id="ct-form" action="{ACTION}" method="post" class="form-horizontal well" style="padding:0">
-                    <fieldset style="padding:19px">
+                    <fieldset style="padding:5px 19px">
                     	<div id="step-1">
                             <h3 class="StepTitle">Hướng dẫn thêm content type</h3>
                             
                             <p>Thêm content type</p>
                         </div>
                         <div id="step-2" class="content">        
-                            <h2 class="StepTitle">Thêm content type</h2>
+                            <h3 class="StepTitle">Thêm content type</h3>
                             <p>
                             	<div class="ct_type-left">
                                     <div class="control-group">
@@ -59,7 +59,6 @@
                             </p>
                         </div>
                         <div id="step-3" class="content">
-                            <h2 class="StepTitle">Step 2 Content</h2>
                             <p>
                                 <!-- extenable form field -->
                              	<div id="ext-form">
@@ -69,12 +68,12 @@
                                         <fieldset id="ct_type_field">
                                             <!-- All extendable elements here-->
                                             <div id="sample-field">
-                                                <div style="border-bottom: 1px dashed #CCC; margin-bottom: 10px">
-                                                    <div class="control-group" style="margin-left: -160px">
+                                                <div style="border-bottom: 1px dashed #CCC">
+                                                    <div class="control-group vnp-field" id="ct_type_field0">
                                                         <div class="controls">
-                                                            <input type="text" name="field_name" placeholder="Tên trường" class="input-small text-tip" data-original-title="Dùng phân biệt các trường dữ liệu, chỉ dùng chữ số, chữ cái và kí tự _">
-                                                            <input type="text" name="field_label" placeholder="Tiêu đề" class="input-medium text-tip" data-original-title="Tiêu đề hiển thị cho trường">
-                                                            <select name="field_type" class="span2 text-tip" data-original-title="Loại dữ liệu">
+                                                            <input type="text" name="field_name" id="ct_field0_field_name" placeholder="Tên trường" class="input-small text-tip" data-original-title="Dùng phân biệt các trường dữ liệu, chỉ dùng chữ số, chữ cái và kí tự _">
+                                                            <input type="text" name="field_label" id="ct_field0_field_label" placeholder="Tiêu đề" class="input-medium text-tip" data-original-title="Tiêu đề hiển thị cho trường">
+                                                            <select name="field_type" id="ct_field0_field_type" class="span2 text-tip" data-original-title="Loại dữ liệu">
                                                                 <option>Loại dữ liệu</option>
                                                                 <option value="number-int">Số nguyên</option>
                                                                 <option value="number-float">Số thực</option>
@@ -88,22 +87,30 @@
                                                                 <option value="select">Select</option>
                                                                 <option value="referer">Dữ liệu liên kết</option>
                                                             </select>
-                                                            <input type="text" name="field_length" placeholder="Độ dài" class="span1 text-tip" data-original-title="Độ dài tối đa của dữ liệu nhập vào">
-                                                            <input type="text" name="default_value" placeholder="Giá trị mặc định" class="input-small text-tip" data-original-title="Giá trị mặc định">
-                                                            <select name="require" class="span2 text-tip" data-original-title="Trường dữ liệu bắt buộc">
+                                                            <input type="text" name="field_length" id="ct_field0_field_length" placeholder="Độ dài" class="span1 text-tip" data-original-title="Độ dài tối đa của dữ liệu nhập vào">
+                                                            <input type="text" name="default_value" id="ct_field0_default_value" placeholder="Giá trị mặc định" class="input-small text-tip" data-original-title="Giá trị mặc định">
+                                                            <select name="require" id="ct_field0_require" class="span2 text-tip" data-original-title="Trường dữ liệu bắt buộc">
                                                                 <option value="0">Không bắt buộc</option>
                                                                 <option value="1">Bắt buộc</option>
                                                             </select>
-                                                            <span class="vnp-ext"></span>
+                                                            <span class="vnp-ext">
+                                                            	<a id="0" href="javascript:void(0)" class="remove-element text-tip" onclick="rmvfield(0, '#ext-form');" data-original-title="Xóa dòng">Xóa dòng</a>
+                                                            </span>
+                                                            <span class="vnp-check"></span>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </fieldset>
                                     </fieldset>
+                                    <div style="clear:both; display: block"></div>
                                     <!-- Extendable Add Remove here-->
                                     <span class="extend-bar">
                                         <a id="add-btn" href="#" class="add-element text-tip" title="Thêm trường" data-original-title="Thêm trường">Thêm</a>
+                                        <a href="javascript:void(0);" id="check-ct_type-btn" class="btn btn-success" onclick="check_ct_fields(0);">
+                                            <i class="icon-th"></i>
+                                            Kiểm tra content field
+                                        </a>
                                     </span>
                                 </div>    
                                 <!-- end extenable form field -->
@@ -146,6 +153,23 @@
 	float: right;
 }
 #result {
+	margin-top: 10px;
+}
+.vnp-field {
+	margin-bottom: 0 !important;
+	min-height: 50px;
+}
+.vnp-field .controls {
+	padding: 10px
+}
+.vnp-field .label {
+	line-height: 25px
+}
+#step-3 .controls {
+	margin-left: 0 !important;
+	padding-left: 10px;
+}
+.extend-bar {
 	margin-top: 10px;
 }
 </style>

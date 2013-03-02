@@ -20,7 +20,7 @@ class ct_type
 		
 		if( $action = $request->get( 'action', 'get,post', '' ) )
 		{
-			$validAction = array( 'add_ct_type', 'del_ct_type', 'view_ct_type', 'refer', 'Ajax_check_ct_type' );
+			$validAction = array( 'add_ct_type', 'del_ct_type', 'view_ct_type', 'refer', 'Ajax_check_ct_type', 'Ajax_check_ct_field' );
 			
 			if( in_array( $action, $validAction ) && method_exists( $this, $action ) )
 			{
@@ -65,6 +65,39 @@ class ct_type
 			$checkStatus = array('status' => 'no', 'msg' => vnpMsg( 'Thao tác không hợp lệ', 'error'));
 			echo json_encode( $checkStatus );
 			exit();
+		}
+	}
+	
+	public function Ajax_check_ct_field()
+	{
+		global $template, $request;
+		
+		if( defined( 'IS_AJAX' ) )
+		{
+			for( $i = 0; $i< 10000; $i++ )
+			{
+				for( $j = 0; $j< 1000; $j++ )
+				{
+				}
+			}
+			$this->ignor_err = array();	
+			$ct_fieldJson	= $request->get( 'ct_fieldJson', 'post' );
+			$ct_fieldJson	= str_replace( '\"', '"', $ct_fieldJson );
+			$ct_field		= ( array )json_decode( $ct_fieldJson );
+			
+			if( $_checkrs = $this->check_ct_field( $ct_field ) )
+			{
+				$msg = 'OK&nbsp;&nbsp;-&nbsp;&nbsp;Content type hợp lệ';
+				$checkStatus = array('status' => 'ok', 'msg' => $msg );
+				echo json_encode( $checkStatus );
+				exit();
+			}
+			else
+			{
+				$checkStatus = array('status' => 'no', 'msg' => implode(', ', $this->ignor_err ));
+				echo json_encode( $checkStatus );
+				exit();
+			}
 		}
 	}
 	
@@ -125,30 +158,30 @@ class ct_type
 						);
 		if( empty( $ct_field['field_name'] ) || empty( $ct_field['field_label'] ) )
 		{
-			$err[] = 'Field name and field label can not be empty!';
-			
+			$err[] = 'Tên trường và tiêu đề không thể trống!';			
 		}
 		if( !in_array( $ct_field['field_type'], $fieldType ) )
 		{
-			$err[] = 'Invalid field type!';
+			$err[] = 'Loại dữ liệu không hợp lêh!';
 		}
 		if( $ct_field['field_length'] < 0 )
 		{
-			$err[] = 'Invalid field length!';
+			$err[] = 'Độ dài không hợp lệ!';
 		}
+		
 		if( !empty( $err ) )
 		{
 			$this->ignor_err = $err;
 			return '';
 		}
 		else
-		{		
+		{	
 			$ct_field['field_name'] = get_alias( $ct_field['field_name'] );
 			$check_ct_field = array( 'field_name' => vnp_db::SQLValue( $ct_field['field_name'] ) );	
 			$db->SelectRows( CONTENT_FIELD, $check_ct_field );
 			if( $db->RowCount() > 0 )
 			{
-				$this->ignor_err[] = 'Content field: <u>' . $ct_field['field_name'] . '</u> existed!';
+				$this->ignor_err[] = 'Trường: <u>' . $ct_field['field_name'] . '</u> đã tồn tại!';
 				return '';
 			}
 			else

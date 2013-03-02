@@ -65,6 +65,9 @@
 <script src="{MY_DIR}sources/static/js/uniform.jquery.js"></script>
 <script src="{MY_DIR}sources/static/js/vnp-extenable-form.jquery.js"></script>
 <script src="{MY_DIR}sources/static/js/smart-wizard.jquery.js"></script>
+<!--
+<script src="{MY_DIR}sources/static/js/jquery.animate-colors-min.js"></script>
+-->
 <script src="{MY_DIR}sources/static/js/vnp-ajax.js"></script>
 
 <script type="text/javascript">
