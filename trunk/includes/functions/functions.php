@@ -250,7 +250,7 @@ function get_alias( $string )
 	{
 		$string = preg_replace("/($uni)/i", $nonUnicode, $string ); 
 	}
-	$string = str_replace( ' ', '_', $string );
+	$string = str_replace( ' ', '-', $string );
 	return strtolower( $string ); 
 } 
 

@@ -66,12 +66,13 @@
 			
 			//sltor = sltor.replace(/ /g, "");
 			
-			$('.vnp-ext', crData).append('<a id="'+ fieldNo + '" href="javascript:void(0)" class="remove-element text-tip" title="Xóa dòng" onclick="rmvfield(' + fieldNo + ', \'' + sltor + '\');">Xóa dòng</a>');
+			$('.vnp-ext', crData).html('<a id="'+ fieldNo + '" href="javascript:void(0)" class="remove-element text-tip" title="Xóa dòng" onclick="rmvfield(' + fieldNo + ', \'' + sltor + '\');">Xóa dòng</a>');
 			
 			var add = crData.html();
 			add = add.replace(/ct_type_field0/g, 'ct_type_field' + fieldNo);
-			add = 	"<div id=\"field-" + fieldNo + "\" style=\"border-bottom: 1px dashed #CCC; margin-bottom: 10px\">" + 
-                	"<div class=\"control-group\" style=\"margin-left: -160px\">" +
+			add = add.replace(/ct_field0/g, 'ct_field' + fieldNo);
+			add = 	"<div id=\"field-" + fieldNo + "\" style=\"border-bottom: 1px dashed #CCC;\">" + 
+                	"<div class=\"control-group vnp-field\" id=\"ct_type_field" + fieldNo +"\">" +
                     "<div class=\"controls\">" + add + "</div></div></div>";
 					
 			$('#ct_type_field', myObj ).append(add);
