@@ -35,6 +35,8 @@ else
 	echo myTheme();
 }
 
+np( $client_info );
+
 /*
 echo $vnp->SetNotice('IMN') . '<br />';
 echo 'time:&nbsp&nbsp&nbsp&nbsp&nbsp ' . VNP_TIME . '<br />';

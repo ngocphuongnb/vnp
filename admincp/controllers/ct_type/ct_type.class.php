@@ -18,9 +18,9 @@ class ct_type
 	{
 		global $request, $template, $db, $session;
 		
-		if( $action = $request->get( 'action', 'get', '' ) )
+		if( $action = $request->get( 'action', 'get,post', '' ) )
 		{
-			$validAction = array( 'add_ct_type', 'del_ct_type', 'view_ct_type', 'refer' );
+			$validAction = array( 'add_ct_type', 'del_ct_type', 'view_ct_type', 'refer', 'Ajax_check_ct_type' );
 			
 			if( in_array( $action, $validAction ) && method_exists( $this, $action ) )
 			{
@@ -29,36 +29,75 @@ class ct_type
 		}	
 	}
 	
-	private function check_ct_type( $ct_type_name )
+	public function Ajax_check_ct_type()
 	{
-		global $db;
+		global $template, $request;
 		
-		if( empty($ct_type_name['content_type_title']) )
-		{
-			$this->error[] = 'Empty content type title!';
-		}
-		elseif( empty($ct_type_name['content_type_name']) )
-		{
-			$ct_type_name['content_type_name'] = get_alias( $ct_type_name['content_type_title'] );
+		if( defined( 'IS_AJAX' ) )
+		{		
+			$ct_typeJson	= $request->get( 'ct_typeJson', 'post' );
+			$ct_typeJson	= str_replace( '\"', '"', $ct_typeJson );
+			$ct_type		= ( array )json_decode( $ct_typeJson );
+			
+			if( $_checkrs = $this->check_ct_type( $ct_type ) )
+			{
+				$msg = vnpMsg( 'Content type hợp lệ, các thông tin dưới đây sẽ được lưu lại:', 'success' );
+				
+				$msg .= '<div class="code-block clearfix">
+							<h6 class="fl">Tên content type: </h6><h5 class="fl">&nbsp;&nbsp;&nbsp;' . $_checkrs['content_type_title'] . '</h5><br />
+							<h6 class="fl">Unique Id: </h6><h5 class="fl">&nbsp;&nbsp;&nbsp;' . $_checkrs['content_type_name'] . '</h5><br />
+							<h6 class="fl">Miêu tả: </h6><h5 class="fl">&nbsp;&nbsp;&nbsp;' . $_checkrs['content_type_note'] . '</h5>
+						</div>';
+						
+				$checkStatus = array('status' => 'ok', 'msg' => $msg );
+				echo json_encode( array_merge( $checkStatus, $_checkrs ) );
+				exit();
+			}
+			else
+			{
+				$checkStatus = array('status' => 'no', 'msg' => vnpMsg( array_merge( $this->error, $this->ignor_err ), 'error'));
+				echo json_encode( $checkStatus );
+				exit();
+			}
 		}
 		else
 		{
-			$ct_type_name['content_type_name'] = get_alias( $ct_type_name['content_type_name'] );
+			$checkStatus = array('status' => 'no', 'msg' => vnpMsg( 'Thao tác không hợp lệ', 'error'));
+			echo json_encode( $checkStatus );
+			exit();
+		}
+	}
+	
+	private function check_ct_type( $ct_type, $ct_typeJson = '' )
+	{
+		global $db;
+		
+		if( empty($ct_type['content_type_title']) )
+		{
+			$this->error[] = 'Empty content type title!';
+		}
+		elseif( empty($ct_type['content_type_name']) )
+		{
+			$ct_type['content_type_name'] = get_alias( $ct_type['content_type_title'] );
+		}
+		else
+		{
+			$ct_type['content_type_name'] = get_alias( $ct_type['content_type_name'] );
 		}
 		
 		if( empty( $this->error ) )
 		{
-			$check_ct_type = array( 'content_type_name' => vnp_db::SQLValue( $ct_type_name['content_type_name'] ) );	
+			$check_ct_type = array( 'content_type_name' => vnp_db::SQLValue( $ct_type['content_type_name'] ) );	
 			$db->SelectRows( CONTENT_TYPE, $check_ct_type );
 			if( $db->RowCount() > 0 )
 			{
 				//$this->error[] = $db->GetLastSQL();
-				$this->error[] = 'Content type existed!';
+				$this->error[] = 'Content type đã tồn tại!';
 				return '';
 			}
 			else
 			{
-				return $ct_type_name;
+				return $ct_type;
 			}
 		}
 		else return '';

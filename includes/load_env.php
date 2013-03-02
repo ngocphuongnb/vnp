@@ -59,6 +59,8 @@ set_timezone();
 // client array
 $client_info['selfurl'] = ( empty( $_SERVER['REQUEST_URI'] ) ) ? $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING'] : $_SERVER['REQUEST_URI'];
 
+$client_info['referer'] = $_SERVER['HTTP_REFERER'];
+
 if( @include( VNP_ROOT . '/includes/class/ips.class.php' ) )
 {
 	$ips = new ips();

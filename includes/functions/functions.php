@@ -249,8 +249,9 @@ function get_alias( $string )
 	foreach( $unicode as $nonUnicode=>$uni )
 	{
 		$string = preg_replace("/($uni)/i", $nonUnicode, $string ); 
-	} 
-	return $string; 
+	}
+	$string = str_replace( ' ', '_', $string );
+	return strtolower( $string ); 
 } 
 
 function vnpMsg( $msgArray, $type )
@@ -270,3 +271,9 @@ function vnpMsg( $msgArray, $type )
 	}
 	else return '';
 }
+
+function getHost( $Address )
+{ 
+	$parseUrl = parse_url( trim( $Address ) ); 
+	return trim( $parseUrl['host'] ? $parseUrl['host'] : array_shift(explode('/', $parseUrl['path'], 2))); 
+} 

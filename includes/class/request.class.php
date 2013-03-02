@@ -24,20 +24,37 @@ class request
 		$return = '';
 		if( !empty( $paramName ) )
 		{
-			switch( $method )
+			if( $method == 'get' )
 			{
-				case 'get':
-					if( array_key_exists( $paramName, $_GET ) )
+				if( array_key_exists( $paramName, $_GET ) )
+				{
+					$return = $_GET[$paramName];
+				}
+			}
+			elseif( $method == 'post' )
+			{
+				if( array_key_exists( $paramName, $_POST ) )
+				{
+					$return = $_POST[$paramName];
+				}
+			}
+			else
+			{
+				$methodArray = explode(',', $method);
+				if( sizeof( $methodArray ) == 2 && isset( $methodArray[0] ) && isset( $methodArray[1] ) )
+				{
+					if( in_array( trim( $methodArray[0] ), array( 'get', 'post' ) ) && in_array( trim( $methodArray[1] ), array( 'get', 'post' ) ) )
 					{
-						$return = $_GET[$paramName];
+						if( array_key_exists( $paramName, $_GET ) )
+						{
+							$return = $_GET[$paramName];
+						}
+						elseif( array_key_exists( $paramName, $_POST ) )
+						{
+							$return = $_POST[$paramName];
+						}
 					}
-					break;
-				case 'post':
-					if( array_key_exists( $paramName, $_POST ) )
-					{
-						$return = $_POST[$paramName];
-					}
-					break;
+				}
 			}
 		}
 		if( !empty( $return ) )
