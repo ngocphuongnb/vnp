@@ -13,14 +13,19 @@
 		<div class="widget-box">
         	<div id="add-ct_type-wizard" class="content-wizard">
 				<ul class="clearfix anchor">
-                  	<li><a href="#step-1" class="selected" isdone="1" rel="1"> <span class="stepNumber">1</span> <span class="stepDesc"> Bước 1 <small>Thêm content type</small></span></a></li>
-                  	<li><a href="#step-2" class="disabled" isdone="0" rel="2"> <span class="stepNumber">2</span> <span class="stepDesc"> Bước 2 <small>Thêm content field</small></span></a></li>
-                  	<li><a href="#step-3" class="disabled" isdone="0" rel="3"> <span class="stepNumber">3</span> <span class="stepDesc"> Bước 3 <small>Cài đặt</small></span></a></li>
+                  	<li><a href="#step-1" class="selected" isdone="1" rel="1"> <span class="stepNumber">1</span> <span class="stepDesc"> Bước 1 <small>Hướng dẫn thêm content type</small></span></a></li>
+                  	<li><a href="#step-2" class="disabled" isdone="0" rel="2"> <span class="stepNumber">2</span> <span class="stepDesc"> Bước 2 <small>Thêm content type</small></span></a></li>
+                  	<li><a href="#step-3" class="disabled" isdone="0" rel="3"> <span class="stepNumber">3</span> <span class="stepDesc"> Bước 3 <small>Thêm content field</small></span></a></li>
                   	<li><a href="#step-4" class="disabled" isdone="0" rel="4"> <span class="stepNumber">4</span> <span class="stepDesc"> Bước 4 <small>Kết thúc</small></span></a></li>
                 </ul>
                 <form action="{ACTION}" method="post" class="form-horizontal well">
                     <fieldset>
-                        <div id="step-1" class="content">        
+                    	<div id="step-1">
+                            <h2 class="StepTitle">Hướng dẫn thêm content type</h2>
+                            
+                            <p>Thêm content type</p>
+                        </div>
+                        <div id="step-2" class="content">        
                             <h2 class="StepTitle">Thêm content type</h2>
                             <p>
                                 <div class="control-group">
@@ -43,7 +48,7 @@
                                 </div>
                             </p>
                         </div>
-                        <div id="step-2" class="content">
+                        <div id="step-3" class="content">
                             <h2 class="StepTitle">Step 2 Content</h2>
                             <p>
                                 <!-- extenable form field -->
@@ -93,10 +98,6 @@
                                 </div>    
                                 <!-- end extenable form field -->
                             </p>
-                        </div>
-                        
-                        <div id="step-3">
-                            <h2 class="StepTitle">Step 3 Content</h2>
                         </div>
                         <div id="step-4">
                             <h2 class="StepTitle">Step 4 Content</h2>
