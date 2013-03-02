@@ -18,33 +18,43 @@
                   	<li><a href="#step-3" class="disabled" isdone="0" rel="3"> <span class="stepNumber">3</span> <span class="stepDesc"> Bước 3 <small>Thêm content field</small></span></a></li>
                   	<li><a href="#step-4" class="disabled" isdone="0" rel="4"> <span class="stepNumber">4</span> <span class="stepDesc"> Bước 4 <small>Kết thúc</small></span></a></li>
                 </ul>
-                <form action="{ACTION}" method="post" class="form-horizontal well">
-                    <fieldset>
+                <form id="ct-form" action="{ACTION}" method="post" class="form-horizontal well" style="padding:0">
+                    <fieldset style="padding:19px">
                     	<div id="step-1">
-                            <h2 class="StepTitle">Hướng dẫn thêm content type</h2>
+                            <h3 class="StepTitle">Hướng dẫn thêm content type</h3>
                             
                             <p>Thêm content type</p>
                         </div>
                         <div id="step-2" class="content">        
                             <h2 class="StepTitle">Thêm content type</h2>
                             <p>
-                                <div class="control-group">
-                                    <label class="control-label" for="content_type_title">Tên content type</label>
-                                    <div class="controls">
-                                        <input type="text" class="input-xlarge tip-right" name="content_type_title" id="" value="" data-original-title="Tên content type">
+                            	<div class="ct_type-left">
+                                    <div class="control-group">
+                                        <label class="control-label" for="content_type_title">Tên content type</label>
+                                        <div class="controls">
+                                            <input type="text" class="input-xlarge tip-right" name="content_type_title" id="content_type_title" value="" data-original-title="Tên content type">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label" for="content_type_name">Unique Id</label>
-                                    <div class="controls">
-                                        <input type="text" class="input-xlarge tip-right" name="content_type_name" id="" value="" data-original-title="Duy nhất và là điều kiện phân biệt các content type">
+                                    <div class="control-group">
+                                        <label class="control-label" for="content_type_name">Unique Id</label>
+                                        <div class="controls">
+                                            <input type="text" class="input-xlarge tip-right" name="content_type_name" id="content_type_name" value="" data-original-title="Duy nhất và là điều kiện phân biệt các content type">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label" for="content_type_note">Miêu tả</label>
-                                    <div class="controls">
-                                        <textarea class="input-xlarge tip-right" name="content_type_note" rows="3" data-original-title="Miêu tả cho content type"></textarea>
+                                    <div class="control-group">
+                                        <label class="control-label" for="content_type_note">Miêu tả</label>
+                                        <div class="controls">
+                                            <textarea class="input-xlarge tip-right" id="content_type_note" name="content_type_note" rows="3" data-original-title="Miêu tả cho content type"></textarea>
+                                        </div>
                                     </div>
+                              	</div>
+                                <div class="ct_type-right">
+                                	<a href="javascript:void(0);" id="check-ct_type-btn" class="btn btn-success" onclick="check_ct_type();">
+                                    	<i class="icon-ok"></i>
+                                        Kiểm tra content type
+                                   	</a>
+                                    <div id="result"></div>
+                                    <div id="ct_type-check-result"></div>
                                 </div>
                             </p>
                         </div>
@@ -122,8 +132,26 @@
 
 <style>
 .stepContainer {
-	height: 0 !important;
 	padding: 0 !important;
+	height: 0 !important;
+}
+.ct_type-left {
+	width: 49%;
+	float: left;
+	padding-right: 10px;
+	border-right: 1px dashed #CCC
+}
+.ct_type-right {
+	width: 49%;
+	float: right;
+}
+#result {
+	margin-top: 10px;
 }
 </style>
+<script type="text/javascript">
+$(function () {
+	
+});
+</script>
 <!-- END: main -->

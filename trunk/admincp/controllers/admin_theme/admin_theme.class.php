@@ -14,7 +14,7 @@ class admin_theme
 	public	$topMenu		= '';
 	public	$sideBar		= '';
 	public	$content	= '';
-	private	$systemStart	= false;
+	public	$systemStart	= false;
 	
 	public function __construct( )
 	{

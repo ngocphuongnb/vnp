@@ -14,6 +14,7 @@
     <link href="{MY_DIR}{ADMIN_DIR}/template/css/styles.css" rel="stylesheet">
     <link href="{MY_DIR}{ADMIN_DIR}/template/css/themes.css" rel="stylesheet">
     <link href="{MY_DIR}{ADMIN_DIR}/template/css/icons-sprite.css" rel="stylesheet">
+    <link href="{MY_DIR}sources/static/css/custom.css" rel="stylesheet">
     <!--[if IE 7]>
     <link rel="stylesheet" type="text/css" href="{MY_DIR}{ADMIN_DIR}/template/css/ie/ie7.css" />
     <![endif]-->
@@ -64,6 +65,7 @@
 <script src="{MY_DIR}sources/static/js/uniform.jquery.js"></script>
 <script src="{MY_DIR}sources/static/js/vnp-extenable-form.jquery.js"></script>
 <script src="{MY_DIR}sources/static/js/smart-wizard.jquery.js"></script>
+<script src="{MY_DIR}sources/static/js/vnp-ajax.js"></script>
 
 <script type="text/javascript">
 $(function () {
