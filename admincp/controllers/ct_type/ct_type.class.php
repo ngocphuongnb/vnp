@@ -87,7 +87,7 @@ class ct_type
 			
 			if( $_checkrs = $this->check_ct_field( $ct_field ) )
 			{
-				$msg = 'OK&nbsp;&nbsp;-&nbsp;&nbsp;Content type hợp lệ';
+				$msg = 'OK&nbsp;&nbsp;-&nbsp;&nbsp;Trường dữ liệu hợp lệ';
 				$checkStatus = array('status' => 'ok', 'msg' => $msg );
 				echo json_encode( $checkStatus );
 				exit();
