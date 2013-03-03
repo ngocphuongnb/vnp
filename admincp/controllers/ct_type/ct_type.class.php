@@ -20,7 +20,7 @@ class ct_type
 		
 		if( $action = $request->get( 'action', 'get,post', '' ) )
 		{
-			$validAction = array( 'add_ct_type', 'del_ct_type', 'view_ct_type', 'refer', 'Ajax_check_ct_type', 'Ajax_check_ct_field' );
+			$validAction = array( 'list_ct_type', 'list_ct_field', 'add_ct_type', 'del_ct_type', 'view_ct_type', 'refer', 'Ajax_check_ct_type', 'Ajax_check_ct_field' );
 			
 			if( in_array( $action, $validAction ) && method_exists( $this, $action ) )
 			{
@@ -29,7 +29,7 @@ class ct_type
 		}	
 	}
 	
-	public function Ajax_check_ct_type()
+	private function Ajax_check_ct_type()
 	{
 		global $template, $request;
 		
@@ -68,18 +68,19 @@ class ct_type
 		}
 	}
 	
-	public function Ajax_check_ct_field()
+	private function Ajax_check_ct_field()
 	{
 		global $template, $request;
 		
 		if( defined( 'IS_AJAX' ) )
 		{
-			for( $i = 0; $i< 10000; $i++ )
+			/*
+			for( $i=0; $i<1000; $i++)
 			{
-				for( $j = 0; $j< 1000; $j++ )
+				for( $j=0; $j<500; $j++)
 				{
 				}
-			}
+			}*/
 			$this->ignor_err = array();	
 			$ct_fieldJson	= $request->get( 'ct_fieldJson', 'post' );
 			$ct_fieldJson	= str_replace( '\"', '"', $ct_fieldJson );
@@ -162,7 +163,7 @@ class ct_type
 		}
 		if( !in_array( $ct_field['field_type'], $fieldType ) )
 		{
-			$err[] = 'Loại dữ liệu không hợp lêh!';
+			$err[] = 'Loại dữ liệu không hợp lệ!';
 		}
 		if( $ct_field['field_length'] < 0 )
 		{
@@ -189,6 +190,57 @@ class ct_type
 				return $ct_field;
 			}
 		}
+	}
+	
+	private function list_ct_type()
+	{
+		global $template, $db;
+		
+		$contentType = $db->QueryArray( 'SELECT `content_type_id`, `content_type_name`, `content_type_title`, `content_type_note` FROM ' . CONTENT_TYPE, MYSQL_ASSOC, 'content_type_name');
+		
+		$theadData = array( 'Content Type id',
+							'Content Type name',
+							'Content Type title',
+							'Content Type note',
+						);
+		$tableData = array(
+							'label'	=> 'Danh sách content type',
+							'menu'	=> array(
+												array( 'href' => MY_ADMDIR . 'index.php?ctl=ct_type&action=add_ct_type', 'anchor' => ' Add new', 'class' => 'icon-plus' ),
+												array( 'href' => '#', 'anchor' => ' Bulk Approved', 'class' => 'icon-ok' ),
+												array( 'href' => '#', 'anchor' => ' Bulk Remove', 'class' => 'icon-minus-sign' )
+											)
+							);
+		
+		$template->content = $template->tableGenerator( $theadData, $contentType, $tableData );
+	}
+	
+	private function list_ct_field()
+	{
+		global $template, $db;
+		
+		$contentField = $db->QueryArray( 'SELECT `field_id`, `content_type_id`, `content_type_name`, `field_name`, `field_label`, `field_type`, `field_length`, `default_value`, `require` FROM ' . CONTENT_FIELD, MYSQL_ASSOC, 'field_id');
+		
+		$theadData = array( 'Content Field id',
+							'Content Type id',
+							'Content Type name',
+							'Field name',
+							'Field label',
+							'Field type',
+							'Field length',
+							'Default value',
+							'Require'
+						);
+		$tableData = array(
+							'label'	=> 'Danh sách content field',
+							'menu'	=> array(
+												array( 'href' => MY_ADMDIR . 'index.php?ctl=ct_type&action=add_ct_type', 'anchor' => ' Add new', 'class' => 'icon-plus' ),
+												array( 'href' => '#', 'anchor' => ' Bulk Approved', 'class' => 'icon-ok' ),
+												array( 'href' => '#', 'anchor' => ' Bulk Remove', 'class' => 'icon-minus-sign' )
+											)
+							);
+		
+		$template->content = $template->tableGenerator( $theadData, $contentField, $tableData );
 	}
 	
 	private function add_ct_type()

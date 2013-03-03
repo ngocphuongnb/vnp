@@ -106,7 +106,7 @@
                                     <div style="clear:both; display: block"></div>
                                     <!-- Extendable Add Remove here-->
                                     <span class="extend-bar">
-                                        <a id="add-btn" href="#" class="add-element text-tip" title="Thêm trường" data-original-title="Thêm trường">Thêm</a>
+                                        <a id="add-btn" href="#" class="info_t btn btn-info" title="Thêm trường" data-original-title="Thêm trường">Thêm</a>
                                         <a href="javascript:void(0);" id="check-ct_type-btn" class="btn btn-success" onclick="check_ct_fields(0);">
                                             <i class="icon-th"></i>
                                             Kiểm tra content field

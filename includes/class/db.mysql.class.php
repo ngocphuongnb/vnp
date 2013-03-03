@@ -269,7 +269,7 @@ class vnp_db
 	 *                Values can be: MYSQL_ASSOC, MYSQL_NUM, MYSQL_BOTH
 	 * @return Records in array form
 	 */
-	public function RecordsArray( $resultType = MYSQL_BOTH )
+	public function RecordsArray( $resultType = MYSQL_BOTH, $key = '' )
 	{
 		$this->ResetError();
 		if( $this->last_result )
@@ -284,7 +284,14 @@ class vnp_db
 				//while($member = mysql_fetch_object($this->last_result)){
 				while( $member = mysql_fetch_array( $this->last_result, $resultType ) )
 				{
-					$members[] = $member;
+					if( !empty( $key ) )
+					{
+						$members[$member[$key]] = $member;
+					}
+					else
+					{
+						$members[] = $member;
+					}
 				}
 				mysql_data_seek( $this->last_result, 0 );
 				$this->active_row = 0;
@@ -417,12 +424,12 @@ class vnp_db
 	 * @return array A multi-dimensional array containing all the data
 	 *               returned from the query or FALSE on all errors
 	 */
-	public function QueryArray( $sql, $resultType = MYSQL_BOTH )
+	public function QueryArray( $sql, $resultType = MYSQL_BOTH, $key = '' )
 	{
 		$this->Query( $sql );
 		if( !$this->Error() )
 		{
-			return $this->RecordsArray( $resultType );
+			return $this->RecordsArray( $resultType, $key );
 		}
 		else
 		{

@@ -5655,3 +5655,6 @@ a.badge:hover {
   position: fixed;
 }
 
+.table tbody tr:hover td, .table tbody tr:hover th {
+background-color: #f5f5f5;
+}

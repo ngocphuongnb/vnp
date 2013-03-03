@@ -65,6 +65,9 @@
 <script src="{MY_DIR}sources/static/js/uniform.jquery.js"></script>
 <script src="{MY_DIR}sources/static/js/vnp-extenable-form.jquery.js"></script>
 <script src="{MY_DIR}sources/static/js/smart-wizard.jquery.js"></script>
+<script src="{MY_DIR}sources/static/js/data-table.jquery.js"></script>
+<script src="{MY_DIR}sources/static/js/TableTools.min.js"></script>
+<script src="{MY_DIR}sources/static/js/ColVis.min.js"></script>
 <!--
 <script src="{MY_DIR}sources/static/js/jquery.animate-colors-min.js"></script>
 -->
@@ -113,6 +116,25 @@ $("#date").mask("99/99/9999");
 			$('#ct_type-submit').click();
 		}
 		$('#vertical-wizard').smartWizard();
+	});
+	
+	$(function () {
+		$('.data-tbl-boxy').dataTable({
+			"sPaginationType": "full_numbers",
+			"iDisplayLength": 10,
+			"oLanguage": {
+				"sLengthMenu": "<span class='lenghtMenu'> _MENU_</span><span class='lengthLabel'>Entries per page:</span>",
+			},
+			"sDom": '<"tbl-searchbox clearfix"fl<"clear">>,<"table_content"t>,<"widget-bottom"p<"clear">>'
+	 
+		});
+		//$("div.tbl-searchbox select").addClass('tbl_length');
+		$("div.tbl-searchbox select").addClass('input-small');
+	/*$(".tbl_length").chosen({
+			disable_search_threshold: 4    
+		});
+			*/
+	 
 	});
 })
 </script>
