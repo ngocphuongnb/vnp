@@ -27,18 +27,13 @@ if( $request->get( 'ajax', 'get' ) == 1 )
 		if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && !empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' )
 		{
 			define( 'IS_AJAX', true );
+			
+			if( $mod = $request->get( 'ctl', 'get,post', '' ) )
+			{
+				$adm->adminAction( $mod );
+			}
 		}
 	}
-}
-
-$array = array( 'content_type_title' => 'Music Song',
-    			'content_type_name' => 'music_song',
-    			'content_type_note' => 'Content type for music song'
-			);
-
-if( $mod = $request->get( 'ctl', 'get,post', '' ) )
-{
-	$adm->adminAction( $mod );
 }
 
 ?>
