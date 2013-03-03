@@ -22,9 +22,9 @@ $adm = new vnp_admin();
 
 if( $request->get( 'ajax', 'get' ) == 1 )
 {
-	//if( getHost( $client_info['referer'] ) == SERVER_NAME )
+	if( getHost( $client_info['referer'] ) == SERVER_NAME )
 	{
-		//if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && !empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' )
+		if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && !empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' )
 		{
 			define( 'IS_AJAX', true );
 		}

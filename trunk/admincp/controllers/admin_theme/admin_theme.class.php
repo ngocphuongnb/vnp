@@ -66,6 +66,53 @@ class admin_theme
 		//ob_start();
 		echo $xtpl->out( 'main' );
 	}
+	
+	/*
+	$theadData	= array( 'thead title 1', 'thead title 2' )
+	$rowData	= array(
+							array( 'col 1', 'col 2', 'col 3' ),
+							array( 'col 1', 'col 2', 'col 3' )
+						);
+						
+	$tableData	= array(
+				'label' => 'Table title',
+				'menu'	=> array(
+									array( 'href' => 'link href', 'anchor' => 'link anchor', 'class' => 'icon class' ),
+									array( 'href' => 'link href', 'anchor' => 'link anchor', 'class' => 'icon class' )
+						);
+						
+	*/
+	
+	public function tableGenerator( $theadData = array(), $rowData = array(), $tableData = array() )
+	{
+		$xtpl = new XTemplate( 'table.tpl', DOC_ROOT . MY_ADMDIR . 'controllers/admin_theme/' );
+		
+		foreach( $theadData as $thead )
+		{
+			$xtpl->assign( 'THEAD', $thead );
+			$xtpl->parse( 'main.thead' );
+		}
+		
+		foreach( $rowData as $row )
+		{
+			foreach( $row as $key => $col )
+			{
+				$xtpl->assign( 'COL', $row[$key] );
+				$xtpl->parse( 'main.row.col' );
+			}
+			$xtpl->parse( 'main.row' );
+		}
+		
+		foreach( $tableData['menu'] as $menu )
+		{
+			$xtpl->assign( 'MENU', $menu );
+			$xtpl->parse( 'main.menu' );
+		}
+		
+		$xtpl->assign( 'LABEL', $tableData['label'] );
+		$xtpl->parse( 'main' );
+		return $xtpl->text( 'main' );
+	}
 }
 
 class vnp_menu

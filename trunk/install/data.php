@@ -108,7 +108,7 @@ $sql_create_table[] = "CREATE TABLE `" . CONTENT_TYPE . "` (
   `content_type_id` mediumint(8) unsigned NOT NULL auto_increment,
   `content_type_name` varchar(255) NOT NULL,
   `content_type_title` varchar(255) NOT NULL,
-  `content_type_note` varchar(255) NOT NULL default '',
+  `content_type_note` varchar(255) default '',
   `content_type_icon` varchar(255) NOT NULL default '',
   `content_type_page` varchar(255) NOT NULL default '',
   `add_method` varchar(255) NOT NULL default '',
