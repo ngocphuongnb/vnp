@@ -1,4 +1,53 @@
 <!-- BEGIN: main -->
+<script src="{MY_DIR}sources/static/js/jquery.form.js"></script>
+<script type="text/javascript">
+$(document).ready(function() { 
+    var options = { 
+        //target:        '#submit-result',
+        beforeSubmit:  showRequest,
+        success:       showResponse
+    }; 
+    $('#ct-form').ajaxForm(options); 
+}); 
+ 
+// pre-submit callback 
+function showRequest(formData, jqForm, options)
+{
+    showLoading("body");
+} 
+ 
+// post-submit callback 
+function showResponse(responseText, statusText, xhr, $form)
+{
+	var result = responseText.split('*');
+	if( result[0] == 'OK' )
+	{
+		var noty_id = noty({
+								layout : 'top',
+								text: result[1],
+								modal : true,
+								type: 'success',
+								timeout: 1200,
+							});
+	}
+	else
+	{
+		var noty_id = noty({
+								layout : 'top',
+								text: 'Đã có lỗi sảy ra, xem lỗi bên dưới',
+								modal : true,
+								type: 'error',
+								timeout: 800,
+							});
+		$('#myModal .modal-header h3').html('Đã có lỗi sảy ra');
+		$('#myModal .modal-body p').html('<blockquote class="quote_orange">' + result[1] + '</blockquote>');
+		$('#myModal').modal({
+			keyboard: false
+		})
+	}
+    hideLoading("body");
+} 
+</script>
 <div class="widget-block">
 	<div class="widget-head">
 		<h5><i class="black-icons users"></i> Thêm content type</h5>
@@ -74,25 +123,50 @@
                                                             <input type="text" name="field_name" id="ct_field0_field_name" placeholder="Tên trường" class="input-small text-tip" data-original-title="Dùng phân biệt các trường dữ liệu, chỉ dùng chữ số, chữ cái và kí tự _">
                                                             <input type="text" name="field_label" id="ct_field0_field_label" placeholder="Tiêu đề" class="input-medium text-tip" data-original-title="Tiêu đề hiển thị cho trường">
                                                             <select name="field_type" id="ct_field0_field_type" class="span2 text-tip" data-original-title="Loại dữ liệu">
-                                                                <option>Loại dữ liệu</option>
-                                                                <option value="number-int">Số nguyên</option>
-                                                                <option value="number-float">Số thực</option>
-                                                                <option value="short-text">Ký tự ( ngắn )</option>
-                                                                <option value="long-text">Ký tự ( dài )</option>
-                                                                <option value="date">Ngày tháng</option>
+                                                                <option>Loại dữ liệu</option>                             
                                                                 <option value="image">Hình ảnh</option>
                                                                 <option value="file">Upload file</option>
                                                                 <option value="radio">Radio</option>
                                                                 <option value="checkbox">Checkbox</option>
                                                                 <option value="select">Select</option>
-                                                                <option value="referer">Dữ liệu liên kết</option>
-                                                            </select>
+                                                                <option value="referer">Dữ liệu liên kết</option>              
+                                                                
+                                                                <option value="VARCHAR">VARCHAR</option>
+                                                                <option value="TINYINT">TINYINT</option>
+                                                                <option value="TEXT">TEXT</option>
+                                                                <option value="DATE">DATE</option>
+                                                                <option value="SMALLINT">SMALLINT</option>
+                                                                <option value="MEDIUMINT">MEDIUMINT</option>
+                                                                <option value="INT">INT</option>
+                                                                <option value="BIGINT">BIGINT</option>
+                                                                <option value="FLOAT">FLOAT</option>
+                                                                <option value="DOUBLE">DOUBLE</option>
+                                                                <option value="DECIMAL">DECIMAL</option>
+                                                                <option value="DATETIME">DATETIME</option>
+                                                                <option value="TIMESTAMP">TIMESTAMP</option>
+                                                                <option value="TIME">TIME</option>
+                                                                <option value="YEAR">YEAR</option>
+                                                                <option value="CHAR">CHAR</option>
+                                                                <option value="TINYBLOB">TINYBLOB</option>
+                                                                <option value="TINYTEXT">TINYTEXT</option>
+                                                                <option value="BLOB">BLOB</option>
+                                                                <option value="MEDIUMBLOB">MEDIUMBLOB</option>
+                                                                <option value="MEDIUMTEXT">MEDIUMTEXT</option>
+                                                                <option value="LONGBLOB">LONGBLOB</option>
+                                                                <option value="LONGTEXT">LONGTEXT</option>
+                                                                <option value="ENUM">ENUM</option>
+                                                                <option value="SET">SET</option>
+                                                                <option value="BOOL">BOOL</option>
+                                                                <option value="BINARY">BINARY</option>
+                                                                <option value="VARBINARY">VARBINARY</option>
+                                                          	</select>
                                                             <input type="text" name="field_length" id="ct_field0_field_length" placeholder="Độ dài" class="span1 text-tip" data-original-title="Độ dài tối đa của dữ liệu nhập vào">
                                                             <input type="text" name="default_value" id="ct_field0_default_value" placeholder="Giá trị mặc định" class="input-small text-tip" data-original-title="Giá trị mặc định">
                                                             <select name="require" id="ct_field0_require" class="span2 text-tip" data-original-title="Trường dữ liệu bắt buộc">
                                                                 <option value="0">Không bắt buộc</option>
                                                                 <option value="1">Bắt buộc</option>
                                                             </select>
+                                                            <input type="checkbox" name="is_unique" value="1" id="ct_field0_is_unique" placeholder="Is unique key" class="text-tip" data-original-title="Chọn làm khóa">
                                                             <span class="vnp-ext">
                                                             	<a id="0" href="javascript:void(0)" class="remove-element text-tip" onclick="rmvfield(0, '#ext-form');" data-original-title="Xóa dòng">Xóa dòng</a>
                                                             </span>
@@ -119,6 +193,8 @@
                         <div id="step-4">
                             <h2 class="StepTitle">Step 4 Content</h2>
                             
+                            <div id="submit-result"></div>
+                            
                             <div class="form-actions">
                                 <button type="submit" name="submit" id="ct_type-submit" value="1" class="btn btn-primary">Save changes</button>
                                 <button class="btn">Cancel</button>
@@ -135,6 +211,17 @@
             <!--Pagination for widget if require--> 
         </div>
     </div>
+</div>
+
+<div class="modal hide" id="myModal">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">×</button>
+		<h3>Modal header</h3>
+	</div>
+	<div class="modal-body">
+		<p>One fine body…</p>
+	</div>
+	<div class="modal-footer"></div>
 </div>
 
 <style>
@@ -173,9 +260,4 @@
 	margin-top: 10px;
 }
 </style>
-<script type="text/javascript">
-$(function () {
-	
-});
-</script>
 <!-- END: main -->

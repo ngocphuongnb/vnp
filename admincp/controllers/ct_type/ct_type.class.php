@@ -20,7 +20,7 @@ class ct_type
 		
 		if( $action = $request->get( 'action', 'get,post', '' ) )
 		{
-			$validAction = array( 'list_ct_type', 'list_ct_field', 'add_ct_type', 'del_ct_type', 'view_ct_type', 'refer', 'Ajax_check_ct_type', 'Ajax_check_ct_field' );
+			$validAction = array( 'list_ct_type', 'list_ct_field', 'add_ct_type', 'del_ct_type', 'view_ct_type', 'refer', 'Ajax_check_ct_type', 'Ajax_check_ct_field', 'Ajax_add_ct_type' );
 			
 			if( in_array( $action, $validAction ) && method_exists( $this, $action ) )
 			{
@@ -102,6 +102,29 @@ class ct_type
 		}
 	}
 	
+	private function Ajax_add_ct_type()
+	{
+		if( defined( 'IS_AJAX' ) )
+		{
+			/*
+			for( $i = 0; $i < 10000000; $i++ )
+			{
+			}
+			*/
+			$this->add_ct_type();
+			if( empty( $this->error ) && empty( $this->ignor_err ) )
+			{
+				echo 'OK*Thêm thành công content type!';
+				exit();
+			}
+			else
+			{
+				echo 'NO*' . implode( '<br />', array_reverse( array_merge( $this->error, $this->ignor_err ) ) );
+				exit();
+			}
+		}
+	}
+	
 	private function check_ct_type( $ct_type, $ct_typeJson = '' )
 	{
 		global $db;
@@ -161,9 +184,9 @@ class ct_type
 		{
 			$err[] = 'Tên trường và tiêu đề không thể trống!';			
 		}
-		if( !in_array( $ct_field['field_type'], $fieldType ) )
+		//if( !in_array( $ct_field['field_type'], $fieldType ) )
 		{
-			$err[] = 'Loại dữ liệu không hợp lệ!';
+			//$err[] = 'Loại dữ liệu không hợp lệ!';
 		}
 		if( $ct_field['field_length'] < 0 )
 		{
@@ -289,6 +312,16 @@ class ct_type
 					{
 						$ct_field[] = $formData['ct_type_field' . $i];
 					}
+					
+					$ctTypeTable = array();
+					$ctTypeTable['primary_key'] = $formData['content_type_name'] . '_id';
+					$ctTypeTable['field'][0]	= array(
+														'field_name'	=> $ctTypeTable['primary_key'],
+														'field_type'	=> 'mediumint',
+														'field_length'	=> 8,
+														'is_unique'		=> 0
+													);
+					
 					foreach( $ct_field as $_field )
 					{
 						if( $__field = $this->check_ct_field( $_field ) )
@@ -304,15 +337,34 @@ class ct_type
 									'field_type'		=> vnp_db::SQLValue( $_field['field_type'] ),
 									'field_length'		=> vnp_db::SQLValue( $_field['field_length'], 'number' ),
 									'default_value'		=> vnp_db::SQLValue( $_field['default_value'] ),
-									'require'			=> vnp_db::SQLValue( $_field['require'], 'number' )
+									'require'			=> vnp_db::SQLValue( $_field['require'], 'number' ),
+									'is_primary'		=> 0,
+									'is_unique'			=> vnp_db::SQLValue( $_field['is_unique'], 'number' )
 								);
+														
 							$_result = $db->InsertRow( CONTENT_FIELD, $ctFieldData );
 							if( !$_result )
 							{
 								$this->error[] = 'Can not add content field - ' . $_field['field_name'];
 								$db->Kill();
 							}
+							else
+							{
+								$ctTypeTable['field'][]	= array(
+														'field_name'	=> $_field['field_name'],
+														'field_type'	=> $_field['field_type'],
+														'field_length'	=> $_field['field_length'],
+														'is_unique'		=> $_field['is_unique'],
+														'require'		=> $_field['require'],
+														'default_Value'	=> $_field['default_Value']
+													);
+							}
 						}
+					}
+					
+					if( !$this->createCtTypeTable( $formData['content_type_name'], $ctTypeTable ) )
+					{
+						$this->ignor_err[] = 'Không thể tạo bảng dữ liệu cho <u>' . $formData['content_type_name'] . '</u><br />Vui lòng kiểm tra xem bảng dữ liệu đã tồn tại hay chưa';
 					}
 				}
 			}
@@ -328,9 +380,74 @@ class ct_type
 	private function addContentTypeForm()
 	{
 		$xtpl = new XTemplate( 'extendable.tpl', DOC_ROOT . MY_ADMDIR . 'controllers/ct_type/' );
-		$xtpl->assign( 'ACTION', MY_ADMDIR . 'index.php?ctl=ct_type&action=add_ct_type' );
+		$xtpl->assign( 'ACTION', MY_ADMDIR . 'ajax.php?ajax=1&ctl=ct_type&action=Ajax_add_ct_type' );
+		$xtpl->assign( 'MY_DIR', VNP_MYDIR );
 		$xtpl->parse( 'main' );
 		return $xtpl->text( 'main' );
+	}
+	
+	private function createCtTypeTable( $tableName = '', $ctTypeTable = array() )
+	{
+		global $db, $db_info;
+		
+		if( !empty( $ctTypeTable ) && is_array( $ctTypeTable ) )
+		{
+			$uniqueKey = array();
+			$sql = '
+					CREATE TABLE `' . $db_info['prefix'] . '_' . $tableName . '` (
+					  `' . $ctTypeTable['field'][0]['field_name'] . '` ' . $ctTypeTable['field'][0]['field_type'] . '(' . $ctTypeTable['field'][0]['field_length'] . ') unsigned NOT NULL auto_increment,';
+					  
+			unset( $ctTypeTable['field'][0] );
+			foreach( $ctTypeTable['field'] as $_field )
+			{
+				if( $_field['require'] == 1 ) $rq = ' NOT NULL ';
+				else $rq = '';
+				
+				$numberType = array('TINYINT', 'SMALLINT', 'MEDIUMINT', 'INT', 'BIGINT', 'FLOAT', 'DOUBLE', 'DECIMAL');
+				
+				if( in_array( strtoupper( $_field['field_type'] ), $numberType ) )
+				{
+					if( $_field['default_value'] == '' )
+					{
+						$_field['default_value'] = 0;
+					}
+				}
+				elseif( strtoupper( $_field['field_type'] ) == 'MEDIUMTEXT' )
+				{
+					$length = '';
+				}
+				else
+				{
+					if( empty( $_field['field_length'] ) )
+					{
+						$length = '(255)';
+					}
+					else
+					{
+						$length = '(' . $_field['field_length'] . ')';
+					}
+				}
+				
+				$sql .= '`' . $_field['field_name'] . '` ' . $_field['field_type'] . $length . $rq . ' DEFAULT \'' . $_field['default_value'] . '\',';
+				
+				if( $_field['is_unique'] == 1 )
+				{
+					$uniqueKey[] = 'UNIQUE KEY `' . $_field['field_name'] . '` (`' . $_field['field_name'] . '`)';
+				}
+			}
+			$sql .= 'PRIMARY KEY (`' . $ctTypeTable['primary_key'] . '`),';
+			$sql .= implode( ',', $uniqueKey );
+			$sql .= ') ENGINE=MyISAM';
+		}
+		if( $db->Query( $sql ) )
+		{
+			return true;
+		}
+		else
+		{
+			$this->ignor_err[] = $sql;
+			return false;
+		}
 	}
 }
 

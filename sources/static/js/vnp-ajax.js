@@ -66,6 +66,7 @@ function check_ct_fields( fieldIndex )
 		fieldObject.field_length	= $(selector + ' input#ct_field' + fieldIndex + '_' + 'field_length').val();
 		fieldObject.default_value	= $(selector + ' input#ct_field' + fieldIndex + '_' + 'default_value').val();
 		fieldObject.require			= $(selector + ' select#ct_field' + fieldIndex + '_' + 'require option:selected').val();
+		fieldObject.is_unique		= $(selector + ' input#ct_field' + fieldIndex + '_' + 'is_unique').val();
 		
 		$.ajax({
 			type: "POST",
