@@ -129,10 +129,12 @@ $sql_create_table[] = "CREATE TABLE `" . CONTENT_FIELD . "` (
   `field_label` varchar(255) NOT NULL default '',
   `field_type` varchar(255) NOT NULL default '',
   `field_length` varchar(255) default '',
-  `default_value` varchar(255) NOT NULL default '',
+  `default_value` varchar(255) default '',
   `ref_field` mediumint(8) unsigned,
-  `require` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `require` tinyint(1) unsigned DEFAULT '0',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `is_primary` tinyint(1) unsigned DEFAULT '0',
+  `is_unique` tinyint(1) unsigned DEFAULT '0',
   PRIMARY KEY (`field_id`),
   UNIQUE KEY `field_name` (`field_name`)
 ) ENGINE=MyISAM";

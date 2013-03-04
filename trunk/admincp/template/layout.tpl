@@ -26,6 +26,10 @@
     <![endif]-->
     <!--fav and touch icons -->
     <link rel="shortcut icon" href="ico/favicon.ico">
+    
+    <script src="{MY_DIR}sources/static/js/jquery.js"></script>
+    <script src="{MY_DIR}sources/static/js/vnp-ajax.js"></script>
+    <script src="{MY_DIR}sources/static/js/jquery.noty.js"></script>
 </head>
 <body>
  
@@ -58,7 +62,6 @@
 <!-- javascript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="{MY_DIR}sources/static/js/jquery.js"></script>
 <script src="{MY_DIR}sources/static/js/bootstrap.js"></script>
 <script src="{MY_DIR}sources/static/js/inputmask.jquery.js"></script>
 <script src="{MY_DIR}sources/static/js/jquery-ui-1.8.16.custom.min.js"></script>
@@ -71,8 +74,6 @@
 <!--
 <script src="{MY_DIR}sources/static/js/jquery.animate-colors-min.js"></script>
 -->
-<script src="{MY_DIR}sources/static/js/vnp-ajax.js"></script>
-
 <script type="text/javascript">
 $(function () {
 $("#date").mask("99/99/9999");

@@ -33,18 +33,21 @@
 				//TODO: that.attr("name", formPrefix+"form"+index + "["+index+"]");
 			}
 			
-			if(origNameAttr)
+			if(origNameAttr && origNameAttr != 'is_primary' )
 			{
 				//This is a subform (thus prefix is not the same as below)
 				field.attr("name", "ct_type_field0[" + origNameAttr + "]");
 			}
 			else
 			{
-				//This is the main form
-				field.attr("origname", nameAttr);
-				
-				//This is the main normalization
-				field.attr("name", "ct_type_field0[" + nameAttr + "]");
+				if( nameAttr != 'is_primary' )
+				{
+					//This is the main form
+					field.attr("origname", nameAttr);
+					
+					//This is the main normalization
+					field.attr("name", "ct_type_field0[" + nameAttr + "]");
+				}
 			}
 		});
 	}
