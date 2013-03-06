@@ -8,7 +8,7 @@
         </button>
 		<div class="nav-collapse collapse">
         	<ul class="nav">
-            	<li class="dropdown search-responsive">
+            	<li class="dropdown-menu search-responsive">
                 	<a data-toggle="dropdown" class="dropdown-toggle" href="#">
                     	<i class="nav-icon magnifying_glass"></i>
                     	<b class="caret"></b>
@@ -26,15 +26,15 @@
 				</li>
                 
                 <!-- BEGIN: loop -->
-                <li class="dropdown">
-                	<a href="{LINK_DATA.href}" class="dropdown-toggle" data-toggle="dropdown" address="true">
+                <li class="vnp-dropdown">
+                	<a href="{LINK_DATA.href}" class="dropdown-toggle" data-toggle="dropdown">
                     	<i class="nav-icon cup"></i> {LINK_DATA.anchor} <b class="caret"></b>
                     </a>
                     <!-- BEGIN: sub -->
             		<ul class="dropdown-menu">
                     	<!-- BEGIN: loop -->
                         <!-- BEGIN: main -->
-              			<li><a href="{SUB_DATA.href}" address="true"> {SUB_DATA.anchor} </a></li>
+              			<li><a href="{SUB_DATA.href}"> {SUB_DATA.anchor} </a></li>
                         <!-- END: main -->
                         {BREAK}
                         <!-- END: loop -->
@@ -44,10 +44,10 @@
                 <!-- END: loop -->
                 
                 <!-- BEGIN: customloop -->
-                <li class="dropdown">{CUSTOM}</li>
+                <li class="vnp-dropdown">{CUSTOM}</li>
                 <!-- END: customloop -->
                 
-				<li class="dropdown">
+				<li class="vnp-dropdown">
                 	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="nav-icon cog_3"></i>
                     	Themes Settings<b class="caret"></b>
                     </a>

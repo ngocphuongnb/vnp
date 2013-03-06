@@ -38,7 +38,23 @@
         </div>
     </div>
 </div>
-
+<script src="{MY_DIR}sources/static/js/data-table.jquery.js"></script>
+<script src="{MY_DIR}sources/static/js/TableTools.min.js"></script>
+<script src="{MY_DIR}sources/static/js/ColVis.min.js"></script>
+<script type="text/javascript">
+$(function () {
+	$('.data-tbl-boxy').dataTable({
+		"sPaginationType": "full_numbers",
+		"iDisplayLength": 10,
+		"oLanguage": {
+			"sLengthMenu": "<span class='lenghtMenu'> _MENU_</span><span class='lengthLabel'>Entries per page:</span>",
+		},
+		"sDom": '<"tbl-searchbox clearfix"fl<"clear">>,<"table_content"t>,<"widget-bottom"p<"clear">>'
+ 
+	});
+	$("div.tbl-searchbox select").addClass('input-small');	 
+});
+</script>
 <style>
 table.data-tbl-boxy tr.odd {
 	background-color: #f9f9f9;

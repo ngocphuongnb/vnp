@@ -1,7 +1,25 @@
 <!-- BEGIN: main -->
+<script src="{MY_DIR}sources/static/js/vnp-extenable-form.jquery.js"></script>
 <script src="{MY_DIR}sources/static/js/jquery.form.js"></script>
 <script type="text/javascript">
 $(document).ready(function() { 
+
+	$('#ext-form').extForm();
+
+	$(function () {
+		// Smart Wizard 	
+		$('#add-ct_type-wizard').smartWizard({
+			enableFinishButton: false,
+			onFinish: onFinishCallback
+		});
+	 
+		function onFinishCallback() {
+			$('#add-ct_type-wizard').smartWizard('showMessage', 'Finish Clicked');
+			$('#ct_type-submit').click();
+		}
+		$('#vertical-wizard').smartWizard();
+	});
+
     var options = { 
         //target:        '#submit-result',
         beforeSubmit:  showRequest,
