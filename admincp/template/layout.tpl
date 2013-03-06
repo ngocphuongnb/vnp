@@ -28,8 +28,8 @@
     <link rel="shortcut icon" href="ico/favicon.ico">
     
     <script src="{MY_DIR}sources/static/js/jquery.js"></script>
+    <script src="{MY_DIR}sources/static/js/jquery.address-1.5.min.js"></script>
     <script src="{MY_DIR}sources/static/js/vnp-ajax.js"></script>
-    <script src="{MY_DIR}sources/static/js/jquery.noty.js"></script>
 </head>
 <body>
  
@@ -66,7 +66,6 @@
 <script src="{MY_DIR}sources/static/js/inputmask.jquery.js"></script>
 <script src="{MY_DIR}sources/static/js/jquery-ui-1.8.16.custom.min.js"></script>
 <script src="{MY_DIR}sources/static/js/uniform.jquery.js"></script>
-<script src="{MY_DIR}sources/static/js/vnp-extenable-form.jquery.js"></script>
 <script src="{MY_DIR}sources/static/js/smart-wizard.jquery.js"></script>
 <script src="{MY_DIR}sources/static/js/data-table.jquery.js"></script>
 <script src="{MY_DIR}sources/static/js/TableTools.min.js"></script>
@@ -102,42 +101,75 @@ $("#date").mask("99/99/9999");
     $('#datepicker').datepicker();
 	/*==JQUERY UNIFORM==*/
 	$(".checkbox-b,.rem_me,.radio-b,input[type='file']").uniform();
-	
-	$('#ext-form').extForm();
-	
-	$(function () {
-		// Smart Wizard 	
-		$('#add-ct_type-wizard').smartWizard({
-			enableFinishButton: false,
-			onFinish: onFinishCallback
-		});
-	 
-		function onFinishCallback() {
-			$('#add-ct_type-wizard').smartWizard('showMessage', 'Finish Clicked');
-			$('#ct_type-submit').click();
-		}
-		$('#vertical-wizard').smartWizard();
-	});
-	
-	$(function () {
-		$('.data-tbl-boxy').dataTable({
-			"sPaginationType": "full_numbers",
-			"iDisplayLength": 10,
-			"oLanguage": {
-				"sLengthMenu": "<span class='lenghtMenu'> _MENU_</span><span class='lengthLabel'>Entries per page:</span>",
-			},
-			"sDom": '<"tbl-searchbox clearfix"fl<"clear">>,<"table_content"t>,<"widget-bottom"p<"clear">>'
-	 
-		});
-		//$("div.tbl-searchbox select").addClass('tbl_length');
-		$("div.tbl-searchbox select").addClass('input-small');
-	/*$(".tbl_length").chosen({
-			disable_search_threshold: 4    
-		});
-			*/
-	 
-	});
 })
+</script>
+
+<script type="text/javascript">
+	var init = true, 
+		state = window.history.pushState !== undefined;
+	
+	// Handles response
+	var handler = function(data)
+	{
+		$('title').html( data.title );
+		$('#main-content .container-fluid .row-fluid').html( data.content );
+		//$('.page').show();
+		//$.address.title(/>([^<]*)<\/title/.exec(data)[1]);
+	};
+	
+	$.address.state('{MY_DIR}{ADMIN_DIR}').init(function() {
+
+		// Initializes the plugin
+		$('.navbar .nav .vnp-dropdown a').address();
+		
+	}).change(function(event) {
+
+		// Selects the proper navigation link
+		$('.navbar .nav .vnp-dropdown a').each(function()
+		{
+			if ($(this).attr('href') == ($.address.state() + event.path))
+			{
+				//$(this).addClass('selected').focus();
+			}
+			else
+			{
+				//$(this).removeClass('selected');
+			}
+		});
+		
+		//if (state && init)
+		if(0)
+		{
+			init = false;
+		}
+		else
+		{
+			//alert('ajax.php?ajax=1&' + $.address.queryString());
+			$.ajax({
+				type: "POST",
+				url: 'ajax.php?ajax=1&' + $.address.queryString(),
+				dataType: "json",					
+				beforeSend: function() {			
+					showLoading("#main-content .container-fluid .row-fluid");
+				},
+				error: function( XMLHttpRequest, textStatus, errorThrown )
+				{
+					handler(XMLHttpRequest.responseText);
+				},
+				success: function(data, textStatus, XMLHttpRequest) {
+					handler( data );
+					hideLoading("#main-content .container-fluid .row-fluid");
+				}
+			});
+		}
+
+	});
+
+	if(!state)
+	{
+		// Hides the page during initialization
+		showLoading("#main-content .container-fluid .row-fluid");
+	}
 </script>
 
 <!-- html5.js for IE less than 9 -->

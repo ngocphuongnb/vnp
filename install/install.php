@@ -304,6 +304,24 @@ elseif( $installStep == 4 )
 	{
 		rename( VNP_ROOT . '/' . INSTALL_DIR . '/install.temp.lock', VNP_ROOT . '/' . INSTALL_DIR . '/install.lock' );
 	}
+	
+	$server_protocol = strtolower( preg_replace( '/^([^\/]+)\/*(.*)$/', '\\1', get_Env( 'SERVER_PROTOCOL' ) ) ) . ( ( get_Env( "HTTPS" ) == "on" ) ? "s" : "" );
+		
+	$domain = $server_protocol . '://' . get_Env( 'SERVER_NAME' );	
+	
+	if( file_exists( VNP_ROOT . '/.htaccess' ) )
+	{		
+		$hta = file_get_contents( VNP_ROOT . '/.htaccess' );
+		$hta = str_replace( 'localhost/vnp/', $domain . $vnp_mydir );
+		file_put_contents( VNP_ROOT . '/.htaccess', $configContent, LOCK_EX );		
+	}
+	
+	if( file_exists( VNP_ROOT . '/' . ADMIN_DIR . '/.htaccess' ) )
+	{	
+		$hta = file_get_contents( VNP_ROOT . '/' . ADMIN_DIR . '/.htaccess' );
+		$hta = str_replace( '/vnp/admincp', $vnp_mydir . ADMIN_DIR );
+		file_put_contents( VNP_ROOT . '/' . ADMIN_DIR . '/.htaccess', $hta, LOCK_EX );		
+	}
 	$content = InstallStep4();
 }
 
