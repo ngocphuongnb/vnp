@@ -15,6 +15,7 @@ function adminFullTheme( $topMenu = '', $sideBar = '', $content = '' )
 	$xtpl->assign( 'ADMIN_DIR', ADMIN_DIR );
 	$xtpl->assign( 'MY_DOMAIN', VNP_DOMAIN );
 	$xtpl->assign( 'MY_DIR', VNP_MYDIR );
+	$xtpl->assign( 'MY_ADMDIR', MY_ADMDIR );
 	
 	$xtpl->assign( 'TOP_MENU', $topMenu );
 	$xtpl->assign( 'SIDE_BAR', $sideBar );

@@ -13,7 +13,8 @@ class admin_theme
 {
 	public	$topMenu		= '';
 	public	$sideBar		= '';
-	public	$content	= '';
+	public	$content		= '';
+	public	$title			= '';
 	public	$systemStart	= false;
 	
 	public function __construct( )
@@ -63,8 +64,16 @@ class admin_theme
 		
 		$xtpl->assign( 'CONTENT', $content );
 		$xtpl->parse( 'main' );
-		//ob_start();
+		ob_start();
 		echo $xtpl->out( 'main' );
+	}
+	
+	public function AjaxOutput()
+	{
+		if( defined( 'IS_AJAX' ) )
+		{
+			return $this->content;
+		}
 	}
 	
 	/*

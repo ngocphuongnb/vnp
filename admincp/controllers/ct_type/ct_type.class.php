@@ -50,20 +50,23 @@ class ct_type
 						</div>';
 						
 				$checkStatus = array('status' => 'ok', 'msg' => $msg );
-				echo json_encode( array_merge( $checkStatus, $_checkrs ) );
+				$template->content = json_encode( array_merge( $checkStatus, $_checkrs ) );
+				echo $template->content;
 				exit();
 			}
 			else
 			{
 				$checkStatus = array('status' => 'no', 'msg' => vnpMsg( array_merge( $this->error, $this->ignor_err ), 'error'));
-				echo json_encode( $checkStatus );
+				$template->content = json_encode( $checkStatus );
+				echo $template->content;
 				exit();
 			}
 		}
 		else
 		{
 			$checkStatus = array('status' => 'no', 'msg' => vnpMsg( 'Thao tác không hợp lệ', 'error'));
-			echo json_encode( $checkStatus );
+			$template->content = json_encode( $checkStatus );
+			echo $template->content;
 			exit();
 		}
 	}
@@ -90,13 +93,15 @@ class ct_type
 			{
 				$msg = 'OK&nbsp;&nbsp;-&nbsp;&nbsp;Trường dữ liệu hợp lệ';
 				$checkStatus = array('status' => 'ok', 'msg' => $msg );
-				echo json_encode( $checkStatus );
+				$template->content = json_encode( $checkStatus );
+				echo $template->content;
 				exit();
 			}
 			else
 			{
 				$checkStatus = array('status' => 'no', 'msg' => implode(', ', $this->ignor_err ));
-				echo json_encode( $checkStatus );
+				$template->content = json_encode( $checkStatus );
+				echo $template->content;
 				exit();
 			}
 		}
@@ -104,6 +109,8 @@ class ct_type
 	
 	private function Ajax_add_ct_type()
 	{
+		global $template;
+		
 		if( defined( 'IS_AJAX' ) )
 		{
 			/*
@@ -114,12 +121,14 @@ class ct_type
 			$this->add_ct_type();
 			if( empty( $this->error ) && empty( $this->ignor_err ) )
 			{
-				echo 'OK*Thêm thành công content type!';
+				$template->content = 'OK*Thêm thành công content type!';
+				echo $template->content;
 				exit();
 			}
 			else
 			{
-				echo 'NO*' . implode( '<br />', array_reverse( array_merge( $this->error, $this->ignor_err ) ) );
+				$template->content = 'NO*' . implode( '<br />', array_reverse( array_merge( $this->error, $this->ignor_err ) ) );
+				echo $template->content;
 				exit();
 			}
 		}
@@ -218,6 +227,10 @@ class ct_type
 	private function list_ct_type()
 	{
 		global $template, $db;
+		//for( $i = 0; $i < 100000000; $i++ )
+		{
+			$a = 0;
+		}
 		
 		$contentType = $db->QueryArray( 'SELECT `content_type_id`, `content_type_name`, `content_type_title`, `content_type_note` FROM ' . CONTENT_TYPE, MYSQL_ASSOC, 'content_type_name');
 		
@@ -241,6 +254,11 @@ class ct_type
 	private function list_ct_field()
 	{
 		global $template, $db;
+		
+		//for( $i = 0; $i < 100000000; $i++ )
+		{
+			$a = 0;
+		}
 		
 		$contentField = $db->QueryArray( 'SELECT `field_id`, `content_type_id`, `content_type_name`, `field_name`, `field_label`, `field_type`, `field_length`, `default_value`, `require` FROM ' . CONTENT_FIELD, MYSQL_ASSOC, 'field_id');
 		
@@ -365,6 +383,17 @@ class ct_type
 					if( !$this->createCtTypeTable( $formData['content_type_name'], $ctTypeTable ) )
 					{
 						$this->ignor_err[] = 'Không thể tạo bảng dữ liệu cho <u>' . $formData['content_type_name'] . '</u><br />Vui lòng kiểm tra xem bảng dữ liệu đã tồn tại hay chưa';
+						
+						$sql = 'DELETE FROM ' . CONTENT_TYPE . ' WHERE `content_type_name`= ' . vnp_db::SQLValue( $formData['content_type_name'] );
+						$db->Query( $sql );
+						$delCdts = array();
+						foreach( $ctTypeTable['field'] as $field )
+						{
+							$delCdts[] = vnp_db::SQLValue( $field['field_name'] );
+						}
+						$delCdts = implode( ',', $delCdts );
+						$sql = 'DELETE FROM ' . CONTENT_FIELD . ' WHERE `field_name` IN (' . $delCdts . ')';
+						$db->Query( $sql );
 					}
 				}
 			}
@@ -393,8 +422,7 @@ class ct_type
 		if( !empty( $ctTypeTable ) && is_array( $ctTypeTable ) )
 		{
 			$uniqueKey = array();
-			$sql = '
-					CREATE TABLE `' . $db_info['prefix'] . '_' . $tableName . '` (
+			$sql = 'CREATE TABLE `' . $db_info['prefix'] . '_' . $tableName . '` (
 					  `' . $ctTypeTable['field'][0]['field_name'] . '` ' . $ctTypeTable['field'][0]['field_type'] . '(' . $ctTypeTable['field'][0]['field_length'] . ') unsigned NOT NULL auto_increment,';
 					  
 			unset( $ctTypeTable['field'][0] );
@@ -435,8 +463,11 @@ class ct_type
 					$uniqueKey[] = 'UNIQUE KEY `' . $_field['field_name'] . '` (`' . $_field['field_name'] . '`)';
 				}
 			}
-			$sql .= 'PRIMARY KEY (`' . $ctTypeTable['primary_key'] . '`),';
-			$sql .= implode( ',', $uniqueKey );
+			$sql .= 'PRIMARY KEY (`' . $ctTypeTable['primary_key'] . '`)';
+			if( !empty( $uniqueKey ) )
+			{
+				$sql .= ',' . implode( ',', $uniqueKey );
+			}
 			$sql .= ') ENGINE=MyISAM';
 		}
 		if( $db->Query( $sql ) )
