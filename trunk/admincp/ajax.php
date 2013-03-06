@@ -20,7 +20,7 @@ require( VNP_ROOT . '/' . ADMIN_DIR . '/controllers/admin_theme/variables.php' )
 
 $adm = new vnp_admin();
 
-if( $request->get( 'ajax', 'get' ) == 1 )
+if( $request->get( 'ajax', 'get,post' ) == 1 )
 {
 	if( getHost( $client_info['referer'] ) == SERVER_NAME )
 	{
@@ -31,9 +31,17 @@ if( $request->get( 'ajax', 'get' ) == 1 )
 			if( $mod = $request->get( 'ctl', 'get,post', '' ) )
 			{
 				$adm->adminAction( $mod );
+				$data = array();
+				$data['content']	= $template->content;
+				$data['title']		= $template->title;
+				echo json_encode( $data );
+				exit();
 			}
 		}
+		else die('Invalid action');
 	}
+	else die('Invalid action');
 }
+else die('Invalid action');
 
 ?>

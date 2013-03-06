@@ -25,7 +25,7 @@ $nmenu->mainMenu( MY_ADMDIR . 'index.php?ctl=ct_type', 'Content type' );
 $nmenu->subMenu( MY_ADMDIR . 'index.php?ctl=ct_type&action=list_ct_type', 'List Content type' );
 $nmenu->subMenu( MY_ADMDIR . 'index.php?ctl=ct_type&action=list_ct_field', 'List Content field' );
 $nmenu->subMenu( MY_ADMDIR . 'index.php?ctl=ct_type&action=add_ct_type', 'Add Content type' );
-$nmenu->subMenu( 'http://bing.com', 'Bing' );
+$nmenu->subMenu( MY_ADMDIR . 'index.php?ctl=ct_type&action=add_content', 'Add Content' );
 $nmenu->subMenu( 'http://yahoo.com', 'Yahoo 1' );
 $nmenu->subMenu( 'break' );
 $nmenu->subMenu( 'http://facebook.com', 'Facebook' );

@@ -27,14 +27,14 @@
                 
                 <!-- BEGIN: loop -->
                 <li class="dropdown">
-                	<a href="{LINK_DATA.href}" class="dropdown-toggle" data-toggle="dropdown">
+                	<a href="{LINK_DATA.href}" class="dropdown-toggle" data-toggle="dropdown" address="true">
                     	<i class="nav-icon cup"></i> {LINK_DATA.anchor} <b class="caret"></b>
                     </a>
                     <!-- BEGIN: sub -->
             		<ul class="dropdown-menu">
                     	<!-- BEGIN: loop -->
                         <!-- BEGIN: main -->
-              			<li><a href="{SUB_DATA.href}"> {SUB_DATA.anchor} </a></li>
+              			<li><a href="{SUB_DATA.href}" address="true"> {SUB_DATA.anchor} </a></li>
                         <!-- END: main -->
                         {BREAK}
                         <!-- END: loop -->
