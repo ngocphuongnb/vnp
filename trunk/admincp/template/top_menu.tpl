@@ -1,15 +1,15 @@
 <!-- BEGIN: main -->
-<ul class="nav">           
+<ul class="nav" id="jMenu">           
     <!-- BEGIN: loop -->
-    <li class="vnp-dropdown">
-        <a href="{LINK_DATA.href}" class="dropdown-toggle vnp-ajax" data-toggle="dropdown">
-            <i class="nav-icon cup"></i> {LINK_DATA.anchor} <b class="caret"></b>
+    <li>
+        <a href="{LINK_DATA.href}" class="fNiv vnp-ajax">
+            {LINK_DATA.anchor}
         </a>
         <!-- BEGIN: sub -->
         <ul class="dropdown-menu">
             <!-- BEGIN: loop -->
             <!-- BEGIN: main -->
-            <li><a class="vnp-ajax" href="{SUB_DATA.href}"> {SUB_DATA.anchor} </a></li>
+            <li><a class="vnp-ajax" href="{SUB_DATA.href}"><i class="icon-tag icon-white"></i> {SUB_DATA.anchor} </a></li>
             <!-- END: main -->
             {BREAK}
             <!-- END: loop -->
@@ -18,7 +18,26 @@
     </li>
     <!-- END: loop -->            
     <!-- BEGIN: customloop -->
-    <li class="vnp-dropdown">{CUSTOM}</li>
+    <li>{CUSTOM}</li>
     <!-- END: customloop -->
 </ul>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#jMenu").jMenu({
+		ulWidth : '150px',
+		effects : {
+			effectSpeedOpen : 200,
+			effectSpeedClose : 200,
+			effectTypeOpen : 'slide',
+			effectTypeClose : 'slide',
+			effectOpen : 'linear',
+			effectClose : 'linear'
+		},
+		TimeBeforeOpening : 100,
+		TimeBeforeClosing : 100,
+		animatedText : false,
+		paddingLeft: 1		});
+})
+</script>
+
 <!-- END: main -->

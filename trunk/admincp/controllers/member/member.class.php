@@ -54,21 +54,19 @@ class member
 		global $adminData, $customMenu;
 		
 		$html = '
-					<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+					<a data-toggle="dropdown" class="fNiv vnp-ajax" href="#">
                     	' . $adminData['realname'] . '
                         <span class="alert-noty">25</span>
                         <i class="white-icons admin_user"></i>
-                        <b class="caret"></b>
                     </a>
 					<ul class="dropdown-menu">
-                        <li><a class="vnp-ajax" href="#"><i class="icon-inbox"></i> Inbox<span class="alert-noty">10</span></a></li>
-                        <li><a class="vnp-ajax" href="#"><i class="icon-envelope"></i> Notifications<span class="alert-noty">15</span></a></li>
-                        <li><a class="vnp-ajax" href="#"><i class="icon-briefcase"></i> My Account</a></li>
-                        <li><a class="vnp-ajax" href="#"><i class="icon-file"></i> View Profile</a></li>
-                        <li><a class="vnp-ajax" href="' . MY_ADMDIR  . 'index.php?ctl=member&action=editprofile"><i class="icon-pencil"></i> Edit Profile</a></li>
-                        <li><a class="vnp-ajax" href="' . MY_ADMDIR  . 'index.php?ctl=member&action=accsetting"><i class="icon-cog"></i> Account Settings</a></li>
-                        <li class="divider"></li>
-                        <li><a href="' . MY_ADMDIR  . 'index.php?ctl=member&action=logout"><i class="icon-off"></i><strong> Logout</strong></a></li>
+                        <li><a class="vnp-ajax" href="#"><i class="icon-inbox icon-white"></i> Inbox<span class="alert-noty">10</span></a></li>
+                        <li><a class="vnp-ajax" href="#"><i class="icon-envelope icon-white"></i> Notifications<span class="alert-noty">15</span></a></li>
+                        <li><a class="vnp-ajax" href="#"><i class="icon-briefcase icon-white"></i> My Account</a></li>
+                        <li><a class="vnp-ajax" href="#"><i class="icon-file icon-white"></i> View Profile</a></li>
+                        <li><a class="vnp-ajax" href="' . MY_ADMDIR  . 'index.php?ctl=member&action=editprofile"><i class="icon-pencil icon-white"></i> Edit Profile</a></li>
+                        <li><a class="vnp-ajax" href="' . MY_ADMDIR  . 'index.php?ctl=member&action=accsetting"><i class="icon-cog icon-white"></i> Account Settings</a></li>
+                        <li><a href="' . MY_ADMDIR  . 'index.php?ctl=member&action=logout"><i class="icon-off icon-white"></i><strong> Logout</strong></a></li>
           			</ul>';
 					
 		$customMenu['topmenu'][] = $html;
