@@ -26,7 +26,6 @@ $nmenu->subMenu( MY_ADMDIR . 'index.php?ctl=ct_type&action=list_ct_type', 'Quả
 $nmenu->subMenu( MY_ADMDIR . 'index.php?ctl=ct_type&action=list_ct_field', 'Quản lý trường' );
 $nmenu->subMenu( MY_ADMDIR . 'index.php?ctl=ct_type&action=add_ct_type', 'Thêm loại nội dung' );
 $nmenu->subMenu( 'http://yahoo.com', 'Yahoo 1' );
-$nmenu->subMenu( 'break' );
 $nmenu->subMenu( MY_ADMDIR . 'list_ct_type', 'List Content type' );
 $nmenu->subMenu( MY_ADMDIR . 'list_ct_field', 'List Content field' );
 $nmenu->subMenu( MY_ADMDIR . 'add_ct_type', 'Add Content type' );

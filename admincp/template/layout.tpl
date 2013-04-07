@@ -10,6 +10,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VNP layout</title>
+<link href="{MY_DIR}sources/static/css/global.css" rel="stylesheet" type="text/css">
 <link href="{MY_ADMDIR}template/css/boilerplate.css" rel="stylesheet" type="text/css">
 <link href="{MY_ADMDIR}template/css/button.css" rel="stylesheet" type="text/css">
 <link href="{MY_ADMDIR}template/css/icons.css" rel="stylesheet" type="text/css">
@@ -20,9 +21,11 @@
 <![endif]-->
 <script src="{MY_ADMDIR}template/js/respond.min.js"></script>
 <script src="{MY_DIR}sources/static/js/jquery.js"></script>
+<script src="{MY_DIR}sources/static/js/jquery-ui.min.js"></script>
 <script src="{MY_DIR}sources/static/js/jquery.address-1.5.min.js"></script>
 <script src="{MY_DIR}sources/static/js/vnp-ajax.js"></script>
 <script src="{MY_DIR}sources/static/js/jquery.noty.js"></script>
+<script src="{MY_DIR}sources/static/js/jMenu.jquery.js"></script>
 </head>
 <body>
 <div id="hook-header">
@@ -30,7 +33,7 @@
 </div>
 <div class="vnpMainBody clearfix">
 	<div id="vnpContainer">
-    	<div class="topMenu">
+    	<div class="topMenu" id="topMenu">
         	<div id="topMenu-ctner">
         		{TOP_MENU}
             </div>
@@ -38,7 +41,7 @@
             	{HOOK.topmenu}
             </div>
         </div>
-        <div class="sideBar">
+        <div class="sideBar" id="sideBar">
         	<div id="sideBar-ctner">
         		{SIDE_BAR}
             </div>
@@ -46,9 +49,10 @@
             	{HOOK.sidebar}
             </div>
         </div>
-        <div class="mainContent">
+        <div class="mainContent" id="mainContent">
         	<div id="content-ctner">
         		{CONTENT}
+                <button onClick="get();">Click</button>
             </div>
             <div id="content-hook">
             	{HOOK.content}

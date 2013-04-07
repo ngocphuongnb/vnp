@@ -38,6 +38,7 @@ if( $request->get( 'ajax', 'get,post' ) == 1 )
 				echo json_encode( $data );
 				exit();
 			}
+			else die('Invalid action');
 		}
 		else die('Invalid action');
 	}
