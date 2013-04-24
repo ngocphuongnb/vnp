@@ -1,29 +1,6 @@
 <!-- BEGIN: main -->
 <script src="{MY_DIR}sources/static/js/vnp-extenable-form.jquery.js"></script>
 <script src="{MY_DIR}sources/static/js/jquery.form.js"></script>
-<script type="text/javascript">
-$(document).ready(function() { 
-    var options = { 
-        //target:        '#submit-result',
-        beforeSubmit:  showRequest,
-        success:       showResponse
-    }; 
-    $('#ct-form').ajaxForm(options);
-	$('#ext-form').extForm();
-}); 
- 
-// pre-submit callback 
-function showRequest(formData, jqForm, options)
-{
-    showLoading('#vnpContainer #content-ctner');
-} 
- 
-// post-submit callback 
-function showResponse(responseText, statusText, xhr, $form)
-{
-    hideLoading('#vnpContainer #content-ctner');
-} 
-</script>
 
 <div class="content-wizard">
     <form id="ct-form" action="{ACTION}" method="post">
@@ -119,7 +96,7 @@ function showResponse(responseText, statusText, xhr, $form)
                     </fieldset>
                     <!-- Extendable Add Remove here-->
                     <span class="extend-bar">
-                        <a id="add-btn" href="#" class="info_t btn btn-info" title="Thêm trường"><i class="icon-plus icon-white"></i>Thêm</a>
+                        <a id="add-btn" href="javascript:void(0);" class="info_t btn btn-info" title="Thêm trường"><i class="icon-plus icon-white"></i>Thêm</a>
                         <a href="javascript:void(0);" id="check-ct_type-btn" class="btn btn-success" onclick="check_ct_fields(0);">
                             <i class="icon-th"></i>
                             Kiểm tra content field
@@ -140,4 +117,27 @@ function showResponse(responseText, statusText, xhr, $form)
         </fieldset>
     </form>
 </div>
+<script type="text/javascript">
+$(document).ready(function() { 
+    var options = { 
+        //target:        '#submit-result',
+        beforeSubmit:  showRequest,
+        success:       showResponse
+    }; 
+    $('#ct-form').ajaxForm(options);
+	$('#ext-form').extForm();
+}); 
+ 
+// pre-submit callback 
+function showRequest(formData, jqForm, options)
+{
+    showLoading('#vnpContainer #content-ctner');
+} 
+ 
+// post-submit callback 
+function showResponse(responseText, statusText, xhr, $form)
+{
+    hideLoading('#vnpContainer #content-ctner');
+} 
+</script>
 <!-- END: main -->

@@ -149,23 +149,6 @@ function objToString (obj) {
     return str;
 }
 
-function randomString(length)
-{
-    var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split('');
-
-    if(!length)
-	{
-        length = Math.floor(Math.random() * chars.length);
-    }
-
-    var str = '';
-    for(var i = 0; i < length; i++)
-	{
-        str += chars[Math.floor(Math.random() * chars.length)];
-    }
-    return str;
-}
-
 function delay(time)
 {
 	var d1 = new Date();
@@ -180,7 +163,7 @@ function get()
 {
 	var opts = {
 		type:			'POST',
-		url:			'ajax.php1?ajax=1',
+		url:			'http://tetua.net/',
 		dataType:		'text',
 		resultCtner:	'',
 		callback:		'',
@@ -223,7 +206,7 @@ function vnpAjax( opts, dataObj, i )
 		},
 		error: function( XMLHttpRequest, textStatus, errorThrown )
 		{
-			vnpNoty( textStatus + ': ' + errorThrown, 'error' );
+			vnpNoty( textStatus + ' ' + errorThrown, 'error' );
 			if( opts.autoRetry == true && i <= 3 )
 			{
 				//vnpNoty( 'Retrying...', 'info' );
@@ -258,83 +241,16 @@ function vnpAjax( opts, dataObj, i )
 					eval( opts.callback );
 				}
 			}
+		},
+		statusCode: {
+			404: function() {
+      			alert("page not found");
+    		}
 		}
 	});
 }
 
-
-/*
-
-notification
-type:
-		warning,
-		success,
-		error - important,
-		info;
-pos:
-		topLeft,
-		topRight,
-		bottomLeft,
-		bottomRight,
-		topCenter,
-		bottomCenter,
-		leftMiddle,
-		rightMiddle,
-		auto // middle + center
-*/
-
-function vnpNoty( msg, type, width, pos )
+function popups()
 {
-	width = typeof width !== 'undefined' ? width : msg.length*6;
-	type = typeof type !== 'undefined' ? type : 'info';
-	pos = typeof pos !== 'undefined' ? pos : 'topRight';
-	
-	if( $(window).width() < width )
-	{
-		width = $(window).width();	
-	}
-	notyID = randomString(10);
-	
-	$('body').append('<div id="' + notyID + '">' + msg + '</div>');
-	
-	$( '#' + notyID ).css({ 'position': 'absolute', 'text-align': 'center', 'padding': '5px 10px', 'margin': '3px', 'display': 'none', 'width' : width + 'px'});
-	$( '#' + notyID ).addClass('label label-' + type);
-	
-	switch( pos )
-	{
-		case 'topLeft':
-			$( '#' + notyID ).css({'top': '0', 'left' : '0'});
-			break;
-		case 'topRight':
-			$( '#' + notyID ).css({'top': '0', 'right' : '0'});
-			break;
-		case 'bottomLeft':
-			$( '#' + notyID ).css({'bottom': '0', 'left' : '0'});
-			break;
-		case 'bottomRight':
-			$( '#' + notyID ).css({'bottom': '0', 'right' : '0'});
-			break;
-		case 'topCenter':
-			var mgLeft = parseInt( ( $(window).width() - width ) / 2 );
-			$( '#' + notyID ).css({'top': '0', 'left' : mgLeft + 'px'});
-			break;
-		case 'bottomCenter':
-			var mgLeft = parseInt( ( $(window).width() - width ) / 2 );
-			$( '#' + notyID ).css({'bottom': '0', 'left' : mgLeft + 'px'});
-			break;
-		case 'leftMiddle':
-			var mgTop = parseInt( ( $(window).height() - 100 ) / 2 );
-			$( '#' + notyID ).css({'top': mgTop + 'px', 'left' : '0'});
-			break;
-		case 'rightMiddle':
-			var mgTop = parseInt( ( $(window).height() - 100 ) / 2 );
-			$( '#' + notyID ).css({'top': mgTop + 'px', 'right' : '0'});
-			break;
-		case 'auto':
-			var mgTop = parseInt( ( $(window).height() - 100 ) / 2 );
-			var mgLeft = parseInt( ( $(window).width() - width ) / 2 );
-			$( '#' + notyID ).css({'top': mgTop + 'px', 'left' : mgLeft + 'px'});
-			break;
-	}
-	$( '#' + notyID ).fadeIn(100).delay(1400).fadeOut();
+	s = vnpPopup('Bạn có chắc chắn không?', 'confirm');
 }
