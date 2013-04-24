@@ -26,6 +26,7 @@
 <script src="{MY_DIR}sources/static/js/vnp-ajax.js"></script>
 <script src="{MY_DIR}sources/static/js/jquery.noty.js"></script>
 <script src="{MY_DIR}sources/static/js/jMenu.jquery.js"></script>
+<script src="{MY_DIR}sources/static/js/global.js"></script>
 </head>
 <body>
 <div id="hook-header">
@@ -53,6 +54,7 @@
         	<div id="content-ctner">
         		{CONTENT}
                 <button onClick="get();">Click</button>
+                <button onClick="popups();">Popup</button>
             </div>
             <div id="content-hook">
             	{HOOK.content}
